@@ -1,0 +1,10 @@
+variable "ami_name" {}
+variable "launch-template-name" {}
+variable "web-sg-name" {}
+variable "tg-arn" {}
+variable "iam-role" {}
+variable "private-subnet-name1" {}
+variable "private-subnet-name2" {}
+variable "instance-profile-name" {}
+variable "asg-name" {}
+variable "web-sg-id" {}
