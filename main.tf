@@ -44,8 +44,8 @@ module "rds" {
   source = "./modules/aws-rds"
 
   sg-name              = var.SG-NAME
-  private-subnet-name1 = var.PRIVATE-SUBNET1
-  private-subnet-name2 = var.PRIVATE-SUBNET2
+  db-subnet-name1 = var.DB-SUBNET1
+  db-subnet-name2 = var.DB-SUBNET2
   db-sg-name           = var.DB-SG-NAME
   rds-username         = var.RDS-USERNAME
   rds-pwd              = var.RDS-PWD
