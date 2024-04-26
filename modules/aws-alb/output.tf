@@ -1,6 +1,6 @@
 output "alb_dns_name" {
   description = "The DNS name of the load balancer"
-  value       = try(aws_lb.web-elb.dns_name)
+  value       = try(aws_lb.Web-elb.dns_name)
 }
 
 output "alb_tg_arn" {

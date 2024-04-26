@@ -65,7 +65,8 @@ module "alb" {
   public-subnet-name2 = var.PUBLIC-SUBNET2
   web-alb-sg-name     = var.ALB-SG-NAME
   web-alb-sg-id       = module.security-group.alb-sg-id
-  alb-name            = var.ALB-NAME
+  web-alb-name            = var.WEB-ALB-NAME
+  app-alb-name            = var.APP-ALB-NAME
   tg-name             = var.TG-NAME
   vpc-name            = var.VPC-NAME
 

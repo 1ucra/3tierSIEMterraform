@@ -40,7 +40,8 @@ variable "DB-INSTANCE-CLASS" {}
 
 # ALB
 variable "TG-NAME" {}
-variable "ALB-NAME" {}
+variable "WEB-ALB-NAME" {}
+variable "APP-ALB-NAME" {}
 
 # IAM
 variable "IAM-ROLE" {}

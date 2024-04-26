@@ -40,7 +40,8 @@ DB-INSTANCE-CLASS = "db.t3.medium"
 
 # ALB
 TG-NAME  = "Web-TG"
-ALB-NAME = "Web-elb"
+WEB-ALB-NAME = "Web-elb"
+APP-ALB-NAME = "App-elb"
 
 # IAM
 IAM-ROLE              = "iam-role-for-ec2-SSM"

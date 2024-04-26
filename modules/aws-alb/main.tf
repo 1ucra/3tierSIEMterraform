@@ -1,6 +1,6 @@
 # Creating ALB for Web Tier
-resource "aws_lb" "web-elb" {
-  name = var.alb-name
+resource "aws_lb" "Web-elb" {
+  name = var.web-alb-name
   internal           = false
   load_balancer_type = "application"
   subnets            = [data.aws_subnet.public-subnet1.id, data.aws_subnet.public-subnet2.id]
@@ -8,7 +8,21 @@ resource "aws_lb" "web-elb" {
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
-    Name = var.alb-name
+    Name = var.web-alb-name
+  }
+}
+
+resource "aws_lb" "App-elb" {
+  name = var.app-alb-name
+  internal           = true
+  load_balancer_type = "application"
+  subnets            = [data.aws_subnet.public-subnet1.id, data.aws_subnet.public-subnet2.id]
+  # 임시 default
+  security_groups    = [data.aws_security_group.default-sg.id]
+  ip_address_type    = "ipv4"
+  enable_deletion_protection = false
+  tags = {
+    Name = var.app-alb-name
   }
 }
 
@@ -38,13 +52,13 @@ resource "aws_lb_target_group" "web-tg" {
     prevent_destroy = false
     #create_before_destroy = true
   } 
-  depends_on = [ aws_lb.web-elb ]
+  depends_on = [ aws_lb.Web-elb ]
 }
 
 
 # Creating ALB listener with port 80 and attaching it to Web-Tier Target Group
 resource "aws_lb_listener" "web-alb-listener" {
-  load_balancer_arn = aws_lb.web-elb.arn
+  load_balancer_arn = aws_lb.Web-elb.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -53,5 +67,5 @@ resource "aws_lb_listener" "web-alb-listener" {
     target_group_arn = aws_lb_target_group.web-tg.arn
   }
 
-  depends_on = [ aws_lb.web-elb ]
+  depends_on = [ aws_lb.Web-elb ]
 }
