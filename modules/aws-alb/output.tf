@@ -3,7 +3,12 @@ output "alb_dns_name" {
   value       = try(aws_lb.Web-elb.dns_name)
 }
 
-output "alb_tg_arn" {
+output "app_tg_arn" {
   description = "The name of the target group of alb"
   value = try(aws_lb_target_group.web-tg.arn)
+}
+
+output "web_tg_arn" {
+  description = "The name of the target group of alb"
+  value = try(aws_lb_target_group.app-tg.arn)
 }

@@ -63,11 +63,14 @@ module "alb" {
 
   public-subnet-name1 = var.PUBLIC-SUBNET1
   public-subnet-name2 = var.PUBLIC-SUBNET2
+  private-subnet-name1 = var.PRIVATE-SUBNET1
+  private-subnet-name2 = var.PRIVATE-SUBNET2
   web-alb-sg-name     = var.ALB-SG-NAME
   web-alb-sg-id       = module.security-group.alb-sg-id
   web-alb-name            = var.WEB-ALB-NAME
   app-alb-name            = var.APP-ALB-NAME
-  tg-name             = var.TG-NAME
+  web-tg-name             = var.WEB-TG-NAME
+  app-tg-name             = var.APP-TG-NAME
   vpc-name            = var.VPC-NAME
 
   depends_on = [module.rds]
@@ -93,12 +96,12 @@ module "autoscaling" {
   instance-profile-name = var.INSTANCE-PROFILE-NAME
   web-sg-name           = var.WEB-SG-NAME
   web-sg-id             = module.security-group.web-tier-sg-id
-  tg-arn                = module.alb.alb_tg_arn
   iam-role              = var.IAM-ROLE
   private-subnet-name1  = var.PRIVATE-SUBNET1
   private-subnet-name2  = var.PRIVATE-SUBNET2
   asg-name              = var.ASG-NAME
-
+  web-tg-arn = module.alb.web_tg_arn
+  app-tg-arn = module.alb.app_tg_arn
   depends_on = [module.iam]
 
 }

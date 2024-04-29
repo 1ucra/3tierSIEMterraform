@@ -39,7 +39,8 @@ RDS-NAME          = "kdt-RDS"
 DB-INSTANCE-CLASS = "db.t3.medium"
 
 # ALB
-TG-NAME  = "Web-TG"
+WEB-TG-NAME  = "Web-TG"
+APP-TG-NAME  = "App-TG"
 WEB-ALB-NAME = "Web-elb"
 APP-ALB-NAME = "App-elb"
 

@@ -39,7 +39,8 @@ variable "RDS-NAME" {}
 variable "DB-INSTANCE-CLASS" {}
 
 # ALB
-variable "TG-NAME" {}
+variable "WEB-TG-NAME" {}
+variable "APP-TG-NAME" {}
 variable "WEB-ALB-NAME" {}
 variable "APP-ALB-NAME" {}
 
