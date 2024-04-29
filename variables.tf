@@ -28,6 +28,7 @@ variable "DB-RT-NAME2" {}
 # SECURITY GROUP
 variable "ALB-SG-NAME" {}
 variable "WEB-SG-NAME" {}
+variable "APP-SG-NAME" {}
 variable "DB-SG-NAME" {}
 
 # RDS
@@ -52,7 +53,8 @@ variable "INSTANCE-PROFILE-NAME" {}
 # AUTOSCALING
 variable "AMI-NAME" {}
 variable "LAUNCH-TEMPLATE-NAME" {}
-variable "ASG-NAME" {}
+variable "WEB-ASG-NAME" {}
+variable "APP-ASG-NAME" {}
 
 # CLOUDFFRONT / ROUTE53 / ACM
 variable "DOMAIN-NAME" {}

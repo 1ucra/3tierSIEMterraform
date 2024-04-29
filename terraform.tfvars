@@ -28,6 +28,7 @@ DB-RT-NAME2 = "kdt-DB-Route-table2"
 # SECURITY GROUP
 ALB-SG-NAME = "kdt-alb-sg"
 WEB-SG-NAME = "kdt-web-sg"
+APP-SG-NAME = "kdt-app-sg"
 DB-SG-NAME  = "kdt-db-sg"
 
 # RDS
@@ -52,7 +53,8 @@ INSTANCE-PROFILE-NAME = "iam-instance-profile-for-ec2-SSM"
 # AUTOSCALING
 AMI-NAME             = "New-AMI"
 LAUNCH-TEMPLATE-NAME = "Web-template"
-ASG-NAME             = "kdt-ASG"
+WEB-ASG-NAME             = "kdt-WEB-ASG"
+APP-ASG-NAME             = "kdt-APP-ASG"
 
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM

@@ -9,6 +9,17 @@ data "aws_security_group" "web-sg" {
   }
 }
 
+data "aws_security_group" "app-sg" {
+  filter {
+    name   = "tag:Name"
+    values = [var.app-sg-name]
+  }
+  filter {
+    name = "group-id"
+    values = [var.app-sg-id]
+  }
+}
+
 data "aws_subnet" "private-subnet1" {
   filter {
     name   = "tag:Name"

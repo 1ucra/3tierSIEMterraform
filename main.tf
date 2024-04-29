@@ -34,6 +34,7 @@ module "security-group" {
   vpc-name    = var.VPC-NAME
   alb-sg-name = var.ALB-SG-NAME
   web-sg-name = var.WEB-SG-NAME
+  app-sg-name = var.APP-SG-NAME
   db-sg-name  = var.DB-SG-NAME
 
   depends_on = [module.vpc]
@@ -95,11 +96,14 @@ module "autoscaling" {
   launch-template-name  = var.LAUNCH-TEMPLATE-NAME
   instance-profile-name = var.INSTANCE-PROFILE-NAME
   web-sg-name           = var.WEB-SG-NAME
+  app-sg-name           = var.APP-SG-NAME
   web-sg-id             = module.security-group.web-tier-sg-id
+  app-sg-id = module.security-group.app-tier-sg-id
   iam-role              = var.IAM-ROLE
   private-subnet-name1  = var.PRIVATE-SUBNET1
   private-subnet-name2  = var.PRIVATE-SUBNET2
-  asg-name              = var.ASG-NAME
+  web-asg-name              = var.WEB-ASG-NAME
+  app-asg-name              = var.APP-ASG-NAME
   web-tg-arn = module.alb.web_tg_arn
   app-tg-arn = module.alb.app_tg_arn
   depends_on = [module.iam]

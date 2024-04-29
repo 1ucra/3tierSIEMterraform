@@ -34,7 +34,7 @@ resource "aws_security_group" "alb-sg" {
 
 resource "aws_security_group" "web-tier-sg" {
   vpc_id      = data.aws_vpc.vpc.id
-  description = "Allow HTTP and HTTPS for ALB Only"
+  description = "Allow HTTP and HTTPS for WEP ALB Only"
 
   ingress {
     from_port       = 80
@@ -60,6 +60,39 @@ resource "aws_security_group" "web-tier-sg" {
 
   tags = {
     Name = var.web-sg-name
+  }
+
+  depends_on = [ aws_security_group.alb-sg ]
+}
+
+resource "aws_security_group" "app-tier-sg" {
+  vpc_id      = data.aws_vpc.vpc.id
+  description = "Allow HTTP and HTTPS from APP ALB Only"
+
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb-sg.id]
+  }
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb-sg.id]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = var.app-sg-name
   }
 
   depends_on = [ aws_security_group.alb-sg ]
