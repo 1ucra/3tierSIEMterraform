@@ -88,6 +88,8 @@ resource "aws_subnet" "db-subnet1" {
   tags = {
     Name = var.db-subnet1
   }
+
+  depends_on = [ aws_subnet.private-subnet2 ]
 }
 
 # Creating DB Subnet 2 for RDS Instance
@@ -100,6 +102,8 @@ resource "aws_subnet" "db-subnet2" {
   tags = {
     Name = var.db-subnet2
   }
+
+  depends_on = [ aws_subnet.db-subnet1 ]
 }
 
 # Creating Elastic IP for NAT Gateway 1
@@ -110,7 +114,7 @@ resource "aws_eip" "eip1" {
     Name = var.eip-name1
   }
 
-  depends_on = [ aws_subnet.private-subnet2 ]
+  depends_on = [ aws_subnet.db-subnet2 ]
 }
 
 # Creating Elastic IP for NAT Gateway 2
@@ -239,4 +243,42 @@ resource "aws_route_table_association" "private-rt-association2" {
   route_table_id = aws_route_table.private-rt2.id
 
   depends_on = [ aws_route_table.private-rt2 ]
+}
+
+# Creating DB Route table 1 
+resource "aws_route_table" "db-rt1" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = var.db-rt-name1
+  }
+
+  depends_on = [ aws_route_table_association.private-rt-association2 ]
+}
+
+# Associating the DB Route table 1 DB Subnet 1
+resource "aws_route_table_association" "db-rt-association1" {
+  subnet_id      = aws_subnet.db-subnet1.id
+  route_table_id = aws_route_table.db-rt1.id
+
+  depends_on = [ aws_route_table.db-rt1 ]
+}
+
+# Creating DB Route table 2 
+resource "aws_route_table" "db-rt2" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = var.db-rt-name2
+  }
+
+  depends_on = [ aws_route_table_association.private-rt-association1 ]
+}
+
+# Associating the DB Route table 2 DB Subnet 2
+resource "aws_route_table_association" "db-rt-association2" {
+  subnet_id      = aws_subnet.db-subnet2.id
+  route_table_id = aws_route_table.db-rt2.id
+
+  depends_on = [ aws_route_table.db-rt2 ]
 }
