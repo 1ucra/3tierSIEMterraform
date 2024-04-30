@@ -33,13 +33,6 @@ resource "aws_lb_target_group" "web-tg" {
     Name = var.web-tg-name
   }
 
-  lifecycle {
-    prevent_destroy = false
-    create_before_destroy = true
-    replace_triggered_by = [
-      aws_lb.Web-elb.id
-    ]
-  } 
   depends_on = [ aws_lb.Web-elb ]
 }
 
@@ -92,12 +85,6 @@ resource "aws_lb_target_group" "app-tg" {
   tags = {
     Name = var.app-tg-name
   }
-
-  lifecycle {
-    replace_triggered_by = [
-      aws_lb.App-elb.id
-    ]
-  }  
   
   depends_on = [ aws_lb.App-elb ]
 }
