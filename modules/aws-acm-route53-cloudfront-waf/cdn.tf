@@ -1,4 +1,4 @@
-resource "aws_cloudfront_distribution" "cdn-web-elb-distribution" {
+resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   origin {
     domain_name = var.alb-dns-name
     origin_id   = "my-web-alb"
@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "cdn-web-elb-distribution" {
   aliases         = [var.domain-name, "www.${var.domain-name}"]
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "CDN ALB Distribution"
+  comment         = "CLOUDFRONT ALB Distribution"
   price_class     = "PriceClass_100"
 
   default_cache_behavior {
@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "cdn-web-elb-distribution" {
   web_acl_id = aws_wafv2_web_acl.web_acl.arn
 
   tags = {
-    Name = var.cdn-name
+    Name = var.cloudfront-name
   }
 
   depends_on = [aws_acm_certificate_validation.cert]

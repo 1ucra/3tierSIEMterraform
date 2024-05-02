@@ -109,11 +109,11 @@ module "autoscaling" {
 
 }
 
-module "waf-cf-acm-route53" {
-  source = "./modules/aws-waf-cdn-acm-route53"
+module "acm-route53-cloudfront-waf" {
+  source = "./modules/aws-acm-route53-cloudfront-waf"
 
   domain-name  = var.DOMAIN-NAME
-  cdn-name     = var.CDN-NAME
+  cloudfront-name     = var.CLOUDFRONT-NAME
   alb-dns-name = module.alb.alb_dns_name
   web_acl_name = var.WEB-ACL-NAME
 

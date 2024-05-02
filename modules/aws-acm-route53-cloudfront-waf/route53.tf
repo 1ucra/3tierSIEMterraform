@@ -33,8 +33,8 @@ resource "aws_route53_record" "www" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.cdn-web-elb-distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn-web-elb-distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.cloudfront-web-elb-distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.cloudfront-web-elb-distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }
@@ -46,8 +46,8 @@ resource "aws_route53_record" "apex" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.cdn-web-elb-distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn-web-elb-distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.cloudfront-web-elb-distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.cloudfront-web-elb-distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }

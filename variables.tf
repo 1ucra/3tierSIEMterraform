@@ -57,7 +57,7 @@ variable "APP-ASG-NAME" {}
 
 # CLOUDFFRONT / ROUTE53 / ACM
 variable "DOMAIN-NAME" {}
-variable "CDN-NAME" {}
+variable "CLOUDFRONT-NAME" {}
 
 # WAFv2
 variable "WEB-ACL-NAME" {}

@@ -1,4 +1,6 @@
 1. 공용 도메인을 신청함. (예.가비아)
 2. 도메인 신청 기관에 도메인 관리에서 NS 서버 정보를 AWS Route53 DNS 정보 변경
 3. AWS에 Route53에 DNS Zone을 생성함.
-4. 
+
+
+1. Parameter Store 생성후 

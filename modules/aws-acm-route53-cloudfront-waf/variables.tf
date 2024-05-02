@@ -1,4 +1,4 @@
 variable "domain-name" {}
-variable "cdn-name" {}
+variable "cloudfront-name" {}
 variable "alb-dns-name" {}
 variable "web_acl_name" {}

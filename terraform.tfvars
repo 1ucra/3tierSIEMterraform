@@ -58,5 +58,5 @@ APP-ASG-NAME             = "kdt-APP-ASG"
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM
 DOMAIN-NAME  = "hellowaws.shop"
-CDN-NAME     = "kdt-CDN-ktd"
+CLOUDFRONT-NAME     = "kdt-CLOUDFRONT-ktd"
 WEB-ACL-NAME = "kdt-WAF-ktd"
