@@ -17,8 +17,7 @@ variable "eip-name1" {}
 variable "eip-name2" {}
 variable "ngw-name1" {}
 variable "ngw-name2" {}
-variable "public-rt-name1" {}
-variable "public-rt-name2" {}
+variable "public-rt-name" {}
 variable "private-rt-name1" {}
 variable "private-rt-name2" {}
 variable "db-rt-name1" {}

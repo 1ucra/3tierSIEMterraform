@@ -18,8 +18,7 @@ variable "EIP-NAME1" {}
 variable "EIP-NAME2" {}
 variable "NGW-NAME1" {}
 variable "NGW-NAME2" {}
-variable "PUBLIC-RT-NAME1" {}
-variable "PUBLIC-RT-NAME2" {}
+variable "PUBLIC-RT-NAME" {}
 variable "PRIVATE-RT-NAME1" {}
 variable "PRIVATE-RT-NAME2" {}
 variable "DB-RT-NAME1" {}

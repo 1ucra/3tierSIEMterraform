@@ -153,7 +153,7 @@ resource "aws_nat_gateway" "ngw2" {
 }
 
 # Creating Public Route table 1
-resource "aws_route_table" "public-rt1" {
+resource "aws_route_table" "public-rt" {
   vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -161,7 +161,7 @@ resource "aws_route_table" "public-rt1" {
   }
 
   tags = {
-    Name = var.public-rt-name1
+    Name = var.public-rt-name
   }
 
   depends_on = [ aws_nat_gateway.ngw2 ]
@@ -170,32 +170,17 @@ resource "aws_route_table" "public-rt1" {
 # Associating the Public Route table 1 Public Subnet 1
 resource "aws_route_table_association" "public-rt-association1" {
   subnet_id      = aws_subnet.public-subnet1.id
-  route_table_id = aws_route_table.public-rt1.id
+  route_table_id = aws_route_table.public-rt.id
 
-  depends_on = [ aws_route_table.public-rt1 ]
-}
-
-# Creating Public Route table 2 
-resource "aws_route_table" "public-rt2" {
-  vpc_id = aws_vpc.vpc.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
-  }
-
-  tags = {
-    Name = var.public-rt-name2
-  }
-  
-  depends_on = [ aws_route_table_association.public-rt-association1 ]
+  depends_on = [ aws_route_table.public-rt ]
 }
 
 # Associating the Public Route table 2 Public Subnet 2
 resource "aws_route_table_association" "public-rt-association2" {
   subnet_id      = aws_subnet.public-subnet2.id
-  route_table_id = aws_route_table.public-rt2.id
+  route_table_id = aws_route_table.public-rt.id
 
-  depends_on = [ aws_route_table.public-rt1 ]
+  depends_on = [ aws_route_table.public-rt ]
 }
 
 
@@ -227,7 +212,7 @@ resource "aws_route_table" "private-rt2" {
   vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.ngw1.id
+    gateway_id = aws_nat_gateway.ngw2.id
   }
 
   tags = {
