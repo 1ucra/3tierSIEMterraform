@@ -32,8 +32,6 @@ resource "aws_lb_target_group" "web-tg" {
   tags = {
     Name = var.web-tg-name
   }
-
-  depends_on = [ aws_lb.Web-elb ]
 }
 
 
@@ -47,8 +45,6 @@ resource "aws_lb_listener" "web-alb-listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web-tg.arn
   }
-
-  depends_on = [ aws_lb_target_group.web-tg ]
 }
 
 # Creating ALB for App Tier
@@ -85,8 +81,6 @@ resource "aws_lb_target_group" "app-tg" {
   tags = {
     Name = var.app-tg-name
   }
-  
-  depends_on = [ aws_lb.App-elb ]
 }
 
 
@@ -100,6 +94,4 @@ resource "aws_lb_listener" "app-alb-listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app-tg.arn
   }
-
-  depends_on = [ aws_lb_target_group.app-tg ]
 }
