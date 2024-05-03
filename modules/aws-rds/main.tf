@@ -1,4 +1,6 @@
 # 8 Creating DB subnet group for RDS Instances
+
+
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = var.sg-name
   subnet_ids = [data.aws_subnet.db-subnet1.id, data.aws_subnet.db-subnet2.id]
@@ -13,6 +15,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   master_username         = data.aws_ssm_parameter.db_id.value
   master_password         = data.aws_ssm_parameter.db_pw.value
   storage_encrypted  = true
+  allow_major_version_upgrade = false
   backup_retention_period = 7
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
