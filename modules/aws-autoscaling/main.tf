@@ -20,7 +20,6 @@ resource "aws_autoscaling_group" "Web-ASG" {
   launch_template {
     id = aws_launch_template.Web-LC.id
     version = aws_launch_template.Web-LC.latest_version
-
   }
   min_size             = 2
   max_size             = 4
@@ -33,7 +32,6 @@ resource "aws_autoscaling_group" "Web-ASG" {
     value               = "Web-ASG"
     propagate_at_launch = true
   }
-
 }
 
 
