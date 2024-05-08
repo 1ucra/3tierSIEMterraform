@@ -3,4 +3,7 @@
 3. AWS에 Route53에 DNS Zone을 생성함.
 
 
-1. Parameter Store 생성후 
+1. Parameter Store 생성해둬야함
+2. S3 생성 해둬야함
+3. bastion은 콘솔에서 마치고 한번 설정하는게 훨 편함
+4. ASG 안지워지는 버그 수동으로 지워줘야함 왜 안되는지 모르겟..

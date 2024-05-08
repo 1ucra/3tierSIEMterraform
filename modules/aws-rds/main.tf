@@ -16,8 +16,8 @@ resource "aws_rds_cluster" "aurora_cluster" {
   master_password         = data.aws_ssm_parameter.db_pw.value
   storage_encrypted  = true
   allow_major_version_upgrade = false
-  backup_retention_period = 7
-  preferred_backup_window = "07:00-09:00"
+  backup_retention_period = 3
+  preferred_backup_window = "19:00-21:00" #4시~6시
   skip_final_snapshot     = true
   database_name           = var.db-name
   port                    = 3306

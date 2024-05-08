@@ -40,23 +40,23 @@ module "security-group" {
 
 }
 
-module "rds" {
-  source = "./modules/aws-rds"
+# module "rds" {
+#   source = "./modules/aws-rds"
 
-  sg-name              = var.SG-NAME
-  db-subnet-name1 = var.DB-SUBNET1
-  db-subnet-name2 = var.DB-SUBNET2
-  db-sg-name           = var.DB-SG-NAME
-  rds-username         = var.RDS-USERNAME
-  rds-pwd              = var.RDS-PWD
-  db-name              = var.DB-NAME
-  rds-name             = var.RDS-NAME
-  db-instance-class    = var.DB-INSTANCE-CLASS
-  db-sg-id             = module.security-group.database-sg-id
+#   sg-name              = var.SG-NAME
+#   db-subnet-name1 = var.DB-SUBNET1
+#   db-subnet-name2 = var.DB-SUBNET2
+#   db-sg-name           = var.DB-SG-NAME
+#   rds-username         = var.RDS-USERNAME
+#   rds-pwd              = var.RDS-PWD
+#   db-name              = var.DB-NAME
+#   rds-name             = var.RDS-NAME
+#   db-instance-class    = var.DB-INSTANCE-CLASS
+#   db-sg-id             = module.security-group.database-sg-id
 
-  depends_on = [module.security-group]
+#   depends_on = [module.security-group]
 
-}
+# }
 
 module "alb" {
   source = "./modules/aws-alb"
@@ -73,8 +73,8 @@ module "alb" {
   app-tg-name             = var.APP-TG-NAME
   vpc-name            = var.VPC-NAME
 
-  depends_on = [module.rds]
-
+  #depends_on = [module.rds]
+  depends_on = [module.vpc]
 }
 
 module "iam" {
