@@ -1,5 +1,9 @@
-output "alb-sg-id" {
-  value = aws_security_group.alb-sg.id
+output "web-alb-sg-id" {
+  value = aws_security_group.web-alb-sg.id
+}
+
+output "app-alb-sg-id" {
+  value = aws_security_group.app-alb-sg.id
 }
 
 output "web-tier-sg-id" {

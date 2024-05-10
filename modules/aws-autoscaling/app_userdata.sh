@@ -11,15 +11,6 @@ systemctl enable nginx
 export PS1="[\u@\h \w]\$ "
 source ~/.bashrc
 
-
-
-
-#########WEB##########
-aws s3 cp s3://ktd-0426/default.conf /etc/nginx/conf.d/
-aws s3 cp s3://ktd-0426/django-community-board-main/static /usr/share/nginx/html/static --recursive
-systemctl restart nginx
-
-#######APP##############
 dnf install -y python3-pip gcc python3-devel mariadb105-devel
 dnf groupinstall "Development Tools" -y
 dnf install bzip2-devel libffi-devel -y
@@ -29,4 +20,3 @@ pip install django
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver 0.0.0.0:8080
-

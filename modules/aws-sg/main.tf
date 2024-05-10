@@ -1,10 +1,17 @@
-resource "aws_security_group" "alb-sg" {
+resource "aws_security_group" "web-alb-sg" {
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for World"
 
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -24,7 +31,7 @@ resource "aws_security_group" "alb-sg" {
   }
 
   tags = {
-    Name = var.alb-sg-name
+    Name = var.web-alb-sg-name
   }
 
   depends_on = [ data.aws_vpc.vpc ]
@@ -39,14 +46,14 @@ resource "aws_security_group" "web-tier-sg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb-sg.id]
+    security_groups = [aws_security_group.web-alb-sg.id]
   }
 
   ingress {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb-sg.id]
+    security_groups = [aws_security_group.web-alb-sg.id]
   }
 
   egress {
@@ -60,7 +67,39 @@ resource "aws_security_group" "web-tier-sg" {
     Name = var.web-sg-name
   }
 
-  depends_on = [ aws_security_group.alb-sg ]
+  depends_on = [ aws_security_group.web-alb-sg ]
+}
+
+resource "aws_security_group" "app-alb-sg" {
+  vpc_id      = data.aws_vpc.vpc.id
+  description = "Allow HTTP and HTTPS for World"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    security_groups = [aws_security_group.web-tier-sg.id]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    security_groups = [aws_security_group.web-tier-sg.id]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = var.app-alb-sg-name
+  }
+
+  depends_on = [ aws_security_group.web-tier-sg ]
 }
 
 resource "aws_security_group" "app-tier-sg" {
@@ -68,17 +107,17 @@ resource "aws_security_group" "app-tier-sg" {
   description = "Allow HTTP and HTTPS from APP ALB Only"
 
   ingress {
-    from_port       = 80
-    to_port         = 80
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb-sg.id]
+    security_groups = [aws_security_group.app-alb-sg.id]
   }
 
   ingress {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb-sg.id]
+    security_groups = [aws_security_group.app-alb-sg.id]
   }
 
   egress {
@@ -93,7 +132,7 @@ resource "aws_security_group" "app-tier-sg" {
     Name = var.app-sg-name
   }
 
-  depends_on = [ aws_security_group.alb-sg ]
+  depends_on = [ aws_security_group.app-alb-sg ]
 }
 
 
@@ -106,8 +145,10 @@ resource "aws_security_group" "database-sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.web-tier-sg.id]
+    security_groups = [aws_security_group.app-tier-sg.id]
   }
+
+  
 
   egress {
     from_port        = 0

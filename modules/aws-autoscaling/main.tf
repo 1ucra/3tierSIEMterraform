@@ -1,7 +1,7 @@
 # Creating Launch template for App tier AutoScaling Group!
 resource "aws_launch_template" "App-LC" {
   name = "${var.launch-template-name}-Backend"
-  image_id = "ami-09b90e09742640522"
+  image_id = var.ami-id
   instance_type = "t3.micro"
 
   iam_instance_profile {
@@ -9,8 +9,8 @@ resource "aws_launch_template" "App-LC" {
   }
 
   vpc_security_group_ids = [data.aws_security_group.app-sg.id]
+  user_data = filebase64("${path.module}/app_userdata.sh")
 
-  user_data = filebase64("./modules/aws-autoscaling/deploy.sh")
 }
 
 
@@ -20,7 +20,6 @@ resource "aws_autoscaling_group" "App-ASG" {
   launch_template {
     id = aws_launch_template.App-LC.id
     version = aws_launch_template.App-LC.latest_version
-
   }
   min_size             = 2
   max_size             = 4
@@ -99,7 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaledown" {
 # Creating Launch template for Web tier AutoScaling Group!
 resource "aws_launch_template" "Web-LC" {
   name = "${var.launch-template-name}-Frontend"
-  image_id = "ami-09b90e09742640522"
+  image_id = var.ami-id
   instance_type = "t3.micro"
 
   iam_instance_profile {
@@ -108,7 +107,12 @@ resource "aws_launch_template" "Web-LC" {
 
   vpc_security_group_ids = [data.aws_security_group.web-sg.id]
 
-  user_data = filebase64("./modules/aws-autoscaling/deploy.sh")
+  user_data = base64encode(templatefile("${path.module}/web_userdata.sh", {
+    app_lb_dns = "${var.app-alb-dns-name}",
+    app_lb_dns2 = "var.app-alb-dns-name2",
+    app_lb_dns3 = var.app-alb-dns-name
+  }))
+
 
   depends_on = [ aws_autoscaling_group.App-ASG ]
 }

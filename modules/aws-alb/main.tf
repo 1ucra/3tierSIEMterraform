@@ -5,7 +5,7 @@ resource "aws_lb" "App-elb" {
   internal           = true
   load_balancer_type = "application"
   subnets            = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
-  security_groups    = [data.aws_security_group.web-alb-sg.id]
+  security_groups    = [data.aws_security_group.app-alb-sg.id]
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "app-tg" {
     unhealthy_threshold = 2
   }
   target_type = "instance"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.vpc.id
 
@@ -39,7 +39,7 @@ resource "aws_lb_target_group" "app-tg" {
 # Creating ALB listener with port 80 and attaching it to Web-Tier Target Group
 resource "aws_lb_listener" "app-alb-listener" {
   load_balancer_arn = aws_lb.App-elb.arn
-  port              = 80
+  port              = 8080
   protocol          = "HTTP"
 
   default_action {

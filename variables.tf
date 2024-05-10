@@ -25,7 +25,8 @@ variable "DB-RT-NAME1" {}
 variable "DB-RT-NAME2" {}
 
 # SECURITY GROUP
-variable "ALB-SG-NAME" {}
+variable "WEB-ALB-SG-NAME" {}
+variable "APP-ALB-SG-NAME" {}
 variable "WEB-SG-NAME" {}
 variable "APP-SG-NAME" {}
 variable "DB-SG-NAME" {}
@@ -54,6 +55,7 @@ variable "AMI-NAME" {}
 variable "LAUNCH-TEMPLATE-NAME" {}
 variable "WEB-ASG-NAME" {}
 variable "APP-ASG-NAME" {}
+variable "AMI-ID" {}
 
 # CLOUDFFRONT / ROUTE53 / ACM
 variable "DOMAIN-NAME" {}

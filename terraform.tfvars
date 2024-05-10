@@ -18,14 +18,15 @@ EIP-NAME1        = "kdt-Elastic-IP1"
 EIP-NAME2        = "kdt-Elastic-IP2"
 NGW-NAME1        = "kdt-NAT1"
 NGW-NAME2        = "kdt-NAT2"
-PUBLIC-RT-NAME  = "kdt-Public-Route-table"
+PUBLIC-RT-NAME   = "kdt-Public-Route-table"
 PRIVATE-RT-NAME1 = "kdt-Private-Route-table1"
 PRIVATE-RT-NAME2 = "kdt-Private-Route-table2"
-DB-RT-NAME1 = "kdt-DB-Route-table1"
-DB-RT-NAME2 = "kdt-DB-Route-table2"
+DB-RT-NAME1      = "kdt-DB-Route-table1"
+DB-RT-NAME2      = "kdt-DB-Route-table2"
 
 # SECURITY GROUP
-ALB-SG-NAME = "kdt-alb-sg"
+WEB-ALB-SG-NAME = "kdt-web-alb-sg"
+APP-ALB-SG-NAME = "kdt-app-alb-sg"
 WEB-SG-NAME = "kdt-web-sg"
 APP-SG-NAME = "kdt-app-sg"
 DB-SG-NAME  = "kdt-db-sg"
@@ -45,18 +46,18 @@ WEB-ALB-NAME = "Web-elb"
 APP-ALB-NAME = "App-elb"
 
 # IAM
-IAM-ROLE              = "iam-role-for-ec2-SSM"
-IAM-POLICY            = "iam-policy-for-ec2-SSM"
-INSTANCE-PROFILE-NAME = "iam-instance-profile-for-ec2-SSM"
+IAM-ROLE              = "role-for-ec2-SSM,S3"
+IAM-POLICY            = "policy-for-ec2-SSM,S3"
+INSTANCE-PROFILE-NAME = "instance-profile-for-ec2-SSM,S3"
 
 # AUTOSCALING
 AMI-NAME             = "New-AMI"
 LAUNCH-TEMPLATE-NAME = "Web-template"
-WEB-ASG-NAME             = "kdt-WEB-ASG"
-APP-ASG-NAME             = "kdt-APP-ASG"
-
+WEB-ASG-NAME         = "kdt-WEB-ASG"
+APP-ASG-NAME         = "kdt-APP-ASG"
+AMI-ID               = "ami-0ddda618e961f2270"
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM
-DOMAIN-NAME  = "hellowaws.shop"
-CLOUDFRONT-NAME     = "kdt-CLOUDFRONT-ktd"
-WEB-ACL-NAME = "kdt-WAF-ktd"
+DOMAIN-NAME     = "hellowaws.shop"
+CLOUDFRONT-NAME = "kdt-CLOUDFRONT-ktd"
+WEB-ACL-NAME    = "kdt-WAF-ktd"

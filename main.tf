@@ -20,18 +20,19 @@ module "vpc" {
   eip-name2        = var.EIP-NAME2
   ngw-name1        = var.NGW-NAME1
   ngw-name2        = var.NGW-NAME2
-  public-rt-name  = var.PUBLIC-RT-NAME
+  public-rt-name   = var.PUBLIC-RT-NAME
   private-rt-name1 = var.PRIVATE-RT-NAME1
   private-rt-name2 = var.PRIVATE-RT-NAME2
-  db-rt-name1 = var.DB-RT-NAME1
-  db-rt-name2 = var.DB-RT-NAME2
+  db-rt-name1      = var.DB-RT-NAME1
+  db-rt-name2      = var.DB-RT-NAME2
 }
 
 module "security-group" {
   source = "./modules/aws-sg"
 
   vpc-name    = var.VPC-NAME
-  alb-sg-name = var.ALB-SG-NAME
+  web-alb-sg-name = var.WEB-ALB-SG-NAME
+  app-alb-sg-name = var.APP-ALB-SG-NAME
   web-sg-name = var.WEB-SG-NAME
   app-sg-name = var.APP-SG-NAME
   db-sg-name  = var.DB-SG-NAME
@@ -61,20 +62,22 @@ module "security-group" {
 module "alb" {
   source = "./modules/aws-alb"
 
-  public-subnet-name1 = var.PUBLIC-SUBNET1
-  public-subnet-name2 = var.PUBLIC-SUBNET2
+  public-subnet-name1  = var.PUBLIC-SUBNET1
+  public-subnet-name2  = var.PUBLIC-SUBNET2
   private-subnet-name1 = var.PRIVATE-SUBNET1
   private-subnet-name2 = var.PRIVATE-SUBNET2
-  web-alb-sg-name     = var.ALB-SG-NAME
-  web-alb-sg-id       = module.security-group.alb-sg-id
-  web-alb-name            = var.WEB-ALB-NAME
-  app-alb-name            = var.APP-ALB-NAME
-  web-tg-name             = var.WEB-TG-NAME
-  app-tg-name             = var.APP-TG-NAME
-  vpc-name            = var.VPC-NAME
+  web-alb-sg-name      = var.WEB-ALB-SG-NAME
+  web-alb-sg-id        = module.security-group.web-alb-sg-id
+  app-alb-sg-name      = var.APP-ALB-SG-NAME
+  app-alb-sg-id        = module.security-group.app-alb-sg-id
+  web-alb-name         = var.WEB-ALB-NAME
+  app-alb-name         = var.APP-ALB-NAME
+  web-tg-name          = var.WEB-TG-NAME
+  app-tg-name          = var.APP-TG-NAME
+  vpc-name             = var.VPC-NAME
 
   #depends_on = [module.rds]
-  depends_on = [module.vpc]
+  depends_on = [module.security-group]
 }
 
 module "iam" {
@@ -83,39 +86,36 @@ module "iam" {
   iam-role              = var.IAM-ROLE
   iam-policy            = var.IAM-POLICY
   instance-profile-name = var.INSTANCE-PROFILE-NAME
-
-  depends_on = [module.alb]
-
 }
 
 module "autoscaling" {
   source = "./modules/aws-autoscaling"
-
   ami_name              = var.AMI-NAME
   launch-template-name  = var.LAUNCH-TEMPLATE-NAME
   instance-profile-name = var.INSTANCE-PROFILE-NAME
   web-sg-name           = var.WEB-SG-NAME
   app-sg-name           = var.APP-SG-NAME
   web-sg-id             = module.security-group.web-tier-sg-id
-  app-sg-id = module.security-group.app-tier-sg-id
-  iam-role              = var.IAM-ROLE
+  app-sg-id             = module.security-group.app-tier-sg-id
   private-subnet-name1  = var.PRIVATE-SUBNET1
   private-subnet-name2  = var.PRIVATE-SUBNET2
-  web-asg-name              = var.WEB-ASG-NAME
-  app-asg-name              = var.APP-ASG-NAME
-  web-tg-arn = module.alb.web_tg_arn
-  app-tg-arn = module.alb.app_tg_arn
-  depends_on = [module.iam]
-
+  web-asg-name          = var.WEB-ASG-NAME
+  app-asg-name          = var.APP-ASG-NAME
+  web-tg-arn            = module.alb.web_tg_arn
+  app-tg-arn            = module.alb.app_tg_arn
+  app-alb-dns-name      = module.alb.app_alb_dns_name
+  ami-id                = var.AMI-ID
+  
+  depends_on            = [module.iam, module.security-group]
 }
 
 module "acm-route53-cloudfront-waf" {
   source = "./modules/aws-acm-route53-cloudfront-waf"
 
-  domain-name  = var.DOMAIN-NAME
-  cloudfront-name     = var.CLOUDFRONT-NAME
-  alb-dns-name = module.alb.alb_dns_name
-  web_acl_name = var.WEB-ACL-NAME
+  domain-name     = var.DOMAIN-NAME
+  cloudfront-name = var.CLOUDFRONT-NAME
+  alb-dns-name    = module.alb.web_alb_dns_name
+  web_acl_name    = var.WEB-ACL-NAME
 
   providers = {
     aws = aws.us-east-1
