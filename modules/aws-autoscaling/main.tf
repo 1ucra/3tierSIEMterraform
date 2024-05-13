@@ -108,9 +108,7 @@ resource "aws_launch_template" "Web-LC" {
   vpc_security_group_ids = [data.aws_security_group.web-sg.id]
 
   user_data = base64encode(templatefile("${path.module}/web_userdata.sh", {
-    app_lb_dns = "${var.app-alb-dns-name}",
-    app_lb_dns2 = "var.app-alb-dns-name2",
-    app_lb_dns3 = var.app-alb-dns-name
+    app_lb_dns = var.app-alb-dns-name
   }))
 
 
