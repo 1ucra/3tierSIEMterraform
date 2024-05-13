@@ -50,6 +50,9 @@ variable "IAM-ROLE" {}
 variable "IAM-POLICY" {}
 variable "INSTANCE-PROFILE-NAME" {}
 
+#AMI
+#variable "INSTANCE-PROFILE-NAME" {}
+
 # AUTOSCALING
 variable "AMI-NAME" {}
 variable "LAUNCH-TEMPLATE-NAME" {}

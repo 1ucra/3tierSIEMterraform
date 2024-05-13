@@ -86,10 +86,24 @@ module "iam" {
   iam-role              = var.IAM-ROLE
   iam-policy            = var.IAM-POLICY
   instance-profile-name = var.INSTANCE-PROFILE-NAME
+  
+}
+
+module "ami" {
+  source ="./modules/aws-ami"
+
+  instance-profile-name = var.INSTANCE-PROFILE-NAME
+  vpc-name    = var.VPC-NAME
+  private-subnet1 = var.PRIVATE-SUBNET1
+  app-alb-dns-name      = module.alb.app_alb_dns_name
+
+  depends_on = [ module.security-group, module.iam ]
 }
 
 module "autoscaling" {
   source = "./modules/aws-autoscaling"
+  
+  ami-id = module.ami.my-ami-id
   ami_name              = var.AMI-NAME
   launch-template-name  = var.LAUNCH-TEMPLATE-NAME
   instance-profile-name = var.INSTANCE-PROFILE-NAME
@@ -104,9 +118,9 @@ module "autoscaling" {
   web-tg-arn            = module.alb.web_tg_arn
   app-tg-arn            = module.alb.app_tg_arn
   app-alb-dns-name      = module.alb.app_alb_dns_name
-  ami-id                = var.AMI-ID
+ 
   
-  depends_on            = [module.iam, module.security-group]
+  depends_on            = [module.ami]
 }
 
 module "acm-route53-cloudfront-waf" {

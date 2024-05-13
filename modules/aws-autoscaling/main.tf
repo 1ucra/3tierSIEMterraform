@@ -1,3 +1,4 @@
+
 # Creating Launch template for App tier AutoScaling Group!
 resource "aws_launch_template" "App-LC" {
   name = "${var.launch-template-name}-Backend"

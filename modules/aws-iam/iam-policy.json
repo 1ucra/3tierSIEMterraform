@@ -8,7 +8,8 @@
                 "s3-object-lambda:*",
                 "ssm:*",
                 "ec2messages:*",
-                "ssmmessages:*"
+                "ssmmessages:*",
+                "ec2:TerminateInstances"
             ],
             "Resource": "*"
         }

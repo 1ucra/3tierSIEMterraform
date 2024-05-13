@@ -55,7 +55,7 @@ AMI-NAME             = "New-AMI"
 LAUNCH-TEMPLATE-NAME = "Web-template"
 WEB-ASG-NAME         = "kdt-WEB-ASG"
 APP-ASG-NAME         = "kdt-APP-ASG"
-AMI-ID               = "ami-0ddda618e961f2270"
+AMI-ID               = "ami-0c754ed8d0a6969fe"
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM
 DOMAIN-NAME     = "hellowaws.shop"

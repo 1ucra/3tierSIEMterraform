@@ -34,6 +34,7 @@ data "aws_subnet" "private-subnet2" {
   }
 }
 
-data "aws_iam_instance_profile" "instance-profile" {
-  name = var.instance-profile-name
-}
+# data "aws_iam_instance_profile" "instance-profile" {
+#   name = var.instance-profile-name
+# }
+
