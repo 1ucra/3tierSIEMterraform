@@ -9,7 +9,6 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
       origin_protocol_policy = "http-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
-
   }
 
   aliases         = [var.domain-name, "www.${var.domain-name}"]
@@ -29,7 +28,24 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
       cookies {
         forward = "none"
       }
+    }
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
 
+  ordered_cache_behavior {
+    path_pattern     = "/attendance"
+    target_origin_id = "my-web-alb"
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+      headers      = ["*"]
+      cookies {
+        forward = "all"
+      }
     }
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
