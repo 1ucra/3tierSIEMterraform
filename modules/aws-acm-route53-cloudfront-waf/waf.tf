@@ -1,6 +1,6 @@
 # We have created one rule where any user if try to access our Application through TOR browser or any VPN, then the user will not be able to access the Application
 resource "aws_wafv2_web_acl" "web_acl" {
-  name  = var.web_acl_name
+  name  = var.web-acl-name
   scope = "CLOUDFRONT"
   default_action {
     allow {}

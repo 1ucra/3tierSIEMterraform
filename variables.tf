@@ -38,6 +38,8 @@ variable "RDS-PWD" {}
 variable "DB-NAME" {}
 variable "RDS-NAME" {}
 variable "DB-INSTANCE-CLASS" {}
+variable "DB-USER-ID" {}
+variable "DB-USER-PWD" {}
 
 # ALB
 variable "WEB-TG-NAME" {}
@@ -55,7 +57,6 @@ variable "INSTANCE-PROFILE-NAME" {}
 
 # AUTOSCALING
 variable "AMI-NAME" {}
-variable "LAUNCH-TEMPLATE-NAME" {}
 variable "WEB-ASG-NAME" {}
 variable "APP-ASG-NAME" {}
 variable "AMI-ID" {}
@@ -63,6 +64,8 @@ variable "AMI-ID" {}
 # CLOUDFFRONT / ROUTE53 / ACM
 variable "DOMAIN-NAME" {}
 variable "CLOUDFRONT-NAME" {}
+variable "HEADER-NAME" {}
+variable "HEADER-VALUE" {}
 
 # WAFv2
 variable "WEB-ACL-NAME" {}

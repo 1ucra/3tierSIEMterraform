@@ -9,6 +9,12 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
       origin_protocol_policy = "http-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
+
+    # 사용자 정의 헤더 추가
+    custom_header {
+      name  = var.header-name
+      value = var.header-value
+    }
   }
 
   aliases         = [var.domain-name, "www.${var.domain-name}"]
@@ -24,7 +30,6 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
     forwarded_values {
       query_string = false
-      headers      = ["*"]
       cookies {
         forward = "none"
       }
@@ -42,7 +47,6 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
     forwarded_values {
       query_string = true
-      headers      = ["*"]
       cookies {
         forward = "all"
       }

@@ -30,7 +30,7 @@ resource "aws_security_group" "tmp_sg" {
   }
 }
 
-resource "aws_instance" "tmp" {
+resource "aws_instance" "bastion" {
   ami           = "ami-0ddda618e961f2270" # 아마존 2023 ami
   instance_type = "t3.micro"
   subnet_id     = data.aws_subnet.subnet.id
@@ -40,7 +40,7 @@ resource "aws_instance" "tmp" {
   user_data = file("${path.module}/userdata.sh")
 
   tags = {
-    Name = "ExampleInstance"
+    Name = "bastion"
   }
 }
 
@@ -51,7 +51,7 @@ locals {
 # AMI 생성
 resource "aws_ami_from_instance" "my_ami" {
   name               = local.ami_name
-  source_instance_id = aws_instance.tmp.id
+  source_instance_id = aws_instance.bastion.id
   description        = "A instance created for a short time to create an AMI"
 
   tags = {
@@ -63,6 +63,6 @@ resource "null_resource" "terminate_instance" {
   depends_on = [aws_ami_from_instance.my_ami]
 
   provisioner "local-exec" {
-    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.tmp.id}"
+    command = "aws ec2 stop-instances --instance-ids ${aws_instance.bastion.id}"
   }
 }

@@ -9,7 +9,7 @@
                 "ssm:*",
                 "ec2messages:*",
                 "ssmmessages:*",
-                "ec2:TerminateInstances"
+                "ec2:StopInstances"
             ],
             "Resource": "*"
         }

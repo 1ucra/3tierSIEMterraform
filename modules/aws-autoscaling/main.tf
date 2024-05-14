@@ -1,7 +1,7 @@
 
 # Creating Launch template for App tier AutoScaling Group!
 resource "aws_launch_template" "App-LC" {
-  name = "${var.launch-template-name}-Backend"
+  name = "App-template"
   image_id = var.ami-id
   instance_type = "t3.micro"
 
@@ -10,8 +10,12 @@ resource "aws_launch_template" "App-LC" {
   }
 
   vpc_security_group_ids = [data.aws_security_group.app-sg.id]
-  user_data = filebase64("${path.module}/app_userdata.sh")
-
+  
+  user_data = base64encode(templatefile("${path.module}/app_userdata.sh", {
+    db-user-id = data.aws_ssm_parameter.db_id.value,
+    db-user-pwd = data.aws_ssm_parameter.db_pwd.value,
+    aurora-endpoint = var.aurora-endpoint
+  }))
 }
 
 
@@ -98,7 +102,7 @@ resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaledown" {
 
 # Creating Launch template for Web tier AutoScaling Group!
 resource "aws_launch_template" "Web-LC" {
-  name = "${var.launch-template-name}-Frontend"
+  name = "Web-template"
   image_id = var.ami-id
   instance_type = "t3.micro"
 

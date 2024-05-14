@@ -52,7 +52,6 @@ INSTANCE-PROFILE-NAME = "instance-profile-for-ec2-SSM,S3"
 
 # AUTOSCALING
 AMI-NAME             = "New-AMI"
-LAUNCH-TEMPLATE-NAME = "Web-template"
 WEB-ASG-NAME         = "kdt-WEB-ASG"
 APP-ASG-NAME         = "kdt-APP-ASG"
 AMI-ID               = "ami-0c754ed8d0a6969fe"
@@ -61,3 +60,5 @@ AMI-ID               = "ami-0c754ed8d0a6969fe"
 DOMAIN-NAME     = "hellowaws.shop"
 CLOUDFRONT-NAME = "kdt-CLOUDFRONT-ktd"
 WEB-ACL-NAME    = "kdt-WAF-ktd"
+HEADER-NAME = "my-header"
+HEADER-VALUE = "kdt"

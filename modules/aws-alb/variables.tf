@@ -11,3 +11,5 @@ variable "app-tg-name" {}
 variable "vpc-name" {}
 variable "web-alb-sg-id" {}
 variable "app-alb-sg-id" {}
+variable "header-name" {}
+variable "header-value" {}

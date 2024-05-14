@@ -1,8 +1,12 @@
+data "aws_ssm_parameter" "db_id"{
+  name = "/config/account/admin/ID"
+}
+
+data "aws_ssm_parameter" "db_pwd"{
+  name = "/config/account/admin/PWD"
+}
+
 data "aws_security_group" "web-sg" {
-  filter {
-    name   = "tag:Name"
-    values = [var.web-sg-name]
-  }
   filter {
     name = "group-id"
     values = [var.web-sg-id]
@@ -10,10 +14,6 @@ data "aws_security_group" "web-sg" {
 }
 
 data "aws_security_group" "app-sg" {
-  filter {
-    name   = "tag:Name"
-    values = [var.app-sg-name]
-  }
   filter {
     name = "group-id"
     values = [var.app-sg-id]

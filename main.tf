@@ -41,23 +41,24 @@ module "security-group" {
 
 }
 
-# module "rds" {
-#   source = "./modules/aws-rds"
+module "rds" {
+  source = "./modules/aws-rds"
 
-#   sg-name              = var.SG-NAME
-#   db-subnet-name1 = var.DB-SUBNET1
-#   db-subnet-name2 = var.DB-SUBNET2
-#   db-sg-name           = var.DB-SG-NAME
-#   rds-username         = var.RDS-USERNAME
-#   rds-pwd              = var.RDS-PWD
-#   db-name              = var.DB-NAME
-#   rds-name             = var.RDS-NAME
-#   db-instance-class    = var.DB-INSTANCE-CLASS
-#   db-sg-id             = module.security-group.database-sg-id
+  sg-name              = var.SG-NAME
+  db-subnet-name1 = var.DB-SUBNET1
+  db-subnet-name2 = var.DB-SUBNET2
+  db-sg-name           = var.DB-SG-NAME
+  rds-username         = var.RDS-USERNAME
+  rds-pwd              = var.RDS-PWD
+  db-name              = var.DB-NAME
+  rds-name             = var.RDS-NAME
+  db-instance-class    = var.DB-INSTANCE-CLASS
+  db-sg-id             = module.security-group.database-sg-id
+  db-user-id = var.DB-USER-ID
+  db-user-pwd = var.DB-USER-PWD
+  depends_on = [module.security-group]
 
-#   depends_on = [module.security-group]
-
-# }
+}
 
 module "alb" {
   source = "./modules/aws-alb"
@@ -75,8 +76,9 @@ module "alb" {
   web-tg-name          = var.WEB-TG-NAME
   app-tg-name          = var.APP-TG-NAME
   vpc-name             = var.VPC-NAME
+  header-name = var.HEADER-NAME
+  header-value = var.HEADER-VALUE
 
-  #depends_on = [module.rds]
   depends_on = [module.security-group]
 }
 
@@ -105,7 +107,6 @@ module "autoscaling" {
   
   ami-id = module.ami.my-ami-id
   ami_name              = var.AMI-NAME
-  launch-template-name  = var.LAUNCH-TEMPLATE-NAME
   instance-profile-name = var.INSTANCE-PROFILE-NAME
   web-sg-name           = var.WEB-SG-NAME
   app-sg-name           = var.APP-SG-NAME
@@ -118,7 +119,7 @@ module "autoscaling" {
   web-tg-arn            = module.alb.web_tg_arn
   app-tg-arn            = module.alb.app_tg_arn
   app-alb-dns-name      = module.alb.app_alb_dns_name
- 
+  aurora-endpoint = module.rds.aurora-endpoint
   
   depends_on            = [module.ami]
 }
@@ -129,7 +130,9 @@ module "acm-route53-cloudfront-waf" {
   domain-name     = var.DOMAIN-NAME
   cloudfront-name = var.CLOUDFRONT-NAME
   alb-dns-name    = module.alb.web_alb_dns_name
-  web_acl_name    = var.WEB-ACL-NAME
+  web-acl-name    = var.WEB-ACL-NAME
+  header-name = var.HEADER-NAME
+  header-value = var.HEADER-VALUE
 
   providers = {
     aws = aws.us-east-1
