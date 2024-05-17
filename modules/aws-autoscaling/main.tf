@@ -12,9 +12,6 @@ resource "aws_launch_template" "App-LC" {
   vpc_security_group_ids = [data.aws_security_group.app-sg.id]
   
   user_data = base64encode(templatefile("${path.module}/app_userdata.sh", {
-    db-user-id = data.aws_ssm_parameter.db_id.value,
-    db-user-pwd = data.aws_ssm_parameter.db_pwd.value,
-    aurora-endpoint = var.aurora-endpoint
   }))
 }
 

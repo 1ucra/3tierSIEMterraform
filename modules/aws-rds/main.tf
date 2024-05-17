@@ -7,7 +7,7 @@ resource "aws_ssm_parameter" "db_id" {
 }
 
 resource "aws_ssm_parameter" "db_pwd" {
-  name  = "/config/account/admin/PW"
+  name  = "/config/account/admin/PWD"
   type  = "SecureString"
   value = var.db-user-pwd
   overwrite   = true
@@ -26,7 +26,7 @@ locals {
   snapshot_time = "aurora-cluster-final-${formatdate("YYYYMMDD-HHmm", timestamp())}"
 }
 
-resource "aws_rds_cluster" "aurora_cluster" {
+resource "aws_rds_cluster" "aurora-cluster" {
   cluster_identifier      = "aurora-cluster"
   engine                  = "aurora-mysql"
   engine_version          = "8.0.mysql_aurora.3.04.2"
@@ -53,12 +53,12 @@ resource "aws_rds_cluster" "aurora_cluster" {
 }
 
 # Creating RDS Cluster instance
-resource "aws_rds_cluster_instance" "primary_instance" {
-  cluster_identifier = aws_rds_cluster.aurora_cluster.id
+resource "aws_rds_cluster_instance" "primary-instance" {
+  cluster_identifier = aws_rds_cluster.aurora-cluster.id
   identifier         = "primary-instance"
   instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.aurora_cluster.engine
-  engine_version     = aws_rds_cluster.aurora_cluster.engine_version
+  engine             = aws_rds_cluster.aurora-cluster.engine
+  engine_version     = aws_rds_cluster.aurora-cluster.engine_version
 }
 
 # Creating RDS Read Replica Instance
@@ -71,3 +71,11 @@ resource "aws_rds_cluster_instance" "primary_instance" {
 
 #   depends_on = [aws_rds_cluster_instance.primary_instance]
 # }
+
+resource "aws_ssm_parameter" "db-cluster-endpoint" {
+  name  = "/config/system/db-cluster-endpoint"
+  type  = "SecureString"
+  value = aws_rds_cluster.aurora-cluster.endpoint
+  overwrite   = true
+  description = "db-cluster-endpoint"
+}

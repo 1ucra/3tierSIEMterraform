@@ -3,9 +3,9 @@
 
 sudo su
 
-aws s3 cp s3://ktd-0426/default.conf.template /etc/nginx/conf.d/
-
-export app_lb_dns="${app_lb_dns}"
+aws s3 cp s3://ktd-0426/django-community-board-main/templates/default.conf.template /etc/nginx/conf.d/
+app_lb_dns=$(aws ssm get-parameter --name "/config/system/alb-dns-name" --with-decryption --query "Parameter.Value" --output text)
+export app_lb_dns
 
 envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 aws s3 cp s3://ktd-0426/django-community-board-main/static /usr/share/nginx/html/static --recursive

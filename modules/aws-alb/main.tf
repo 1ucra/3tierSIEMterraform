@@ -101,7 +101,7 @@ resource "aws_lb_listener" "web-alb-listener" {
   }
 }
 
-resource "aws_lb_listener_rule" "web_listener_rule" {
+resource "aws_lb_listener_rule" "web-listener-rule" {
   listener_arn = aws_lb_listener.web-alb-listener.arn
   priority     = 1
 
@@ -118,4 +118,13 @@ resource "aws_lb_listener_rule" "web_listener_rule" {
   }
 }
 
+resource "aws_ssm_parameter" "app-alb-dns" {
+  name  = "/config/system/alb-dns-name"
+  type  = "String"
+  value = aws_lb.App-elb.dns_name
+
+  tags = {
+    Name = "AppALBDNS"
+  }
+}
 

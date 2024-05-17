@@ -1,3 +1,6 @@
+#S3
+variable "S3-NAME" {}
+
 # VPC
 variable "VPC-NAME" {}
 variable "VPC-CIDR" {}

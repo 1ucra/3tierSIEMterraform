@@ -12,4 +12,3 @@ variable "app-sg-id" {}
 variable "web-tg-arn" {}
 variable "app-tg-arn" {}
 variable "app-alb-dns-name" {}
-variable "aurora-endpoint" {}

@@ -3,11 +3,10 @@
 3. AWS에 Route53에 DNS Zone을 생성함.
 
 
-테라폼이 스크립트 파일의 변경을 감지하지는 못함 -> destory하거나 template에서 userdata 바꾸기
+테라폼이 쉘 스크립트 파일의 변경을 감지하지는 못함 -> destory하거나 template에서 userdata 바꾸기
 AMI 아마존2023에 nginx 설치된거 생성
-Parameter Store 생성해둬야함
+보안 자격증명 codecommit용 ID.PW 만들기 -> Parameter 스토어에 저장해두기
 S3 생성 해둬야함
 iam 콘솔로 만들기 - 관리자 계쩡과 운영계정의 분리
-bastion은 콘솔에서 마치고 한번 설정하는게 훨 편함
-수정할때 sg 안지워지는 버그 수동으로 지워줘야함 왜 안되는지 모르겟..
+
 sg 이름 지정하면 중복 떠서 이름 뻄. 리소스 연결 안된거 지워주기

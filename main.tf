@@ -1,3 +1,8 @@
+module "s3" {
+  source = "./modules/aws-s3"
+  s3-name = var.S3-NAME
+}
+
 module "vpc" {
   source = "./modules/aws-vpc"
 
@@ -96,7 +101,7 @@ module "ami" {
 
   instance-profile-name = var.INSTANCE-PROFILE-NAME
   vpc-name    = var.VPC-NAME
-  private-subnet1 = var.PRIVATE-SUBNET1
+  db-subnet1 = var.DB-SUBNET1
   app-alb-dns-name      = module.alb.app_alb_dns_name
 
   depends_on = [ module.security-group, module.iam ]
@@ -119,8 +124,6 @@ module "autoscaling" {
   web-tg-arn            = module.alb.web_tg_arn
   app-tg-arn            = module.alb.app_tg_arn
   app-alb-dns-name      = module.alb.app_alb_dns_name
-  aurora-endpoint = module.rds.aurora-endpoint
-  
   depends_on            = [module.ami]
 }
 

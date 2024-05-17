@@ -8,6 +8,6 @@ data "aws_vpc" "vpc" {
 data "aws_subnet" "subnet"{
     filter {
      name   = "tag:Name"
-    values = [var.private-subnet1]
+    values = [var.db-subnet1]
   }
 }
