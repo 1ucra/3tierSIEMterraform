@@ -11,3 +11,10 @@ data "aws_subnet" "subnet"{
     values = [var.db-subnet1]
   }
 }
+
+data "aws_security_group" "bastion-sg" {
+  filter {
+     name   = "tag:Name"
+    values = ["example_sg"]
+  }
+}

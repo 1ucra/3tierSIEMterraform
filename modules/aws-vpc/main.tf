@@ -233,6 +233,11 @@ resource "aws_route_table_association" "private-rt-association2" {
 # Creating DB Route table 1 
 resource "aws_route_table" "db-rt1" {
   vpc_id = aws_vpc.vpc.id
+  
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.ngw2.id
+  }
 
   tags = {
     Name = var.db-rt-name1
@@ -252,7 +257,12 @@ resource "aws_route_table_association" "db-rt-association1" {
 # Creating DB Route table 2 
 resource "aws_route_table" "db-rt2" {
   vpc_id = aws_vpc.vpc.id
-
+  
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.ngw2.id
+  }
+  
   tags = {
     Name = var.db-rt-name2
   }

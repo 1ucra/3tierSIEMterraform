@@ -10,6 +10,7 @@ systemctl start nginx
 systemctl enable nginx
 sudo dnf install -y ruby
 sudo dnf install -y wget
+sudo dnf install -y mariadb105
 wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
 chmod +x ./install
 sudo ./install auto
