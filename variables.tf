@@ -13,71 +13,70 @@ variable "private_cidr1" {}
 variable "private_subnet1" {}
 variable "private_cidr2" {}
 variable "private_subnet2" {}
-variable "DB_SUBNET1" {}
-variable "DB_CIDR1" {}
-variable "DB_SUBNET2" {}
-variable "DB_CIDR2" {}
-variable "EIP_NAME1" {}
-variable "EIP_NAME2" {}
-variable "NGW_NAME1" {}
-variable "NGW_NAME2" {}
-variable "PUBLIC_RT_NAME" {}
-variable "PRIVATE_RT_NAME1" {}
-variable "PRIVATE_RT_NAME2" {}
-variable "DB_RT_NAME1" {}
-variable "DB_RT_NAME2" {}
+variable "db_subnet1" {}
+variable "db_cird1" {}
+variable "db_subnet2" {}
+variable "db_cird2" {}
+variable "eip_name1" {}
+variable "eip_name2" {}
+variable "ngw_name1" {}
+variable "ngw_name2" {}
+variable "public_routeTable_name" {}
+variable "private_routeTable_name1" {}
+variable "private_routeTable_name2" {}
+variable "db_routeTable_name1" {}
+variable "db_routeTable_name2" {}
 
 # SECURITY GROUP
-variable "WEB_ALB_SG_NAME" {}
-variable "APP_ALB_SG_NAME" {}
-variable "WEB-SG-NAME" {}
-variable "APP_SG_NAME" {}
-variable "DB_SG_NAME" {}
-variable "REDIS_SG_NAME" {}
-variable "BASTION_SG_NAME" {}
+variable "web_alb_securityGroup_name" {}
+variable "app_alb_securityGroup_name" {}
+variable "webTier_securityGroup_name" {}
+variable "appTier_securityGroup_name" {}
+variable "dbTier_securityGroup_name" {}
+variable "redis_securityGroup_name" {}
+variable "bastion_securityGroup_name" {}
 
 # RDS
-variable "SG-NAME" {}
-variable "RDS-USERNAME" {}
-variable "RDS-PWD" {}
-variable "DB-NAME" {}
-variable "RDS-NAME" {}
-variable "DB-INSTANCE-CLASS" {}
-variable "DB-USER-ID" {}
-variable "DB-USER-PWD" {
+variable "db_securityGroup_name" {}
+variable "rds_username" {}
+variable "rds_pwd" {}
+variable "db_name" {}
+variable "rds_name" {}
+variable "db_user_id" {}
+variable "db_user_pwd" {
     description = "Database user password (8 characters minimum)"
     sensitive   = true
 }
 
 # ALB
-variable "WEB-TG-NAME" {}
-variable "APP-TG-NAME" {}
-variable "WEB-ALB-NAME" {}
-variable "APP-ALB-NAME" {}
+variable "web_tg_name" {}
+variable "app_tg_name" {}
+variable "web_alb_name" {}
+variable "app_alb_name" {}
 
 # DB-CACHE
 
 # IAM
-variable "IAM-ROLE" {}
+variable "iam_role" {}
 variable "IAM-POLICY" {}
-variable "INSTANCE-PROFILE-NAME" {}
+variable "instance_profile_name" {}
 
 #AMI
-#variable "INSTANCE-PROFILE-NAME" {}
+#variable "instance_profile_name" {}
 
 # AUTOSCALING
 variable "AMI-NAME" {}
-variable "WEB-ASG-NAME" {}
-variable "APP-ASG-NAME" {}
+variable "web_asg_name" {}
+variable "app_asg_name" {}
 variable "AMI-ID" {}
 
 # CLOUDFFRONT / ROUTE53 / ACM
-variable "DOMAIN-NAME" {}
-variable "CLOUDFRONT-NAME" {}
-variable "HEADER-NAME" {}
-variable "HEADER-VALUE" {}
+variable "domain_name" {}
+variable "cloudfront_name" {}
+variable "header_name" {}
+variable "header_value" {}
 
 # WAFv2
-variable "WEB-ACL-NAME" {}
+variable "web_acl_name" {}
 
 # variable "" {}

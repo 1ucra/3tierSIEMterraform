@@ -1,7 +1,7 @@
 resource "aws_ssm_parameter" "db_id" {
   name  = "/config/account/admin/ID"
   type  = "SecureString"
-  value = var.db-user-id
+  value = var.db_user_id
   overwrite   = true
   description = "input db admin ID"
 }
@@ -9,15 +9,15 @@ resource "aws_ssm_parameter" "db_id" {
 resource "aws_ssm_parameter" "db_pwd" {
   name  = "/config/account/admin/PWD"
   type  = "SecureString"
-  value = var.db-user-pwd
+  value = var.db_user_pwd
   overwrite   = true
   description = "input db admin PWD"
 }
 
 # 8 Creating DB subnet group for RDS Instances
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = var.sg-name
-  subnet_ids = [data.aws_subnet.DB_SUBNET1.id, data.aws_subnet.DB_SUBNET2.id]
+  name       = var.db_securityGroup_name
+  subnet_ids = [data.aws_subnet.db_subnet1.id, data.aws_subnet.db_subnet2.id]
 }
 
 # Creating Aurora RDS Cluster, username and password used only for practice, otherwise follow DevOps best practices to keep it secret
@@ -39,7 +39,7 @@ resource "aws_rds_cluster" "aurora-cluster" {
   preferred_backup_window = "19:00-21:00" #4시~6시
   skip_final_snapshot     = false
   final_snapshot_identifier = local.snapshot_time
-  database_name           = var.db-name
+  database_name           = var.db_name
   port                    = 3306
   db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids  = [data.aws_security_group.db-sg.id]
@@ -48,7 +48,7 @@ resource "aws_rds_cluster" "aurora-cluster" {
     min_capacity = 1.0
   }
   tags = {
-    Name = var.rds-name
+    Name = var.rds_name
   }
 }
 

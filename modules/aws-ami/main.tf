@@ -3,8 +3,8 @@ resource "aws_instance" "bastion" {
   ami           = "ami-0ddda618e961f2270" # 아마존 2023 ami
   instance_type = "t3.micro"
   subnet_id     = data.aws_subnet.subnet.id
-  iam_instance_profile   = var.instance-profile-name
-  vpc_security_group_ids = [data.aws_security_group.bastion-sg.id]
+  iam_instance_profile   = var.instance_profile_name
+  vpc_security_group_ids = [var.bastion_securityGroup_id]
   
   user_data = file("${path.module}/userdata.sh")
 

@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   origin {
-    domain_name = var.alb-dns-name
+    domain_name = var.alb_dns_name
     origin_id   = "my-web-alb"
 
     custom_origin_config {
@@ -12,12 +12,12 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
     # 사용자 정의 헤더 추가
     custom_header {
-      name  = var.header-name
-      value = var.header-value
+      name  = var.header_name
+      value = var.header_value
     }
   }
 
-  aliases         = [var.domain-name, "www.${var.domain-name}"]
+  aliases         = [var.domain_name, "www.${var.domain_name}"]
   enabled         = true
   is_ipv6_enabled = true
   comment         = "CLOUDFRONT ALB Distribution"
@@ -70,7 +70,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   web_acl_id = aws_wafv2_web_acl.web_acl.arn
 
   tags = {
-    Name = var.cloudfront-name
+    Name = var.cloudfront_name
   }
 
   depends_on = [aws_acm_certificate_validation.cert]

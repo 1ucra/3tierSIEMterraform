@@ -1,24 +1,24 @@
-data "aws_subnet" "DB_SUBNET1" {
+data "aws_subnet" "db_subnet1" {
   filter {
     name   = "tag:Name"
-    values = [var.db-subnet-name1]
+    values = [var.db_subnet_name1]
   }
 }
 
-data "aws_subnet" "DB_SUBNET2" {
+data "aws_subnet" "db_subnet2" {
   filter {
     name   = "tag:Name"
-    values = [var.db-subnet-name2]
+    values = [var.db_subnet_name2]
   }
 }
 
 data "aws_security_group" "db-sg" {
   filter {
     name   = "tag:Name"
-    values = [var.DB_SG_NAME]
+    values = [var.dbTier_securityGroup_name]
   }
   filter {
     name = "group-id"
-    values = [var.db-sg-id]
+    values = [var.db_securityGroup_id]
   }
 }

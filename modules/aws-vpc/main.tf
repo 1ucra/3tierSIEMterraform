@@ -79,31 +79,31 @@ resource "aws_subnet" "private_subnet2" {
 }
 
 # Creating DB Subnet 1 for RDS Instance
-resource "aws_subnet" "DB_SUBNET1" {
+resource "aws_subnet" "db_subnet1" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.DB_CIDR1
+  cidr_block = var.db_cird1
   availability_zone = data.aws_availability_zones.azs.names[0]
   map_public_ip_on_launch = false
 
   tags = {
-    Name = var.DB_SUBNET1
+    Name = var.db_subnet1
   }
 
   depends_on = [ aws_subnet.private_subnet2 ]
 }
 
 # Creating DB Subnet 2 for RDS Instance
-resource "aws_subnet" "DB_SUBNET2" {
+resource "aws_subnet" "db_subnet2" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.DB_CIDR2
+  cidr_block = var.db_cird2
   availability_zone = data.aws_availability_zones.azs.names[1]
   map_public_ip_on_launch = false
 
   tags = {
-    Name = var.DB_SUBNET2
+    Name = var.db_subnet2
   }
 
-  depends_on = [ aws_subnet.DB_SUBNET1 ]
+  depends_on = [ aws_subnet.db_subnet1 ]
 }
 
 # Creating Elastic IP for NAT Gateway 1
@@ -111,10 +111,10 @@ resource "aws_eip" "eip1" {
   domain = "vpc"
 
   tags = {
-    Name = var.EIP_NAME1
+    Name = var.eip_name1
   }
 
-  depends_on = [ aws_subnet.DB_SUBNET2 ]
+  depends_on = [ aws_subnet.db_subnet2 ]
 }
 
 # Creating Elastic IP for NAT Gateway 2
@@ -122,7 +122,7 @@ resource "aws_eip" "eip2" {
   domain = "vpc"
 
   tags = {
-    Name = var.EIP_NAME2
+    Name = var.eip_name2
   }
 
   depends_on = [ aws_eip.eip1 ]
@@ -134,7 +134,7 @@ resource "aws_nat_gateway" "ngw1" {
   subnet_id     = aws_subnet.public_subnet1.id
 
   tags = {
-    Name = var.NGW_NAME1
+    Name = var.ngw_name1
   }
 
   depends_on = [ aws_eip.eip2 ]
@@ -146,7 +146,7 @@ resource "aws_nat_gateway" "ngw2" {
   subnet_id     = aws_subnet.public_subnet2.id
 
   tags = {
-    Name = var.NGW_NAME2
+    Name = var.ngw_name2
   }
 
   depends_on = [ aws_nat_gateway.ngw1 ]
@@ -161,7 +161,7 @@ resource "aws_route_table" "public-rt" {
   }
 
   tags = {
-    Name = var.PUBLIC_RT_NAME
+    Name = var.public_routeTable_name
   }
 
   depends_on = [ aws_nat_gateway.ngw2 ]
@@ -193,7 +193,7 @@ resource "aws_route_table" "private-rt1" {
   }
 
   tags = {
-    Name = var.PRIVATE_RT_NAME1
+    Name = var.private_routeTable_name1
   }
 
   depends_on = [ aws_route_table_association.public-rt-association2 ]
@@ -216,7 +216,7 @@ resource "aws_route_table" "private-rt2" {
   }
 
   tags = {
-    Name = var.PRIVATE_RT_NAME2
+    Name = var.private_routeTable_name2
   }
 
   depends_on = [ aws_route_table_association.private-rt-association1 ]
@@ -240,7 +240,7 @@ resource "aws_route_table" "db-rt1" {
   }
 
   tags = {
-    Name = var.DB_RT_NAME1
+    Name = var.db_routeTable_name1
   }
 
   depends_on = [ aws_route_table_association.private-rt-association2 ]
@@ -248,7 +248,7 @@ resource "aws_route_table" "db-rt1" {
 
 # Associating the DB Route table 1 DB Subnet 1
 resource "aws_route_table_association" "db-rt-association1" {
-  subnet_id      = aws_subnet.DB_SUBNET1.id
+  subnet_id      = aws_subnet.db_subnet1.id
   route_table_id = aws_route_table.db-rt1.id
 
   depends_on = [ aws_route_table.db-rt1 ]
@@ -264,7 +264,7 @@ resource "aws_route_table" "db-rt2" {
   }
   
   tags = {
-    Name = var.DB_RT_NAME2
+    Name = var.db_routeTable_name2
   }
 
   depends_on = [ aws_route_table_association.private-rt-association1 ]
@@ -272,7 +272,7 @@ resource "aws_route_table" "db-rt2" {
 
 # Associating the DB Route table 2 DB Subnet 2
 resource "aws_route_table_association" "db-rt-association2" {
-  subnet_id      = aws_subnet.DB_SUBNET2.id
+  subnet_id      = aws_subnet.db_subnet2.id
   route_table_id = aws_route_table.db-rt2.id
 
   depends_on = [ aws_route_table.db-rt2 ]

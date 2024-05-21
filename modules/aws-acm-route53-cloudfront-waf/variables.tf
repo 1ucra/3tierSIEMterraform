@@ -1,6 +1,6 @@
-variable "domain-name" {}
-variable "cloudfront-name" {}
-variable "alb-dns-name" {}
-variable "web-acl-name" {}
-variable "header-name" {}
-variable "header-value" {}
+variable "domain_name" {}
+variable "cloudfront_name" {}
+variable "alb_dns_name" {}
+variable "web_acl_name" {}
+variable "header_name" {}
+variable "header_value" {}

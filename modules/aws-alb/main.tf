@@ -1,7 +1,7 @@
 
 # Creating ALB for App Tier
 resource "aws_lb" "App-elb" {
-  name = var.app-alb-name
+  name = var.app_alb_name
   internal           = true
   load_balancer_type = "application"
   subnets            = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
@@ -9,13 +9,13 @@ resource "aws_lb" "App-elb" {
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
-    Name = var.app-alb-name
+    Name = var.app_alb_name
   }
 }
 
 # Creating Target Group for App-Tier 
 resource "aws_lb_target_group" "app-tg" {
-  #name = var.app-tg-name
+  #name = var.app_tg_name
   health_check {
     enabled = true
     interval            = 10
@@ -31,7 +31,7 @@ resource "aws_lb_target_group" "app-tg" {
   vpc_id   = data.aws_vpc.vpc.id
 
   tags = {
-    Name = var.app-tg-name
+    Name = var.app_tg_name
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_lb_listener" "app-alb-listener" {
 
 # Creating ALB for Web Tier
 resource "aws_lb" "Web-elb" {
-  name = var.web-alb-name
+  name = var.web_alb_name
   internal           = false
   load_balancer_type = "application"
   subnets            = [data.aws_subnet.public_subnet1.id, data.aws_subnet.public_subnet2.id]
@@ -58,13 +58,13 @@ resource "aws_lb" "Web-elb" {
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
-    Name = var.web-alb-name
+    Name = var.web_alb_name
   }
 }
 
 # Creating Target Group for Web-Tier 
 resource "aws_lb_target_group" "web-tg" {
-  #name = var.web-tg-name
+  #name = var.web_tg_name
   health_check {
     enabled = true
     interval            = 10
@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "web-tg" {
   vpc_id   = data.aws_vpc.vpc.id
 
   tags = {
-    Name = var.web-tg-name
+    Name = var.web_tg_name
   }
 }
 
@@ -112,14 +112,14 @@ resource "aws_lb_listener_rule" "web-listener-rule" {
 
   condition {
     http_header {
-      http_header_name = var.header-name
-      values           = [var.header-value]
+      http_header_name = var.header_name
+      values           = [var.header_value]
     }
   }
 }
 
 resource "aws_ssm_parameter" "app-alb-dns" {
-  name  = "/config/system/alb-dns-name"
+  name  = "/config/system/alb_dns_name"
   type  = "String"
   value = aws_lb.App-elb.dns_name
 

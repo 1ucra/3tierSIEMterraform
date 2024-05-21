@@ -11,6 +11,7 @@ export hostname=$(hostname)
 envsubst < /templates/index.html.template > /templates/index.html
 pip install --no-cache-dir -r ./requirements.txt
 pip install django
+pip install django-redis
 
 db_user_id=$(aws ssm get-parameter --name "/config/account/admin/ID" --with-decryption --query "Parameter.Value" --output text)
 db_user_pwd=$(aws ssm get-parameter --name "/config/account/admin/PWD" --with-decryption --query "Parameter.Value" --output text)

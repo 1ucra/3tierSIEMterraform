@@ -1,3 +1,3 @@
-variable "DB_SUBNET1" {}
-variable "DB_SUBNET2" {}
-variable "REDIS_SG_NAME" {}
+variable "db_subnet1" {}
+variable "db_subnet2" {}
+variable "redis_securityGroup_id" {}

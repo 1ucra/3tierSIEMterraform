@@ -1,3 +1,3 @@
-variable "iam-role" {}
+variable "iam_role" {}
 variable "iam-policy" {}
-variable "instance-profile-name" {}
+variable "instance_profile_name" {}

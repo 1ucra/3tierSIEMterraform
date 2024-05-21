@@ -29,7 +29,7 @@ resource "aws_route53_record" "cert_validation" {
 # AWS Route53 record resource for the "www" subdomain. The record uses an "A" type record and an alias to the AWS CloudFront distribution with the specified domain name and hosted zone ID. The target health evaluation is set to false.
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.zone.id
-  name    = "www.${var.domain-name}"
+  name    = "www.${var.domain_name}"
   type    = "A"
 
   alias {
@@ -42,7 +42,7 @@ resource "aws_route53_record" "www" {
 # AWS Route53 record resource for the apex domain (root domain) with an "A" type record. The record uses an alias to the AWS CloudFront distribution with the specified domain name and hosted zone ID. The target health evaluation is set to false.
 resource "aws_route53_record" "apex" {
   zone_id = data.aws_route53_zone.zone.id
-  name    = var.domain-name
+  name    = var.domain_name
   type    = "A"
 
   alias {

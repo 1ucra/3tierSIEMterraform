@@ -1,8 +1,8 @@
 variable "vpc_name" {}
-variable "WEB_ALB_SG_NAME" {}
-variable "APP_ALB_SG_NAME" {}
-variable "WEB-SG-NAME" {}
-variable "APP_SG_NAME" {}
-variable "DB_SG_NAME" {}
-variable "REDIS_SG_NAME" {}
-variable "BASTION_SG_NAME" {}
+variable "web_alb_securityGroup_name" {}
+variable "app_alb_securityGroup_name" {}
+variable "webTier_securityGroup_name" {}
+variable "appTier_securityGroup_name" {}
+variable "dbTier_securityGroup_name" {}
+variable "redis_securityGroup_name" {}
+variable "bastion_securityGroup_name" {}

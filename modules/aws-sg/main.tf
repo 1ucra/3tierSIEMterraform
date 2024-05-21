@@ -1,5 +1,5 @@
 resource "aws_security_group" "bastion-sg" {
-  name        = "bastion-sg"
+  #name        = "bastion-sg"
   description = "Allow SSH, HTTP and HTTPS"
   vpc_id      = data.aws_vpc.vpc.id # 실제 VPC ID로 변경
   
@@ -18,12 +18,12 @@ resource "aws_security_group" "bastion-sg" {
   }
 
   tags = {
-    Name = var.BASTION_SG_NAME
+    Name = var.bastion_securityGroup_name
   }
 }
 
 resource "aws_security_group" "redis-sg" {
-  name        = "redis-sg"
+  #name        = "redis-sg"
   description = "Security group for Redis Serverless"
   vpc_id      = data.aws_vpc.vpc.id  # 실제 VPC ID로 변경
 
@@ -42,12 +42,12 @@ resource "aws_security_group" "redis-sg" {
   }
 
   tags = {
-    Name = var.REDIS_SG_NAME
+    Name = var.redis_securityGroup_name
   }
 }
 
 resource "aws_security_group" "web-alb-sg" {
-  name = "web-alb-sg"
+  #name = "web-alb-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for World"
 
@@ -73,7 +73,7 @@ resource "aws_security_group" "web-alb-sg" {
   }
 
   tags = {
-    Name = var.WEB_ALB_SG_NAME
+    Name = var.web_alb_securityGroup_name
   }
 
   depends_on = [ data.aws_vpc.vpc ]
@@ -81,7 +81,7 @@ resource "aws_security_group" "web-alb-sg" {
 
 
 resource "aws_security_group" "web-tier-sg" {
-  name = "web-tier-sg"
+  #name = "web-tier-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for WEP ALB Only"
 
@@ -107,14 +107,14 @@ resource "aws_security_group" "web-tier-sg" {
   }
 
   tags = {
-    Name = var.WEB-SG-NAME
+    Name = var.webTier_securityGroup_name
   }
 
   depends_on = [ aws_security_group.web-alb-sg ]
 }
 
 resource "aws_security_group" "app-alb-sg" {
-  name = "app-alb-sg"
+  #name = "app-alb-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for World"
 
@@ -140,14 +140,14 @@ resource "aws_security_group" "app-alb-sg" {
   }
 
   tags = {
-    Name = var.APP_ALB_SG_NAME
+    Name = var.app_alb_securityGroup_name
   }
 
   depends_on = [ aws_security_group.web-tier-sg ]
 }
 
 resource "aws_security_group" "app-tier-sg" {
-  name = "app-tier-sg"
+  #name = "app-tier-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS from APP ALB Only"
 
@@ -174,7 +174,7 @@ resource "aws_security_group" "app-tier-sg" {
   }
 
   tags = {
-    Name = var.APP_SG_NAME
+    Name = var.appTier_securityGroup_name
   }
 
   depends_on = [ aws_security_group.app-alb-sg ]
@@ -183,7 +183,7 @@ resource "aws_security_group" "app-tier-sg" {
 
 # Creating Security Group for RDS Instances Tier With  only access to App-Tier ALB
 resource "aws_security_group" "database-sg" {
-  name = "database-sg"
+  #name = "database-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Protocol Type MySQL/Aurora"
 
@@ -211,7 +211,7 @@ resource "aws_security_group" "database-sg" {
   }
 
   tags = {
-    Name = var.DB_SG_NAME
+    Name = var.dbTier_securityGroup_name
   }
 
   depends_on = [ aws_security_group.web-tier-sg ]

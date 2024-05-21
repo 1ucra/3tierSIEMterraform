@@ -1,50 +1,50 @@
 data "aws_subnet" "public_subnet1" {
   filter {
     name   = "tag:Name"
-    values = [var.public-subnet-name1]
+    values = [var.public_subnet_name1]
   }
 }
 
 data "aws_subnet" "public_subnet2" {
   filter {
     name   = "tag:Name"
-    values = [var.public-subnet-name2]
+    values = [var.public_subnet_name2]
   }
 }
 
 data "aws_subnet" "private_subnet1" {
   filter {
     name   = "tag:Name"
-    values = [var.private-subnet-name1]
+    values = [var.private_subnet_name1]
   }
 }
 
 data "aws_subnet" "private_subnet2" {
   filter {
     name   = "tag:Name"
-    values = [var.private-subnet-name2]
+    values = [var.private_subnet_name2]
   }
 }
 
 data "aws_security_group" "web-alb-sg" {
   filter {
     name   = "tag:Name"
-    values = [var.WEB_ALB_SG_NAME]
+    values = [var.web_alb_securityGroup_name]
   }
   filter {
     name = "group-id"
-    values = [var.web-alb-sg-id]
+    values = [var.web_alb_securityGroup_id]
   }
 }
 
 data "aws_security_group" "app-alb-sg" {
   filter {
     name   = "tag:Name"
-    values = [var.APP_ALB_SG_NAME]
+    values = [var.app_alb_securityGroup_name]
   }
   filter {
     name = "group-id"
-    values = [var.app-alb-sg-id]
+    values = [var.app_alb_securityGroup_id]
   }
 }
 

@@ -6,35 +6,17 @@ data "aws_ssm_parameter" "db_pwd"{
   name = "/config/account/admin/PWD"
 }
 
-data "aws_security_group" "web-sg" {
-  filter {
-    name = "group-id"
-    values = [var.web-sg-id]
-  }
-}
-
-data "aws_security_group" "app-sg" {
-  filter {
-    name = "group-id"
-    values = [var.app-sg-id]
-  }
-}
 
 data "aws_subnet" "private_subnet1" {
   filter {
     name   = "tag:Name"
-    values = [var.private-subnet-name1]
+    values = [var.private_subnet_name1]
   }
 }
 
 data "aws_subnet" "private_subnet2" {
   filter {
     name   = "tag:Name"
-    values = [var.private-subnet-name2]
+    values = [var.private_subnet_name2]
   }
 }
-
-# data "aws_iam_instance_profile" "instance-profile" {
-#   name = var.instance-profile-name
-# }
-

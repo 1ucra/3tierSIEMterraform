@@ -6,10 +6,10 @@ resource "aws_launch_template" "App-LC" {
   instance_type = "t3.micro"
 
   iam_instance_profile {
-    name = var.instance-profile-name
+    name = var.instance_profile_name
   }
 
-  vpc_security_group_ids = [data.aws_security_group.app-sg.id]
+  vpc_security_group_ids = [var.app-securityGroup-id]
   
   user_data = base64encode(templatefile("${path.module}/app_userdata.sh", {
   }))
@@ -17,7 +17,7 @@ resource "aws_launch_template" "App-LC" {
 
 
 resource "aws_autoscaling_group" "App-ASG" {
-  name = var.app-asg-name
+  name = var.app_asg_name
   vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
   launch_template {
     id = aws_launch_template.App-LC.id
@@ -27,7 +27,7 @@ resource "aws_autoscaling_group" "App-ASG" {
   max_size             = 4
   health_check_type    = "ELB"
   health_check_grace_period = 300
-  target_group_arns    = [var.app-tg-arn]
+  target_group_arns    = [var.app-targetGroup-arn]
   force_delete         = true
   tag {
     key                 = "Name"
@@ -104,13 +104,13 @@ resource "aws_launch_template" "Web-LC" {
   instance_type = "t3.micro"
 
   iam_instance_profile {
-    name = var.instance-profile-name
+    name = var.instance_profile_name
   }
 
-  vpc_security_group_ids = [data.aws_security_group.web-sg.id]
+  vpc_security_group_ids = [var.web-securityGroup-id]
 
   user_data = base64encode(templatefile("${path.module}/web_userdata.sh", {
-    app_lb_dns = var.app-alb-dns-name
+    app_lb_dns = var.app_alb_dns_name
   }))
 
 
@@ -119,7 +119,7 @@ resource "aws_launch_template" "Web-LC" {
 
 
 resource "aws_autoscaling_group" "Web-ASG" {
-  name = var.web-asg-name
+  name = var.web_asg_name
   vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
   launch_template {
     id = aws_launch_template.Web-LC.id
@@ -129,7 +129,7 @@ resource "aws_autoscaling_group" "Web-ASG" {
   max_size             = 4
   health_check_type    = "ELB"
   health_check_grace_period = 300
-  target_group_arns    = [var.web-tg-arn]
+  target_group_arns    = [var.web-targetGroup-arn]
   force_delete         = true
   tag {
     key                 = "Name"
