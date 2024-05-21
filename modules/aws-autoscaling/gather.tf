@@ -20,14 +20,14 @@ data "aws_security_group" "app-sg" {
   }
 }
 
-data "aws_subnet" "private-subnet1" {
+data "aws_subnet" "private_subnet1" {
   filter {
     name   = "tag:Name"
     values = [var.private-subnet-name1]
   }
 }
 
-data "aws_subnet" "private-subnet2" {
+data "aws_subnet" "private_subnet2" {
   filter {
     name   = "tag:Name"
     values = [var.private-subnet-name2]

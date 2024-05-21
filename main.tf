@@ -1,46 +1,48 @@
 module "s3" {
   source = "./modules/aws-s3"
-  s3-name = var.S3-NAME
+  s3_name = var.s3_name
 }
 
 module "vpc" {
   source = "./modules/aws-vpc"
 
-  vpc-name         = var.VPC-NAME
-  vpc-cidr         = var.VPC-CIDR
-  igw-name         = var.IGW-NAME
-  public-cidr1     = var.PUBLIC-CIDR1
-  public-subnet1   = var.PUBLIC-SUBNET1
-  public-cidr2     = var.PUBLIC-CIDR2
-  public-subnet2   = var.PUBLIC-SUBNET2
-  private-cidr1    = var.PRIVATE-CIDR1
-  private-subnet1  = var.PRIVATE-SUBNET1
-  private-cidr2    = var.PRIVATE-CIDR2
-  private-subnet2  = var.PRIVATE-SUBNET2
-  db-cidr1         = var.DB-CIDR1
-  db-subnet1       = var.DB-SUBNET1
-  db-cidr2         = var.DB-CIDR2
-  db-subnet2       = var.DB-SUBNET2
-  eip-name1        = var.EIP-NAME1
-  eip-name2        = var.EIP-NAME2
-  ngw-name1        = var.NGW-NAME1
-  ngw-name2        = var.NGW-NAME2
-  public-rt-name   = var.PUBLIC-RT-NAME
-  private-rt-name1 = var.PRIVATE-RT-NAME1
-  private-rt-name2 = var.PRIVATE-RT-NAME2
-  db-rt-name1      = var.DB-RT-NAME1
-  db-rt-name2      = var.DB-RT-NAME2
+  vpc_name         = var.vpc_name
+  vpc_cidr         = var.vpc_cidr
+  igw_name         = var.igw_name
+  public_cird1     = var.public_cird1
+  public_subnet1   = var.public_subnet1
+  public_cidr2     = var.public_cidr2
+  public_subnet2   = var.public_subnet2
+  private_cidr1    = var.private_cidr1
+  private_subnet1  = var.private_subnet1
+  private_cidr2    = var.private_cidr2
+  private_subnet2  = var.private_subnet2
+  DB_CIDR1         = var.DB_CIDR1
+  DB_SUBNET1       = var.DB_SUBNET1
+  DB_CIDR2         = var.DB_CIDR2
+  DB_SUBNET2       = var.DB_SUBNET2
+  EIP_NAME1        = var.EIP_NAME1
+  EIP_NAME2        = var.EIP_NAME2
+  NGW_NAME1        = var.NGW_NAME1
+  NGW_NAME2        = var.NGW_NAME2
+  PUBLIC_RT_NAME   = var.PUBLIC_RT_NAME
+  PRIVATE_RT_NAME1 = var.PRIVATE_RT_NAME1
+  PRIVATE_RT_NAME2 = var.PRIVATE_RT_NAME2
+  DB_RT_NAME1      = var.DB_RT_NAME1
+  DB_RT_NAME2      = var.DB_RT_NAME2
 }
 
 module "security-group" {
   source = "./modules/aws-sg"
 
-  vpc-name    = var.VPC-NAME
-  web-alb-sg-name = var.WEB-ALB-SG-NAME
-  app-alb-sg-name = var.APP-ALB-SG-NAME
-  web-sg-name = var.WEB-SG-NAME
-  app-sg-name = var.APP-SG-NAME
-  db-sg-name  = var.DB-SG-NAME
+  vpc_name    = var.vpc_name
+  WEB_ALB_SG_NAME = var.WEB_ALB_SG_NAME
+  APP_ALB_SG_NAME = var.APP_ALB_SG_NAME
+  WEB-SG-NAME = var.WEB-SG-NAME
+  APP_SG_NAME = var.APP_SG_NAME
+  DB_SG_NAME  = var.DB_SG_NAME
+  REDIS_SG_NAME = var.REDIS_SG_NAME
+  BASTION_SG_NAME = var.BASTION_SG_NAME
 
   depends_on = [module.vpc]
 
@@ -50,9 +52,9 @@ module "rds" {
   source = "./modules/aws-rds"
 
   sg-name              = var.SG-NAME
-  db-subnet-name1 = var.DB-SUBNET1
-  db-subnet-name2 = var.DB-SUBNET2
-  db-sg-name           = var.DB-SG-NAME
+  db-subnet-name1 = var.DB_SUBNET1
+  db-subnet-name2 = var.DB_SUBNET2
+  DB_SG_NAME           = var.DB_SG_NAME
   rds-username         = var.RDS-USERNAME
   rds-pwd              = var.RDS-PWD
   db-name              = var.DB-NAME
@@ -68,21 +70,31 @@ module "rds" {
 module "alb" {
   source = "./modules/aws-alb"
 
-  public-subnet-name1  = var.PUBLIC-SUBNET1
-  public-subnet-name2  = var.PUBLIC-SUBNET2
-  private-subnet-name1 = var.PRIVATE-SUBNET1
-  private-subnet-name2 = var.PRIVATE-SUBNET2
-  web-alb-sg-name      = var.WEB-ALB-SG-NAME
+  public-subnet-name1  = var.public_subnet1
+  public-subnet-name2  = var.public_subnet2
+  private-subnet-name1 = var.private_subnet1
+  private-subnet-name2 = var.private_subnet2
+  WEB_ALB_SG_NAME      = var.WEB_ALB_SG_NAME
   web-alb-sg-id        = module.security-group.web-alb-sg-id
-  app-alb-sg-name      = var.APP-ALB-SG-NAME
+  APP_ALB_SG_NAME      = var.APP_ALB_SG_NAME
   app-alb-sg-id        = module.security-group.app-alb-sg-id
   web-alb-name         = var.WEB-ALB-NAME
   app-alb-name         = var.APP-ALB-NAME
   web-tg-name          = var.WEB-TG-NAME
   app-tg-name          = var.APP-TG-NAME
-  vpc-name             = var.VPC-NAME
+  vpc_name             = var.vpc_name
   header-name = var.HEADER-NAME
   header-value = var.HEADER-VALUE
+
+  depends_on = [module.security-group]
+}
+
+module "db-cache" {
+  source = "./modules/aws-elasticache"
+  
+  DB_SUBNET1 = var.DB_SUBNET1
+  DB_SUBNET2 = var.DB_SUBNET2
+  REDIS_SG_NAME = var.REDIS_SG_NAME
 
   depends_on = [module.security-group]
 }
@@ -100,8 +112,8 @@ module "ami" {
   source ="./modules/aws-ami"
 
   instance-profile-name = var.INSTANCE-PROFILE-NAME
-  vpc-name    = var.VPC-NAME
-  db-subnet1 = var.DB-SUBNET1
+  vpc_name    = var.vpc_name
+  DB_SUBNET1 = var.DB_SUBNET1
   app-alb-dns-name      = module.alb.app_alb_dns_name
 
   depends_on = [ module.security-group, module.iam ]
@@ -113,12 +125,12 @@ module "autoscaling" {
   ami-id = module.ami.my-ami-id
   ami_name              = var.AMI-NAME
   instance-profile-name = var.INSTANCE-PROFILE-NAME
-  web-sg-name           = var.WEB-SG-NAME
-  app-sg-name           = var.APP-SG-NAME
+  WEB-SG-NAME           = var.WEB-SG-NAME
+  APP_SG_NAME           = var.APP_SG_NAME
   web-sg-id             = module.security-group.web-tier-sg-id
   app-sg-id             = module.security-group.app-tier-sg-id
-  private-subnet-name1  = var.PRIVATE-SUBNET1
-  private-subnet-name2  = var.PRIVATE-SUBNET2
+  private-subnet-name1  = var.private_subnet1
+  private-subnet-name2  = var.private_subnet2
   web-asg-name          = var.WEB-ASG-NAME
   app-asg-name          = var.APP-ASG-NAME
   web-tg-arn            = module.alb.web_tg_arn

@@ -1,4 +1,4 @@
 variable "instance-profile-name" {}
-variable "vpc-name" {}
-variable "db-subnet1" {}
+variable "vpc_name" {}
+variable "DB_SUBNET1" {}
 variable "app-alb-dns-name" {}

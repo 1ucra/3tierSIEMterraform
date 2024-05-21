@@ -1,25 +1,25 @@
-data "aws_subnet" "public-subnet1" {
+data "aws_subnet" "public_subnet1" {
   filter {
     name   = "tag:Name"
     values = [var.public-subnet-name1]
   }
 }
 
-data "aws_subnet" "public-subnet2" {
+data "aws_subnet" "public_subnet2" {
   filter {
     name   = "tag:Name"
     values = [var.public-subnet-name2]
   }
 }
 
-data "aws_subnet" "private-subnet1" {
+data "aws_subnet" "private_subnet1" {
   filter {
     name   = "tag:Name"
     values = [var.private-subnet-name1]
   }
 }
 
-data "aws_subnet" "private-subnet2" {
+data "aws_subnet" "private_subnet2" {
   filter {
     name   = "tag:Name"
     values = [var.private-subnet-name2]
@@ -29,7 +29,7 @@ data "aws_subnet" "private-subnet2" {
 data "aws_security_group" "web-alb-sg" {
   filter {
     name   = "tag:Name"
-    values = [var.web-alb-sg-name]
+    values = [var.WEB_ALB_SG_NAME]
   }
   filter {
     name = "group-id"
@@ -40,7 +40,7 @@ data "aws_security_group" "web-alb-sg" {
 data "aws_security_group" "app-alb-sg" {
   filter {
     name   = "tag:Name"
-    values = [var.app-alb-sg-name]
+    values = [var.APP_ALB_SG_NAME]
   }
   filter {
     name = "group-id"
@@ -59,6 +59,6 @@ data "aws_security_group" "app-alb-sg" {
 data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
-    values = [var.vpc-name]
+    values = [var.vpc_name]
   }
 }

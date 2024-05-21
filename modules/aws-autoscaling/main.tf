@@ -18,7 +18,7 @@ resource "aws_launch_template" "App-LC" {
 
 resource "aws_autoscaling_group" "App-ASG" {
   name = var.app-asg-name
-  vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
+  vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
   launch_template {
     id = aws_launch_template.App-LC.id
     version = aws_launch_template.App-LC.latest_version
@@ -120,7 +120,7 @@ resource "aws_launch_template" "Web-LC" {
 
 resource "aws_autoscaling_group" "Web-ASG" {
   name = var.web-asg-name
-  vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
+  vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
   launch_template {
     id = aws_launch_template.Web-LC.id
     version = aws_launch_template.Web-LC.latest_version

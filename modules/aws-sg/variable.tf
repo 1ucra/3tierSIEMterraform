@@ -1,6 +1,8 @@
-variable "vpc-name" {}
-variable "web-alb-sg-name" {}
-variable "app-alb-sg-name" {}
-variable "web-sg-name" {}
-variable "app-sg-name" {}
-variable "db-sg-name" {}
+variable "vpc_name" {}
+variable "WEB_ALB_SG_NAME" {}
+variable "APP_ALB_SG_NAME" {}
+variable "WEB-SG-NAME" {}
+variable "APP_SG_NAME" {}
+variable "DB_SG_NAME" {}
+variable "REDIS_SG_NAME" {}
+variable "BASTION_SG_NAME" {}

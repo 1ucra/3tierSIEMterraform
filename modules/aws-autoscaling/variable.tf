@@ -1,7 +1,7 @@
 variable "ami-id" {}
 variable "ami_name" {}
-variable "web-sg-name" {}
-variable "app-sg-name" {}
+variable "WEB-SG-NAME" {}
+variable "APP_SG_NAME" {}
 variable "private-subnet-name1" {}
 variable "private-subnet-name2" {}
 variable "instance-profile-name" {}

@@ -17,7 +17,7 @@ resource "aws_ssm_parameter" "db_pwd" {
 # 8 Creating DB subnet group for RDS Instances
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = var.sg-name
-  subnet_ids = [data.aws_subnet.db-subnet1.id, data.aws_subnet.db-subnet2.id]
+  subnet_ids = [data.aws_subnet.DB_SUBNET1.id, data.aws_subnet.DB_SUBNET2.id]
 }
 
 # Creating Aurora RDS Cluster, username and password used only for practice, otherwise follow DevOps best practices to keep it secret
