@@ -1,10 +1,9 @@
 module "s3" {
   source = "./modules/aws-s3"
-  s3_name = var.s3_name
 }
 
 module "vpc" {
-  source = "./modules/aws-vpc"
+  source = "./modules/3tier/aws-vpc"
 
   vpc_name         = var.vpc_name
   vpc_cidr         = var.vpc_cidr
@@ -33,7 +32,7 @@ module "vpc" {
 }
 
 module "security-group" {
-  source = "./modules/aws-sg"
+  source = "./modules/3tier/aws-sg"
 
   vpc_name    = var.vpc_name
   web_alb_securityGroup_name = var.web_alb_securityGroup_name
@@ -49,7 +48,7 @@ module "security-group" {
 }
 
 module "rds" {
-  source = "./modules/aws-rds"
+  source = "./modules/3tier/aws-rds"
 
   db_securityGroup_name              = var.db_securityGroup_name
   db_subnet_name1 = var.db_subnet1
@@ -67,7 +66,7 @@ module "rds" {
 }
 
 module "alb" {
-  source = "./modules/aws-alb"
+  source = "./modules/3tier/aws-alb"
 
   public_subnet_name1  = var.public_subnet1
   public_subnet_name2  = var.public_subnet2
@@ -89,7 +88,7 @@ module "alb" {
 }
 
 module "db-cache" {
-  source = "./modules/aws-elasticache"
+  source = "./modules/3tier/aws-elasticache"
   
   db_subnet1 = var.db_subnet1
   db_subnet2 = var.db_subnet2
@@ -98,7 +97,7 @@ module "db-cache" {
 }
 
 module "iam" {
-  source = "./modules/aws-iam"
+  source = "./modules/3tier/aws-iam"
 
   iam_role              = var.iam_role
   iam-policy            = var.IAM-POLICY
@@ -107,7 +106,7 @@ module "iam" {
 }
 
 module "ami" {
-  source ="./modules/aws-ami"
+  source ="./modules/3tier/aws-ami"
 
   instance_profile_name = var.instance_profile_name
   vpc_name    = var.vpc_name
@@ -119,7 +118,7 @@ module "ami" {
 }
 
 module "autoscaling" {
-  source = "./modules/aws-autoscaling"
+  source = "./modules/3tier/aws-autoscaling"
   
   ami-id = module.ami.my-ami-id
   ami_name              = var.AMI-NAME
@@ -139,7 +138,7 @@ module "autoscaling" {
 }
 
 module "acm-route53-cloudfront-waf" {
-  source = "./modules/aws-acm-route53-cloudfront-waf"
+  source = "./modules/3tier/aws-acm-route53-cloudfront-waf"
 
   domain_name     = var.domain_name
   cloudfront_name = var.cloudfront_name

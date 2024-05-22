@@ -1,5 +1,3 @@
-#S3
-variable "s3_name" {}
 
 # VPC
 variable "vpc_name" {}
