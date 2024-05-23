@@ -1,3 +1,7 @@
+#S3
+variable "s3_image_bucket_name" {}
+variable "s3_artifact_bucket_name" {}
+variable "s3_logs_bucket_name" {}
 
 # VPC
 variable "vpc_name" {}
@@ -36,8 +40,6 @@ variable "bastion_securityGroup_name" {}
 
 # RDS
 variable "db_securityGroup_name" {}
-variable "rds_username" {}
-variable "rds_pwd" {}
 variable "db_name" {}
 variable "rds_name" {}
 variable "db_user_id" {}
@@ -77,4 +79,5 @@ variable "header_value" {}
 # WAFv2
 variable "web_acl_name" {}
 
-# variable "" {}
+# CICD
+variable "repository_name" {}

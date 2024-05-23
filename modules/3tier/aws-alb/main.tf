@@ -15,7 +15,7 @@ resource "aws_lb" "App-elb" {
 
 # Creating Target Group for App-Tier 
 resource "aws_lb_target_group" "app-tg" {
-  #name = var.app_tg_name
+  name = "${var.app_tg_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   health_check {
     enabled = true
     interval            = 10
@@ -64,7 +64,7 @@ resource "aws_lb" "Web-elb" {
 
 # Creating Target Group for Web-Tier 
 resource "aws_lb_target_group" "web-tg" {
-  #name = var.web_tg_name
+  name = "${var.web_tg_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   health_check {
     enabled = true
     interval            = 10

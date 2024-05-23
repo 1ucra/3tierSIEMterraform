@@ -1,5 +1,5 @@
 resource "aws_security_group" "bastion-sg" {
-  #name        = "bastion-sg"
+  name        = "bastion-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   description = "Allow SSH, HTTP and HTTPS"
   vpc_id      = data.aws_vpc.vpc.id # 실제 VPC ID로 변경
   
@@ -23,7 +23,7 @@ resource "aws_security_group" "bastion-sg" {
 }
 
 resource "aws_security_group" "redis-sg" {
-  #name        = "redis-sg"
+  name        = "redis-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   description = "Security group for Redis Serverless"
   vpc_id      = data.aws_vpc.vpc.id  # 실제 VPC ID로 변경
 
@@ -47,7 +47,7 @@ resource "aws_security_group" "redis-sg" {
 }
 
 resource "aws_security_group" "web-alb-sg" {
-  #name = "web-alb-sg"
+  name = "web-alb-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for World"
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "web-alb-sg" {
 
 
 resource "aws_security_group" "web-tier-sg" {
-  #name = "web-tier-sg"
+  name = "web-tier-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for WEP ALB Only"
 
@@ -114,7 +114,7 @@ resource "aws_security_group" "web-tier-sg" {
 }
 
 resource "aws_security_group" "app-alb-sg" {
-  #name = "app-alb-sg"
+  name = "app-alb-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS for World"
 
@@ -147,7 +147,7 @@ resource "aws_security_group" "app-alb-sg" {
 }
 
 resource "aws_security_group" "app-tier-sg" {
-  #name = "app-tier-sg"
+  name = "app-tier-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow HTTP and HTTPS from APP ALB Only"
 
@@ -183,7 +183,7 @@ resource "aws_security_group" "app-tier-sg" {
 
 # Creating Security Group for RDS Instances Tier With  only access to App-Tier ALB
 resource "aws_security_group" "database-sg" {
-  #name = "database-sg"
+  name = "database-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Protocol Type MySQL/Aurora"
 

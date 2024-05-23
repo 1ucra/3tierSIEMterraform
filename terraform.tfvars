@@ -1,4 +1,7 @@
-
+#S3 
+s3_image_bucket_name =  "hellowaws-image-bucket"
+s3_artifact_bucket_name = "hellowaws-artifact-bucket"
+s3_logs_bucket_name = "hellowaws-logs-bucket"
 # VPC
 vpc_name         = "hellowaws_VPC"
 vpc_cidr         = "10.50.0.0/16"
@@ -36,8 +39,6 @@ bastion_securityGroup_name = "hellowaws_bastion-sg"
 
 # RDS
 db_securityGroup_name           = "hellowaws-rds-sg"
-rds_username      = "admin"
-rds_pwd           = "Admin1234"
 db_name           = "mydb"
 rds_name          = "hellowaws_RDS"
 
@@ -64,3 +65,6 @@ cloudfront_name = "hellowaws_CLOUDFRONT-ktd"
 web_acl_name    = "hellowaws_WAF-ktd"
 header_name = "my-header"
 header_value = "hellowaws"
+
+#CICD
+repository_name = "hellowaws-application-sourcecode"
