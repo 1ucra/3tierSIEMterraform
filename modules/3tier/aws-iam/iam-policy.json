@@ -9,7 +9,9 @@
                 "ssm:*",
                 "ec2messages:*",
                 "ssmmessages:*",
-                "ec2:StopInstances"
+                "ec2:StopInstances",
+                "codecommit:GitPull",
+                "codecommit:GitPush"
             ],
             "Resource": "*"
         }

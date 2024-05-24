@@ -61,8 +61,8 @@ AMI-ID               = "ami-0c754ed8d0a6969fe"
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM
 domain_name     = "hellowaws.shop"
-cloudfront_name = "hellowaws_CLOUDFRONT-ktd"
-web_acl_name    = "hellowaws_WAF-ktd"
+cloudfront_name = "hellowaws_CLOUDFRONT"
+web_acl_name    = "hellowaws_WAF"
 header_name = "my-header"
 header_value = "hellowaws"
 

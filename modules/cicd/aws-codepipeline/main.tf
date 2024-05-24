@@ -89,7 +89,7 @@ resource "aws_codepipeline" "hellowaws_cicd" {
 
 # EventBridge가 사용할 IAM 역할 생성
 resource "aws_iam_role" "eventbridge_role" {
-  name = "eventbridge_codepipeline_role"
+  name = "hellowaws_eventbridge_codepipeline_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
