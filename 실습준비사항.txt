@@ -15,7 +15,9 @@ AMI 아마존2023에 nginx 설치된거 생성
 S3 생성 해둬야함
 iam 콘솔로 만들기 - 관리자 계쩡과 운영계정의 분리
 
-sg 이름 지정하면 중복 떠서 이름 뻄. 리소스 연결 안된거 지워주기
+terraform apply 할 때 sg 지울 때 인스턴스 삭제를 알아서 안해줘서 
+module.security-group.aws_security_group.app-tier-sg: Still destroying... [id=sg-0579061de6df462eb, 2m30s elapsed]
+형식의 무한루프에 빠짐. 수동으로 ec2 지워줘야함
 
 사용자의 로그인 세션정보를 캐싱하고 싶어서 레디스를 프로비저닝해두기만함
 구현은 백앤드 몫 같아서 안함 
