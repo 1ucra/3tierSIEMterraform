@@ -172,3 +172,17 @@ module "build"{
   subnet1-id = module.vpc.private-subnet1-id
   subnet2-id = module.vpc.private-subnet2-id
 }
+
+module "deploy" {
+  source = "./modules/cicd/aws-codedeploy"
+
+  app-targetGroupName = module.alb.app_tg_name
+  app-autoscalingGroupName = module.autoscaling.App-autoscalingGroupName
+}
+
+module "pipeline" {
+  source = "./modules/cicd/aws-codepipeline"
+
+  artifact-bucket-name = module.s3.artifact-bucket-id
+  repository-arn = module.repository.repository-arn
+}

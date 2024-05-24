@@ -17,3 +17,13 @@ output "web_tg_arn" {
   description = "The name of the target group of alb"
   value = try(aws_lb_target_group.web-tg.arn)
 }
+
+output "app_tg_name" {
+  description = "The name of the target group of alb"
+  value = try(aws_lb_target_group.app-tg.name)
+}
+
+output "web_tg_name" {
+  description = "The name of the target group of alb"
+  value = try(aws_lb_target_group.web-tg.name)
+}

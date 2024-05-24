@@ -28,6 +28,10 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "my-web-alb"
 
+    min_ttl         = 0
+    default_ttl     = 300
+    max_ttl         = 3600
+
     forwarded_values {
       query_string = false
       cookies {

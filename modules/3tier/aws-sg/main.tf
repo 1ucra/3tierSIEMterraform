@@ -107,7 +107,7 @@ resource "aws_security_group" "web-tier-sg" {
   }
 
   tags = {
-    Name = var.webTier_securityGroup_name
+    Name = "${var.webTier_securityGroup_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   }
 
   depends_on = [ aws_security_group.web-alb-sg ]
@@ -174,7 +174,7 @@ resource "aws_security_group" "app-tier-sg" {
   }
 
   tags = {
-    Name = var.appTier_securityGroup_name
+    Name = "${var.appTier_securityGroup_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   }
 
   depends_on = [ aws_security_group.app-alb-sg ]
@@ -211,7 +211,7 @@ resource "aws_security_group" "database-sg" {
   }
 
   tags = {
-    Name = var.dbTier_securityGroup_name
+    Name = "${var.dbTier_securityGroup_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   }
 
   depends_on = [ aws_security_group.web-tier-sg ]

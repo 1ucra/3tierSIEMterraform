@@ -22,7 +22,8 @@ export db_user_pwd
 export aurora_endpoint
 export redis_endpoint
 aws s3 cp s3://ktd-0426/django-community-board-main/templates/settings.py.template /community_board_project/
-envsubst < /community_board_project/settings.py.template > /community_board_project/settings.py
+aws s3 cp s3://ktd-0426/django-community-board-main/templates/nodbsettings.py.template /community_board_project/
+envsubst < /community_board_project/nodbsettings.py.template > /community_board_project/settings.py
 systemctl restart nginx
 python3 manage.py makemigrations
 python3 manage.py migrate
