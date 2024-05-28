@@ -51,21 +51,21 @@ module "security-group" {
 
 }
 
-# module "rds" {
-#   source = "./modules/3tier/aws-rds"
+module "rds" {
+  source = "./modules/3tier/aws-rds"
 
-#   db_securityGroup_name              = var.db_securityGroup_name
-#   db_subnet_name1 = var.db_subnet1
-#   db_subnet_name2 = var.db_subnet2
-#   dbTier_securityGroup_name           = var.dbTier_securityGroup_name
-#   db_name              = var.db_name
-#   rds_name             = var.rds_name
-#   db_securityGroup_id             = module.security-group.database_securityGroup_id
-#   db_user_id = var.db_user_id
-#   db_user_pwd = var.db_user_pwd
-#   depends_on = [module.security-group]
+  db_securityGroup_name              = var.db_securityGroup_name
+  db_subnet_name1 = var.db_subnet1
+  db_subnet_name2 = var.db_subnet2
+  dbTier_securityGroup_name           = var.dbTier_securityGroup_name
+  db_name              = var.db_name
+  rds_name             = var.rds_name
+  db_securityGroup_id             = module.security-group.database_securityGroup_id
+  db_user_id = var.db_user_id
+  db_user_pwd = var.db_user_pwd
+  depends_on = [module.security-group]
 
-# }
+}
 
 module "alb" {
   source = "./modules/3tier/aws-alb"
@@ -89,14 +89,14 @@ module "alb" {
   depends_on = [module.security-group]
 }
 
-# module "db-cache" {
-#   source = "./modules/3tier/aws-elasticache"
+module "db-cache" {
+  source = "./modules/3tier/aws-elasticache"
   
-#   db_subnet1 = var.db_subnet1
-#   db_subnet2 = var.db_subnet2
-#   redis_securityGroup_id = module.security-group.redis_securityGroup_id
-#   depends_on = [module.security-group]
-# }
+  db_subnet1 = var.db_subnet1
+  db_subnet2 = var.db_subnet2
+  redis_securityGroup_id = module.security-group.redis_securityGroup_id
+  depends_on = [module.security-group]
+}
 
 module "iam" {
   source = "./modules/3tier/aws-iam"
@@ -136,7 +136,7 @@ module "autoscaling" {
   web-targetGroup-arn            = module.alb.web_tg_arn
   app-targetGroup-arn            = module.alb.app_tg_arn
   app_alb_dns_name      = module.alb.app_alb_dns_name
-  depends_on            = [module.ami]
+  depends_on            = [module.ami, module.repository]
 }
 
 module "acm-route53-cloudfront-waf" {
