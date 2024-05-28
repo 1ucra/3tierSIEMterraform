@@ -11,7 +11,8 @@
                 "ssmmessages:*",
                 "ec2:StopInstances",
                 "codecommit:GitPull",
-                "codecommit:GitPush"
+                "codecommit:GitPush",
+                "codedeploy:*"  
             ],
             "Resource": "*"
         }
