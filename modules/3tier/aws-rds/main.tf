@@ -62,15 +62,15 @@ resource "aws_rds_cluster_instance" "primary-instance" {
 }
 
 # Creating RDS Read Replica Instance
-resource "aws_rds_cluster_instance" "read_replica_instance" {
-  count              = 1
-  cluster_identifier = aws_rds_cluster.aurora-cluster.id
-  identifier         = "read-replica-instance-${count.index}"
-  instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.aurora-cluster.engine
+# resource "aws_rds_cluster_instance" "read_replica_instance" {
+#   count              = 1
+#   cluster_identifier = aws_rds_cluster.aurora-cluster.id
+#   identifier         = "read-replica-instance-${count.index}"
+#   instance_class     = "db.serverless"
+#   engine             = aws_rds_cluster.aurora-cluster.engine
 
-  depends_on = [aws_rds_cluster_instance.primary-instance]
-}
+#   depends_on = [aws_rds_cluster_instance.primary-instance]
+# }
 
 resource "aws_ssm_parameter" "db-cluster-endpoint" {
   name  = "/config/system/db-cluster-endpoint"

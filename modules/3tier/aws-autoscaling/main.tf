@@ -11,8 +11,8 @@ resource "aws_launch_template" "App-LC" {
 
   vpc_security_group_ids = [var.app-securityGroup-id]
   
-  user_data = base64encode(templatefile("${path.module}/app_userdata2.sh", {
-  }))
+  # user_data = base64encode(templatefile("${path.module}/app_userdata2.sh", {
+  # }))
 }
 
 

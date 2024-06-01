@@ -185,4 +185,5 @@ module "pipeline" {
 
   artifact-bucket-name = module.s3.artifact-bucket-id
   repository-arn = module.repository.repository-arn
+  repository-name = var.repository_name
 }

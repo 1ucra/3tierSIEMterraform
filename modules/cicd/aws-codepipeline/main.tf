@@ -43,7 +43,7 @@ resource "aws_codepipeline" "hellowaws_cicd" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        RepositoryName = "hellowaws-application-sourcecode"
+        RepositoryName = var.repository-name
         BranchName     = "main"
         PollForSourceChanges = "false"
       }

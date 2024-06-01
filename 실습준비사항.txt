@@ -21,3 +21,5 @@ module.security-group.aws_security_group.app-tier-sg: Still destroying... [id=sg
 
 사용자의 로그인 세션정보를 캐싱하고 싶어서 레디스를 프로비저닝해두기만함
 구현은 백앤드 몫 같아서 안함 
+
+destroy할 떄 s3 비워둬야함ㄴ

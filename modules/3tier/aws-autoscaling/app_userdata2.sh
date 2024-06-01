@@ -4,9 +4,10 @@
 
 # 필요한 패키지 설치
 
-yum install -y python3-pip gcc python3-devel mariadb105-devel 
+yum install -y python3-pip gcc python3-devel 
 yum groupinstall "Development Tools" -y 
 yum install -y bzip2-devel libffi-devel 
+
 
 # Git 설정
 

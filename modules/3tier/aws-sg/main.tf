@@ -183,7 +183,6 @@ resource "aws_security_group" "app-tier-sg" {
 
 # Creating Security Group for RDS Instances Tier With  only access to App-Tier ALB
 resource "aws_security_group" "database-sg" {
-  name = "database-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Protocol Type MySQL/Aurora"
 

@@ -1,6 +1,6 @@
 # 기존 보안 그룹 데이터 소스
 resource "aws_instance" "bastion" {
-  ami           = "ami-0ddda618e961f2270" # 아마존 2023 ami
+  ami           = "ami-0647086318eb3b918" # 아마존 2 ami
   instance_type = "t3.micro"
   subnet_id     = data.aws_subnet.subnet.id
   iam_instance_profile   = var.instance_profile_name
@@ -26,6 +26,8 @@ resource "aws_ami_from_instance" "my_ami" {
   tags = {
     Name = "my-ami"
   }
+  
+  depends_on = [ aws_instance.bastion ]
 }
 
 resource "null_resource" "terminate_instance" {

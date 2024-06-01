@@ -67,6 +67,11 @@ resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
       value = "us-east-2"
     }
 
+    environment_variable {
+      name  = "REPOSITORY_NAME"
+      value = var.repository_name
+    }
+
     privileged_mode = true
 
   }
@@ -76,6 +81,7 @@ resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
   artifacts {
     type  = "S3"
     location = var.s3_artifact_bucket_id
+    path                = "hellowaws-cicd/build_output"
     packaging = "NONE"
     encryption_disabled = true
   }
