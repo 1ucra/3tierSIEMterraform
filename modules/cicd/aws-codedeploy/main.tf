@@ -37,12 +37,25 @@ resource "aws_codedeploy_deployment_group" "app_deploy_group" {
 
   deployment_style {
     deployment_option = "WITH_TRAFFIC_CONTROL"
-    deployment_type   = "IN_PLACE"
+    deployment_type   = "BLUE_GREEN"
   }
 
   deployment_config_name = "CodeDeployDefault.HalfAtATime"
 
-  autoscaling_groups = [var.app-autoscalingGroupName]
+  blue_green_deployment_config {
+    terminate_blue_instances_on_deployment_success {
+      action = "TERMINATE"
+      termination_wait_time_in_minutes = 1
+    }
+
+    deployment_ready_option {
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
+    }
+
+    green_fleet_provisioning_option {
+      action = "DISCOVER_EXISTING"
+    }
+  }
 
   load_balancer_info {
     elb_info {

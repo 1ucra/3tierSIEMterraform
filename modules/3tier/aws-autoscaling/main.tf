@@ -83,7 +83,7 @@ resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm" {
 
 resource "aws_autoscaling_policy" "app-custom-cpu-policy-scaledown" {
   name                   = "custom-cpu-policy-scaledown"
-  autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
+  autoscaling_group_name = aws_autoscaling_group.App-ASG.id
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = -1
   cooldown               = 60
@@ -91,7 +91,7 @@ resource "aws_autoscaling_policy" "app-custom-cpu-policy-scaledown" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaledown" {
-  alarm_name          = "custom-webserver-cpu-alarm-scaledown"
+  alarm_name          = "custom-appserver-cpu-alarm-scaledown"
   alarm_description   = "alarm when cpu usage decreases"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = 2
