@@ -1,4 +1,4 @@
-resource "aws_iam_role" "hellowaws-codedeploy-role" {
+resource "aws_iam_role" "hellowaws_codedeploy_role" {
   name = "hellowaws_codedeploy_role"
 
   assume_role_policy = jsonencode({
@@ -16,28 +16,27 @@ resource "aws_iam_role" "hellowaws-codedeploy-role" {
 }
 
 resource "aws_iam_role_policy_attachment" "codedeploy_role_policy" {
-  role       = aws_iam_role.hellowaws-codedeploy-role.name
+  role       = aws_iam_role.hellowaws_codedeploy_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
 
 resource "aws_iam_role_policy_attachment" "admin_access_policy" {
-  role       = aws_iam_role.hellowaws-codedeploy-role.name
+  role       = aws_iam_role.hellowaws_codedeploy_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "aws_codedeploy_app" "hellowaws_app_deploy" {
-  name              = "hellowaws_app_deploy"
-  compute_platform  = "Server"
+  name             = "hellowaws_app_deploy"
+  compute_platform = "Server"
 }
 
-# AWS CodeDeploy 배포 그룹 생성
 resource "aws_codedeploy_deployment_group" "app_deploy_group" {
   app_name              = aws_codedeploy_app.hellowaws_app_deploy.name
   deployment_group_name = "app_deploy_group"
-  service_role_arn      = aws_iam_role.hellowaws-codedeploy-role.arn
+  service_role_arn      = aws_iam_role.hellowaws_codedeploy_role.arn
 
   deployment_style {
-    deployment_option = "WITHOUT_TRAFFIC_CONTROL"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
     deployment_type   = "IN_PLACE"
   }
 
@@ -46,6 +45,9 @@ resource "aws_codedeploy_deployment_group" "app_deploy_group" {
   autoscaling_groups = [var.app-autoscalingGroupName]
 
   load_balancer_info {
+    elb_info {
+      name = var.app_alb_name
+    }
     target_group_info {
       name = var.app-targetGroupName
     }
@@ -53,6 +55,6 @@ resource "aws_codedeploy_deployment_group" "app_deploy_group" {
 
   auto_rollback_configuration {
     enabled = true
-    events = ["DEPLOYMENT_FAILURE"]
+    events  = ["DEPLOYMENT_FAILURE"]
   }
 }

@@ -29,6 +29,19 @@ resource "aws_autoscaling_group" "App-ASG" {
   health_check_grace_period = 300
   target_group_arns    = [var.app-targetGroup-arn]
   force_delete         = true
+  
+  metrics_granularity = "1Minute"
+  enabled_metrics = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances"
+  ]
+  
   tag {
     key                 = "Name"
     value               = "App-ASG"
@@ -131,11 +144,26 @@ resource "aws_autoscaling_group" "Web-ASG" {
   health_check_grace_period = 300
   target_group_arns    = [var.web-targetGroup-arn]
   force_delete         = true
+
+  metrics_granularity = "1Minute"
+    enabled_metrics = [
+      "GroupMinSize",
+      "GroupMaxSize",
+      "GroupDesiredCapacity",
+      "GroupInServiceInstances",
+      "GroupPendingInstances",
+      "GroupStandbyInstances",
+      "GroupTerminatingInstances",
+      "GroupTotalInstances"
+    ]
+
   tag {
     key                 = "Name"
     value               = "Web-ASG"
     propagate_at_launch = true
   }
+
+  
 }
 
 

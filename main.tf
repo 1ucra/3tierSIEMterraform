@@ -178,6 +178,7 @@ module "deploy" {
 
   app-targetGroupName = module.alb.app_tg_name
   app-autoscalingGroupName = module.autoscaling.App-autoscalingGroupName
+  app_alb_name = var.app_alb_name
 }
 
 module "pipeline" {
