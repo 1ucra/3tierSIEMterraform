@@ -37,7 +37,7 @@ resource "aws_rds_cluster" "aurora-cluster" {
   allow_major_version_upgrade = false
   backup_retention_period = 3
   preferred_backup_window = "19:00-21:00" #4시~6시
-  skip_final_snapshot     = false
+  skip_final_snapshot     = true
   final_snapshot_identifier = local.snapshot_time
   database_name           = var.db_name
   port                    = 3306
