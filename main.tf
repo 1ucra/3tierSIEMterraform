@@ -176,8 +176,8 @@ module "build"{
 module "deploy" {
   source = "./modules/cicd/aws-codedeploy"
 
-  app-targetGroupName = module.alb.app_tg_name
-  app-autoscalingGroupName = module.autoscaling.App-autoscalingGroupName
+  app_targetGroupName = module.alb.app_tg_name
+  app_autoscalingGroupName = module.autoscaling.app_autoscalingGroupName
   app_alb_name = var.app_alb_name
 }
 

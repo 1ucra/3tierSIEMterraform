@@ -53,21 +53,24 @@ resource "aws_codedeploy_deployment_group" "app_deploy_group" {
     }
 
     green_fleet_provisioning_option {
-      action = "DISCOVER_EXISTING"
+      action = "COPY_AUTO_SCALING_GROUP"
+
     }
   }
 
   load_balancer_info {
-    elb_info {
-      name = var.app_alb_name
-    }
     target_group_info {
-      name = var.app-targetGroupName
+      name = var.app_targetGroupName
     }
   }
+  
 
   auto_rollback_configuration {
     enabled = true
     events  = ["DEPLOYMENT_FAILURE"]
   }
+
+  autoscaling_groups = [
+    var.app_autoscalingGroupName,
+  ]
 }

@@ -14,4 +14,10 @@ resource "aws_wafv2_web_acl" "web_acl" {
     metric_name                = "BlockIPRuleMetrics"
     sampled_requests_enabled   = true
   }
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = var.web_acl_name
+    owner = "ktd-admin"
+  }
 }

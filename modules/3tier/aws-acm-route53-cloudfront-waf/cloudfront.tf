@@ -20,7 +20,6 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   aliases         = [var.domain_name, "www.${var.domain_name}"]
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "CLOUDFRONT ALB Distribution"
   price_class     = "PriceClass_100"
 
   default_cache_behavior {
@@ -74,7 +73,9 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   web_acl_id = aws_wafv2_web_acl.web_acl.arn
 
   tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
     Name = var.cloudfront_name
+    owner = "ktd-admin"
   }
 
   depends_on = [aws_acm_certificate_validation.cert]

@@ -25,6 +25,9 @@ resource "aws_lb_target_group" "app-tg" {
     healthy_threshold   = 5
     unhealthy_threshold = 2
   }
+
+  deregistration_delay = 60
+
   target_type = "instance"
   port     = 8080
   protocol = "HTTP"
@@ -46,6 +49,12 @@ resource "aws_lb_listener" "app-alb-listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app-tg.arn
   }
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_lb_listener.app-alb-listener"
+    owner = "ktd-admin"
+  }
 }
 
 # Creating ALB for Web Tier
@@ -58,7 +67,9 @@ resource "aws_lb" "Web-elb" {
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
     Name = var.web_alb_name
+    owner = "ktd-admin"
   }
 }
 
@@ -80,7 +91,9 @@ resource "aws_lb_target_group" "web-tg" {
   vpc_id   = data.aws_vpc.vpc.id
 
   tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
     Name = var.web_tg_name
+    owner = "ktd-admin"
   }
 }
 
@@ -98,6 +111,12 @@ resource "aws_lb_listener" "web-alb-listener" {
       message_body = "Forbidden. Only accessible through the cloud front"
       status_code  = "403"
     }
+  }
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_lb_listener.web-alb-listener"
+    owner = "ktd-admin"
   }
 }
 

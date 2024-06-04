@@ -24,23 +24,23 @@ resource "aws_autoscaling_group" "App-ASG" {
     version = aws_launch_template.App-LC.latest_version
   }
   min_size             = 2
-  max_size             = 4
+  max_size             = 6
   health_check_type    = "ELB"
   health_check_grace_period = 300
   target_group_arns    = [var.app-targetGroup-arn]
   force_delete         = true
   
   metrics_granularity = "1Minute"
-  enabled_metrics = [
-    "GroupMinSize",
-    "GroupMaxSize",
-    "GroupDesiredCapacity",
-    "GroupInServiceInstances",
-    "GroupPendingInstances",
-    "GroupStandbyInstances",
-    "GroupTerminatingInstances",
-    "GroupTotalInstances"
-  ]
+    enabled_metrics = [
+      "GroupMinSize",
+      "GroupMaxSize",
+      "GroupDesiredCapacity",
+      "GroupInServiceInstances",
+      "GroupPendingInstances",
+      "GroupStandbyInstances",
+      "GroupTerminatingInstances",
+      "GroupTotalInstances"
+    ]
   
   tag {
     key                 = "Name"
@@ -50,64 +50,6 @@ resource "aws_autoscaling_group" "App-ASG" {
 
 }
 
-
-resource "aws_autoscaling_policy" "app-custom-cpu-policy" {
-  name                   = "custom-cpu-policy"
-  autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = 1
-  cooldown               = 60
-  policy_type            = "SimpleScaling"
-}
-
-
-resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm" {
-  alarm_name          = "custom-webserver-cpu-alarm"
-  alarm_description   = "alarm when cpu usage increases"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 2
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 120
-  statistic           = "Average"
-  threshold           = "70"
-
-  dimensions = {
-    "AutoScalingGroupName" : aws_autoscaling_group.Web-ASG.name
-  }
-  actions_enabled = true
-
-  alarm_actions = [aws_autoscaling_policy.web-custom-cpu-policy.arn]
-}
-
-
-resource "aws_autoscaling_policy" "app-custom-cpu-policy-scaledown" {
-  name                   = "custom-cpu-policy-scaledown"
-  autoscaling_group_name = aws_autoscaling_group.App-ASG.id
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = -1
-  cooldown               = 60
-  policy_type            = "SimpleScaling"
-}
-
-resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaledown" {
-  alarm_name          = "custom-appserver-cpu-alarm-scaledown"
-  alarm_description   = "alarm when cpu usage decreases"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = 2
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 120
-  statistic           = "Average"
-  threshold           = "50"
-
-  dimensions = {
-    "AutoScalingGroupName" : aws_autoscaling_group.App-ASG.name
-  }
-  actions_enabled = true
-
-  alarm_actions = [aws_autoscaling_policy.app-custom-cpu-policy-scaledown.arn]
-}
 
 
 # Creating Launch template for Web tier AutoScaling Group!
@@ -157,6 +99,15 @@ resource "aws_autoscaling_group" "Web-ASG" {
       "GroupTotalInstances"
     ]
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+      max_healthy_percentage = 200
+      instance_warmup        = 180
+    }
+  }
+
   tag {
     key                 = "Name"
     value               = "Web-ASG"
@@ -166,61 +117,3 @@ resource "aws_autoscaling_group" "Web-ASG" {
   
 }
 
-
-resource "aws_autoscaling_policy" "web-custom-cpu-policy" {
-  name                   = "custom-cpu-policy"
-  autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = 1
-  cooldown               = 60
-  policy_type            = "SimpleScaling"
-}
-
-
-resource "aws_cloudwatch_metric_alarm" "web-custom-cpu-alarm" {
-  alarm_name          = "custom-webserver-cpu-alarm"
-  alarm_description   = "alarm when cpu usage increases"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 2
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 120
-  statistic           = "Average"
-  threshold           = "70"
-
-  dimensions = {
-    "AutoScalingGroupName" : aws_autoscaling_group.Web-ASG.name
-  }
-  actions_enabled = true
-
-  alarm_actions = [aws_autoscaling_policy.web-custom-cpu-policy.arn]
-}
-
-
-resource "aws_autoscaling_policy" "web-custom-cpu-policy-scaledown" {
-  name                   = "custom-cpu-policy-scaledown"
-  autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
-  adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = -1
-  cooldown               = 60
-  policy_type            = "SimpleScaling"
-}
-
-resource "aws_cloudwatch_metric_alarm" "web-custom-cpu-alarm-scaledown" {
-  alarm_name          = "custom-webserver-cpu-alarm-scaledown"
-  alarm_description   = "alarm when cpu usage decreases"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = 2
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 120
-  statistic           = "Average"
-  threshold           = "50"
-
-  dimensions = {
-    "AutoScalingGroupName" : aws_autoscaling_group.Web-ASG.name
-  }
-  actions_enabled = true
-
-  alarm_actions = [aws_autoscaling_policy.web-custom-cpu-policy-scaledown.arn]
-}
