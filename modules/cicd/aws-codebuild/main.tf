@@ -64,7 +64,7 @@ resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
     
     environment_variable {
       name  = "AWS_DEFAULT_REGION"
-      value = "us-east-2"
+      value = "ca-central-1"
     }
 
     environment_variable {

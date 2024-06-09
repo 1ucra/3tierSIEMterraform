@@ -280,7 +280,7 @@ resource "aws_route_table_association" "db-rt-association2" {
 
 resource "aws_vpc_endpoint" "s3_gateway" {
   vpc_id            = aws_vpc.vpc.id
-  service_name      = "com.amazonaws.us-east-2.s3"  # 리전 명시
+  service_name      = "com.amazonaws.ca-central-1.s3"  # 리전 명시
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = [

@@ -38,9 +38,12 @@ dbTier_securityGroup_name  = "hellowaws_db-sg"
 redis_securityGroup_name = "hellowaws_redis-sg"
 bastion_securityGroup_name = "hellowaws_bastion-sg"
 
+#
+AMI-ID               = "ami-0f682fb0d11c2ae31"
+
 # RDS
 db_securityGroup_name           = "hellowaws-rds-sg"
-db_name           = "mydb"
+db_name           = "sampletable"
 rds_name          = "hellowaws_RDS"
 
 # ALB
@@ -50,15 +53,14 @@ web_alb_name = "Web-elb"
 app_alb_name = "App-elb"
 
 # IAM
-iam_role              = "role-for-ec2-SSM,S3"
-IAM-POLICY            = "policy-for-ec2-SSM,S3"
-instance_profile_name = "instance-profile-for-ec2-SSM,S3"
+iam_role              = "role-for-ec2-SSM,S3,CICD"
+IAM-POLICY            = "policy-for-ec2-SSM,S3CICD"
+instance_profile_name = "instance-profile-for-ec2-SSM,S3CICD"
 
 # AUTOSCALING
-AMI-NAME             = "New-AMI"
 web_asg_name         = "hellowaws_WEB-ASG"
 app_asg_name         = "hellowaws_APP-ASG"
-AMI-ID               = "ami-0c754ed8d0a6969fe"
+
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM
 domain_name     = "hellowaws.shop"

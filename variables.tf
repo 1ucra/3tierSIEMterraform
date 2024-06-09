@@ -65,10 +65,9 @@ variable "instance_profile_name" {}
 #variable "instance_profile_name" {}
 
 # AUTOSCALING
-variable "AMI-NAME" {}
+variable "AMI-ID" {}
 variable "web_asg_name" {}
 variable "app_asg_name" {}
-variable "AMI-ID" {}
 
 # CLOUDFFRONT / ROUTE53 / ACM
 variable "domain_name" {}

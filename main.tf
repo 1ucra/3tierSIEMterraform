@@ -100,7 +100,7 @@ module "db-cache" {
 
 module "iam" {
   source = "./modules/3tier/aws-iam"
-
+  
   iam_role              = var.iam_role
   iam-policy            = var.IAM-POLICY
   instance_profile_name = var.instance_profile_name
@@ -109,7 +109,8 @@ module "iam" {
 
 module "ami" {
   source ="./modules/3tier/aws-ami"
-
+  
+  ami-id = var.AMI-ID
   instance_profile_name = var.instance_profile_name
   vpc_name    = var.vpc_name
   db_subnet1 = var.db_subnet1
@@ -122,8 +123,7 @@ module "ami" {
 module "autoscaling" {
   source = "./modules/3tier/aws-autoscaling"
   
-  ami-id = module.ami.my-ami-id
-  ami_name              = var.AMI-NAME
+  my-ami-id = module.ami.my-ami-id
   instance_profile_name = var.instance_profile_name
   webTier_securityGroup_name           = var.webTier_securityGroup_name
   appTier_securityGroup_name           = var.appTier_securityGroup_name

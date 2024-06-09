@@ -1,6 +1,6 @@
-# 기존 보안 그룹 데이터 소스
+
 resource "aws_instance" "bastion" {
-  ami           = "ami-0647086318eb3b918" # 아마존 2 ami
+  ami           = var.ami-id # 아마존 2 ami
   instance_type = "t3.micro"
   subnet_id     = data.aws_subnet.subnet.id
   iam_instance_profile   = var.instance_profile_name
@@ -13,13 +13,9 @@ resource "aws_instance" "bastion" {
   }
 }
 
-locals {
-  ami_name = "amz-nginx-${formatdate("YYYYMMDD-HHmm", timestamp())}"
-}
-
 # AMI 생성
 resource "aws_ami_from_instance" "my_ami" {
-  name               = local.ami_name
+  name               = "amz-nginx-${formatdate("YYYYMMDD-HHmm", timestamp())}"
   source_instance_id = aws_instance.bastion.id
   description        = "A instance created for a short time to create an AMI"
 
@@ -30,10 +26,12 @@ resource "aws_ami_from_instance" "my_ami" {
   depends_on = [ aws_instance.bastion ]
 }
 
-resource "null_resource" "terminate_instance" {
-  depends_on = [aws_ami_from_instance.my_ami]
+# resource "null_resource" "stop_instance" {
 
-  provisioner "local-exec" {
-    command = "aws ec2 stop-instances --instance-ids ${aws_instance.bastion.id}"
-  }
-}
+#   provisioner "local-exec" {
+#     when = create
+#     command = "aws ec2 stop-instances --instance-ids '${aws_instance.bastion.id}'"
+#   }
+
+#   depends_on = [ aws_instance.bastion, aws_ami_from_instance.my_ami]
+# }

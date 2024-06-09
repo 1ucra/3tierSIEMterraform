@@ -32,7 +32,7 @@ resource "aws_codedeploy_app" "hellowaws_app_deploy" {
 
 resource "aws_codedeploy_deployment_group" "app_deploy_group" {
   app_name              = aws_codedeploy_app.hellowaws_app_deploy.name
-  deployment_group_name = "app_deploy_group"
+  deployment_group_name = "first_app_deploy_group"
   service_role_arn      = aws_iam_role.hellowaws_codedeploy_role.arn
 
   deployment_style {
@@ -45,7 +45,7 @@ resource "aws_codedeploy_deployment_group" "app_deploy_group" {
   blue_green_deployment_config {
     terminate_blue_instances_on_deployment_success {
       action = "TERMINATE"
-      termination_wait_time_in_minutes = 1
+      termination_wait_time_in_minutes = 0
     }
 
     deployment_ready_option {

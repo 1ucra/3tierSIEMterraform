@@ -9,11 +9,14 @@ resource "aws_s3_bucket" "image-bucket" {
 
 resource "aws_s3_bucket" "artifact-bucket" {
   bucket = var.s3_artifact_bucket_name
-
+  force_destroy = true
+  
   tags = {
     Name        = "My bucket2"
     Environment = "Dev"
   }
+
+
 }
 
 resource "aws_s3_bucket_public_access_block" "codepipeline_bucket_pab" {

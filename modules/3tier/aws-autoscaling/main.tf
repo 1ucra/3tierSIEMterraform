@@ -2,12 +2,15 @@
 # Creating Launch template for App tier AutoScaling Group!
 resource "aws_launch_template" "App-LC" {
   name = "App-template"
-  image_id = var.ami-id
+  image_id = var.my-ami-id
   instance_type = "t3.micro"
 
   iam_instance_profile {
     name = var.instance_profile_name
   }
+
+  user_data = base64encode(templatefile("${path.module}/app_userdata.sh", {
+  }))
 
   vpc_security_group_ids = [var.app-securityGroup-id]
   
@@ -42,6 +45,12 @@ resource "aws_autoscaling_group" "App-ASG" {
       "GroupTotalInstances"
     ]
   
+  warm_pool {
+    min_size                 = 1
+    max_group_prepared_capacity = 3
+    pool_state               = "Stopped"
+  }
+
   tag {
     key                 = "Name"
     value               = "App-ASG"
@@ -55,7 +64,7 @@ resource "aws_autoscaling_group" "App-ASG" {
 # Creating Launch template for Web tier AutoScaling Group!
 resource "aws_launch_template" "Web-LC" {
   name = "Web-template"
-  image_id = var.ami-id
+  image_id = var.my-ami-id
   instance_type = "t3.micro"
 
   iam_instance_profile {
@@ -112,6 +121,12 @@ resource "aws_autoscaling_group" "Web-ASG" {
     key                 = "Name"
     value               = "Web-ASG"
     propagate_at_launch = true
+  }
+
+  warm_pool {
+    min_size                 = 1
+    max_group_prepared_capacity = 3
+    pool_state               = "Stopped"
   }
 
   

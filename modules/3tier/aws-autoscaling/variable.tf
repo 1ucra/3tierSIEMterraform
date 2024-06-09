@@ -1,5 +1,4 @@
-variable "ami-id" {}
-variable "ami_name" {}
+variable "my-ami-id" {}
 variable "webTier_securityGroup_name" {}
 variable "appTier_securityGroup_name" {}
 variable "private_subnet_name1" {}

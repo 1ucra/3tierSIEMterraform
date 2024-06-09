@@ -81,7 +81,7 @@ resource "aws_codepipeline" "hellowaws_cicd" {
 
       configuration = {
         ApplicationName = "hellowaws_app_deploy"
-        DeploymentGroupName = "app_deploy_group"
+        DeploymentGroupName = "first_app_deploy_group"
       }
     }
   }

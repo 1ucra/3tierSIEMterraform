@@ -9,7 +9,7 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-2"
+  region = "ca-central-1"
 }
 
 # Needed because CloudFront can only use ACM certs generated in us-east-1

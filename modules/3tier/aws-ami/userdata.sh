@@ -10,8 +10,11 @@ systemctl start nginx
 systemctl enable nginx
 yum install -y ruby
 yum install -y wget
+yum install amazon-cloudwatch-agent -y
+systemctl start amazon-cloudwatch-agent
+systemctl enable amazon-cloudwatch-agent
 
-wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
+wget https://aws-codedeploy-ca-central-1.s3.ca-central-1.amazonaws.com/latest/install
 chmod +x ./install
 ./install auto
 systemctl start codedeploy-agent
