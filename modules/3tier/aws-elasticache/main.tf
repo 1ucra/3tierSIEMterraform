@@ -18,6 +18,12 @@ resource "aws_elasticache_serverless_cache" "redis_cluster" {
   security_group_ids       = [var.redis_securityGroup_id]
   subnet_ids               = [data.aws_subnet.db_subnet1.id, data.aws_subnet.db_subnet2.id]
   
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_elasticache_serverless_cache_redis_cluster"
+    owner = "ktd-admin"
+  }
+
 }
 
 
@@ -27,4 +33,10 @@ resource "aws_ssm_parameter" "redis-endpoint" {
   type  = "String"
   value = aws_elasticache_serverless_cache.redis_cluster.endpoint[0].address
   depends_on = [ aws_elasticache_serverless_cache.redis_cluster ]
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_ssm_parameter_redis-endpoint"
+    owner = "ktd-admin"
+  }
 }

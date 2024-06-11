@@ -9,29 +9,33 @@ resource "aws_instance" "bastion" {
   user_data = file("${path.module}/userdata.sh")
 
   tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
     Name = "bastion"
+    owner = "ktd-admin"
   }
 }
 
 # AMI 생성
-resource "aws_ami_from_instance" "my_ami" {
+resource "aws_ami_from_instance" "ktd_ami" {
   name               = "amz-nginx-${formatdate("YYYYMMDD-HHmm", timestamp())}"
   source_instance_id = aws_instance.bastion.id
   description        = "A instance created for a short time to create an AMI"
 
   tags = {
-    Name = "my-ami"
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "ktd-ami"
+    owner = "ktd-admin"
   }
   
   depends_on = [ aws_instance.bastion ]
 }
 
-# resource "null_resource" "stop_instance" {
+resource "null_resource" "stop_instance" {
 
-#   provisioner "local-exec" {
-#     when = create
-#     command = "aws ec2 stop-instances --instance-ids '${aws_instance.bastion.id}'"
-#   }
+  provisioner "local-exec" {
+    when = create
+    command = "aws ec2 stop-instances --instance-ids '${aws_instance.bastion.id}'"
+  }
 
-#   depends_on = [ aws_instance.bastion, aws_ami_from_instance.my_ami]
-# }
+  depends_on = [ aws_instance.bastion, aws_ami_from_instance.ktd_ami]
+}

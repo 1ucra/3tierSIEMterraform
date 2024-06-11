@@ -4,6 +4,12 @@ resource "aws_ssm_parameter" "db_id" {
   value = var.db_user_id
   overwrite   = true
   description = "input db admin ID"
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_ssm_parameter_db_id"
+    owner = "ktd-admin"
+  }
 }
 
 resource "aws_ssm_parameter" "db_pwd" {
@@ -12,19 +18,27 @@ resource "aws_ssm_parameter" "db_pwd" {
   value = var.db_user_pwd
   overwrite   = true
   description = "input db admin PWD"
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_ssm_parameter_db_pwd"
+    owner = "ktd-admin"
+  }
 }
 
 # 8 Creating DB subnet group for RDS Instances
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = var.db_securityGroup_name
   subnet_ids = [data.aws_subnet.db_subnet1.id, data.aws_subnet.db_subnet2.id]
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_db_subnet_group_db_subnet_group"
+    owner = "ktd-admin"
+  }
 }
 
 # Creating Aurora RDS Cluster, username and password used only for practice, otherwise follow DevOps best practices to keep it secret
-
-locals {
-  snapshot_time = "aurora-cluster-final-${formatdate("YYYYMMDD-HHmm", timestamp())}"
-}
 
 resource "aws_rds_cluster" "aurora-cluster" {
   cluster_identifier      = "aurora-cluster"
@@ -38,7 +52,7 @@ resource "aws_rds_cluster" "aurora-cluster" {
   backup_retention_period = 3
   preferred_backup_window = "19:00-21:00" #4시~6시
   skip_final_snapshot     = true
-  final_snapshot_identifier = local.snapshot_time
+  final_snapshot_identifier = "aurora-cluster-final-${formatdate("YYYYMMDD-HHmm", timestamp())}"
   database_name           = var.db_name
   port                    = 3306
   db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
@@ -47,8 +61,11 @@ resource "aws_rds_cluster" "aurora-cluster" {
     max_capacity = 2.0
     min_capacity = 1.0
   }
+  
   tags = {
-    Name = var.rds_name
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_rds_cluster/aurora-cluster"
+    owner = "ktd-admin"
   }
 }
 
@@ -59,6 +76,12 @@ resource "aws_rds_cluster_instance" "primary-instance" {
   instance_class     = "db.serverless"
   engine             = aws_rds_cluster.aurora-cluster.engine
   engine_version     = aws_rds_cluster.aurora-cluster.engine_version
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_rds_cluster_instance/primary-instance"
+    owner = "ktd-admin"
+  }
 }
 
 # Creating RDS Read Replica Instance
@@ -78,4 +101,10 @@ resource "aws_ssm_parameter" "db-cluster-endpoint" {
   value = aws_rds_cluster.aurora-cluster.endpoint
   overwrite   = true
   description = "db-cluster-endpoint"
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_ssm_parameter/db-cluster-endpoint"
+    owner = "ktd-admin"
+  }
 }

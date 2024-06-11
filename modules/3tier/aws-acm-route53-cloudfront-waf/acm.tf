@@ -9,7 +9,7 @@ resource "aws_acm_certificate" "cert" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_acm_certificate.cert"
+    Name = "aws_acm_certificate/cert"
     owner = "ktd-admin"
   }
 

@@ -9,7 +9,9 @@ resource "aws_lb" "App-elb" {
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
-    Name = var.app_alb_name
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_lb/App-elb"
+    owner = "ktd-admin"
   }
 }
 
@@ -34,7 +36,9 @@ resource "aws_lb_target_group" "app-tg" {
   vpc_id   = data.aws_vpc.vpc.id
 
   tags = {
-    Name = var.app_tg_name
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_lb_target_group/app-tg"
+    owner = "ktd-admin"
   }
 }
 
@@ -52,7 +56,7 @@ resource "aws_lb_listener" "app-alb-listener" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_lb_listener.app-alb-listener"
+    Name = "aws_lb_listener/app-alb-listener"
     owner = "ktd-admin"
   }
 }
@@ -68,7 +72,7 @@ resource "aws_lb" "Web-elb" {
   enable_deletion_protection = false
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = var.web_alb_name
+    Name = "aws_lb/Web-elb"
     owner = "ktd-admin"
   }
 }
@@ -143,7 +147,9 @@ resource "aws_ssm_parameter" "app-alb-dns" {
   value = aws_lb.App-elb.dns_name
 
   tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
     Name = "AppALBDNS"
+    owner = "ktd-admin"
   }
 }
 

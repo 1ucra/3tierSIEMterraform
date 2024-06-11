@@ -17,7 +17,7 @@ resource "aws_wafv2_web_acl" "web_acl" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = var.web_acl_name
+    Name = "aws_wafv2_web_acl/web_acl"
     owner = "ktd-admin"
   }
 }

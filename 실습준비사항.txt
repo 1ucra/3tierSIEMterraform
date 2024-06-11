@@ -23,3 +23,5 @@ module.security-group.aws_security_group.app-tier-sg: Still destroying... [id=sg
 구현은 백앤드 몫 같아서 안함 
 
 destroy할 떄 s3 비워둬야함, codedeploy로 생성된 autoscalingroup 수동삭제해야함
+
+리소스 유형은 _ 로 리소스이름은 -로 통일하기

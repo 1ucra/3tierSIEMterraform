@@ -29,8 +29,8 @@
 # }
 
 
-# resource "aws_autoscaling_policy" "web-custom-cpu-policy-scaledown" {
-#   name                   = "custom-cpu-policy-scaledown"
+# resource "aws_autoscaling_policy" "web-custom-cpu-policy-scaleIn" {
+#   name                   = "custom-cpu-policy-scaleIn"
 #   autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
 #   adjustment_type        = "ChangeInCapacity"
 #   scaling_adjustment     = -1
@@ -38,8 +38,8 @@
 #   policy_type            = "SimpleScaling"
 # }
 
-# resource "aws_cloudwatch_metric_alarm" "web-custom-cpu-alarm-scaledown" {
-#   alarm_name          = "custom-webserver-cpu-alarm-scaledown"
+# resource "aws_cloudwatch_metric_alarm" "web-custom-cpu-alarm-scaleIn" {
+#   alarm_name          = "custom-webserver-cpu-alarm-scaleIn"
 #   alarm_description   = "alarm when cpu usage decreases"
 #   comparison_operator = "LessThanOrEqualToThreshold"
 #   evaluation_periods  = 2
@@ -54,5 +54,5 @@
 #   }
 #   actions_enabled = true
 
-#   alarm_actions = [aws_autoscaling_policy.web-custom-cpu-policy-scaledown.arn]
+#   alarm_actions = [aws_autoscaling_policy.web-custom-cpu-policy-scaleIn.arn]
 # }

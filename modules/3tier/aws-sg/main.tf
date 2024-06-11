@@ -18,7 +18,10 @@ resource "aws_security_group" "bastion-sg" {
   }
 
   tags = {
-    Name = var.bastion_securityGroup_name
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_security_group_bastion-sg"
+    owner = "ktd-admin"
+    
   }
 }
 

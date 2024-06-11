@@ -74,7 +74,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = var.cloudfront_name
+    Name = "aws_cloudfront_distribution/cloudfront-web-elb-distribution"
     owner = "ktd-admin"
   }
 

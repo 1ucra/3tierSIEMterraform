@@ -156,6 +156,15 @@ module "acm-route53-cloudfront-waf" {
   depends_on = [module.autoscaling]
 }
 
+module "resourceGroup" {
+  source = "./modules/3tier/aws-resourceGroup"
+  
+  web_asg_name          = var.web_asg_name
+  app_asg_name          = var.app_asg_name
+
+  depends_on = [ module.autoscaling ]
+}
+
 module "repository"{
   source = "./modules/cicd/aws-codecommit"
 
