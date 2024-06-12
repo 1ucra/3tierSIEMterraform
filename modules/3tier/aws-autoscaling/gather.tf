@@ -1,14 +1,14 @@
 
-data "aws_subnet" "private_subnet1" {
+data "aws_subnet" "private-subnet1" {
   filter {
     name   = "tag:Name"
-    values = [var.private_subnet_name1]
+    values = ["aws_subnet/private-subnet1"]
   }
 }
 
-data "aws_subnet" "private_subnet2" {
+data "aws_subnet" "private-subnet2" {
   filter {
     name   = "tag:Name"
-    values = [var.private_subnet_name2]
+    values = ["aws_subnet/private-subnet2"]
   }
 }

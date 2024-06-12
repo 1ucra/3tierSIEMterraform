@@ -30,8 +30,8 @@ db_routeTable_name1      = "hellowaws_DB-Route-table1"
 db_routeTable_name2      = "hellowaws_DB-Route-table2"
 
 # SECURITY GROUP
-web_alb_securityGroup_name = "hellowaws_web-alb-sg"
-app_alb_securityGroup_name = "hellowaws_app-alb-sg"
+web_elb_securityGroup_name = "hellowaws_web-elb-sg"
+app_elb_securityGroup_name = "hellowaws_app-elb-sg"
 webTier_securityGroup_name = "hellowaws_web-sg"
 appTier_securityGroup_name = "hellowaws_app-sg"
 dbTier_securityGroup_name  = "hellowaws_db-sg"
@@ -46,11 +46,11 @@ db_securityGroup_name           = "hellowaws-rds-sg"
 db_name           = "sampletable"
 rds_name          = "hellowaws_RDS"
 
-# ALB
+# elb
 web_tg_name  = "Web-TG"
 app_tg_name  = "App-TG"
-web_alb_name = "Web-elb"
-app_alb_name = "App-elb"
+web_elb_name = "Web-elb"
+app_elb_name = "App-elb"
 
 # IAM
 iam_role              = "role-for-ec2-SSM,S3,CICD"

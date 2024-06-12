@@ -1,7 +1,7 @@
 resource "aws_security_group" "bastion-sg" {
-  name        = "bastion-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  name        = "bastion-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
   description = "Allow SSH, HTTP and HTTPS"
-  vpc_id      = data.aws_vpc.vpc.id # 실제 VPC ID로 변경
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id # 실제 VPC ID로 변경
   
   ingress {
     from_port   = 443
@@ -19,16 +19,16 @@ resource "aws_security_group" "bastion-sg" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_security_group_bastion-sg"
+    Name = "aws_security_group/bastion-sg"
     owner = "ktd-admin"
     
   }
 }
 
 resource "aws_security_group" "redis-sg" {
-  name        = "redis-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  name        = "redis-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
   description = "Security group for Redis Serverless"
-  vpc_id      = data.aws_vpc.vpc.id  # 실제 VPC ID로 변경
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id  # 실제 VPC ID로 변경
 
   ingress {
     from_port   = 6379
@@ -45,13 +45,15 @@ resource "aws_security_group" "redis-sg" {
   }
 
   tags = {
-    Name = var.redis_securityGroup_name
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_security_group/redis-sg"
+    owner = "ktd-admin"
   }
 }
 
-resource "aws_security_group" "web-alb-sg" {
-  name = "web-alb-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  vpc_id      = data.aws_vpc.vpc.id
+resource "aws_security_group" "web-elb-sg" {
+  name = "web-elb-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id
   description = "Allow HTTP and HTTPS for World"
 
   ingress {
@@ -76,30 +78,32 @@ resource "aws_security_group" "web-alb-sg" {
   }
 
   tags = {
-    Name = var.web_alb_securityGroup_name
+    createDate = "${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    Name = "aws_security_group/web-elb-sg"
+    owner = "ktd-admin"
   }
 
-  depends_on = [ data.aws_vpc.vpc ]
+  depends_on = [ data.aws_vpc.hellowaws-vpc ]
 }
 
 
 resource "aws_security_group" "web-tier-sg" {
-  name = "web-tier-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  vpc_id      = data.aws_vpc.vpc.id
-  description = "Allow HTTP and HTTPS for WEP ALB Only"
+  name = "web-tier-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id
+  description = "Allow HTTP and HTTPS for WEP elb Only"
 
   ingress {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.web-alb-sg.id]
+    security_groups = [aws_security_group.web-elb-sg.id]
   }
 
   ingress {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    security_groups = [aws_security_group.web-alb-sg.id]
+    security_groups = [aws_security_group.web-elb-sg.id]
   }
 
   egress {
@@ -110,15 +114,17 @@ resource "aws_security_group" "web-tier-sg" {
   }
 
   tags = {
-    Name = "${var.webTier_securityGroup_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    createDate = "${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    Name = "aws_security_group/web-tier-sg"
+    owner = "ktd-admin"
   }
 
-  depends_on = [ aws_security_group.web-alb-sg ]
+  depends_on = [ aws_security_group.web-elb-sg ]
 }
 
-resource "aws_security_group" "app-alb-sg" {
-  name = "app-alb-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  vpc_id      = data.aws_vpc.vpc.id
+resource "aws_security_group" "app-elb-sg" {
+  name = "app-elb-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id
   description = "Allow HTTP and HTTPS for World"
 
   ingress {
@@ -143,29 +149,31 @@ resource "aws_security_group" "app-alb-sg" {
   }
 
   tags = {
-    Name = var.app_alb_securityGroup_name
+    createDate = "${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    Name = "aws_security_group/app-elb-sg"
+    owner = "ktd-admin"
   }
 
   depends_on = [ aws_security_group.web-tier-sg ]
 }
 
 resource "aws_security_group" "app-tier-sg" {
-  name = "app-tier-sg${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  vpc_id      = data.aws_vpc.vpc.id
-  description = "Allow HTTP and HTTPS from APP ALB Only"
+  name = "app-tier-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id
+  description = "Allow HTTP and HTTPS from APP elb Only"
 
   ingress {
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
-    security_groups = [aws_security_group.app-alb-sg.id]
+    security_groups = [aws_security_group.app-elb-sg.id]
   }
 
   ingress {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    security_groups = [aws_security_group.app-alb-sg.id]
+    security_groups = [aws_security_group.app-elb-sg.id]
   }
 
   egress {
@@ -177,16 +185,19 @@ resource "aws_security_group" "app-tier-sg" {
   }
 
   tags = {
-    Name = "${var.appTier_securityGroup_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    createDate = "${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    Name = "aws_security_group/app-tier-sg"
+    owner = "ktd-admin"
   }
 
-  depends_on = [ aws_security_group.app-alb-sg ]
+  depends_on = [ aws_security_group.app-elb-sg ]
 }
 
 
-# Creating Security Group for RDS Instances Tier With  only access to App-Tier ALB
+# Creating Security Group for RDS Instances Tier With  only access to App-Tier elb
 resource "aws_security_group" "database-sg" {
-  vpc_id      = data.aws_vpc.vpc.id
+  name = "database-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  vpc_id      = data.aws_vpc.hellowaws-vpc.id
   description = "Protocol Type MySQL/Aurora"
 
   ingress {
@@ -213,7 +224,9 @@ resource "aws_security_group" "database-sg" {
   }
 
   tags = {
-    Name = "${var.dbTier_securityGroup_name}"
+    createDate = "${formatdate("YYYYMMDD-HHmm", timestamp())}"
+    Name = "aws_security_group/database-sg"
+    owner = "ktd-admin"
   }
 
   depends_on = [ aws_security_group.web-tier-sg ]

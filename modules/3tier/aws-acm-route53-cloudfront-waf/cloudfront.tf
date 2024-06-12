@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   origin {
-    domain_name = var.alb_dns_name
-    origin_id   = "my-web-alb"
+    domain_name = var.elb_dns_name
+    origin_id   = var.web_elb.id
 
     custom_origin_config {
       http_port              = 80
@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "my-web-alb"
+    target_origin_id = "my-web-elb"
 
     min_ttl         = 0
     default_ttl     = 300
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
   ordered_cache_behavior {
     path_pattern     = "/attendance"
-    target_origin_id = "my-web-alb"
+    target_origin_id = "my-web-elb"
 
     allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods  = ["GET", "HEAD"]
@@ -70,7 +70,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
-  web_acl_id = aws_wafv2_web_acl.web_acl.arn
+  web_acl_id = aws_wafv2_web_acl.waf.arn
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"

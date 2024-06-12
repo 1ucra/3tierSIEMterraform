@@ -1,6 +1,6 @@
-data "aws_vpc" "vpc" {
+data "aws_vpc" "hellowaws-vpc" {
   filter {
     name   = "tag:Name"
-    values = [var.vpc_name]
+    values = ["aws_vpc/hellowaws-vpc"]
   }
 }

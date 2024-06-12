@@ -1,5 +1,5 @@
 # We have created one rule where any user if try to access our Application through TOR browser or any VPN, then the user will not be able to access the Application
-resource "aws_wafv2_web_acl" "web_acl" {
+resource "aws_wafv2_web_acl" "waf" {
   name  = var.web_acl_name
   scope = "CLOUDFRONT"
   description = "There are no rules in the initial state"
@@ -17,7 +17,7 @@ resource "aws_wafv2_web_acl" "web_acl" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_wafv2_web_acl/web_acl"
+    Name = "aws_wafv2_web_acl/waf"
     owner = "ktd-admin"
   }
 }

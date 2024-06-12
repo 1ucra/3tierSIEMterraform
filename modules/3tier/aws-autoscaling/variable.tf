@@ -10,4 +10,4 @@ variable "web-securityGroup-id" {}
 variable "app-securityGroup-id" {}
 variable "web-targetGroup-arn" {}
 variable "app-targetGroup-arn" {}
-variable "app_alb_dns_name" {}
+variable "app_elb_dns_name" {}

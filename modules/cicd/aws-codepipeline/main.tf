@@ -1,5 +1,5 @@
 # IAM 역할 생성 및 Admin Access 정책 부여
-resource "aws_iam_role" "hellowaws_codepipeline_role" {
+resource "aws_iam_role" "hellowaws-codepipeline-role" {
   name = "hellowaws_codepipeline_role"
 
   assume_role_policy = jsonencode({
@@ -16,15 +16,15 @@ resource "aws_iam_role" "hellowaws_codepipeline_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
-  role       = aws_iam_role.hellowaws_codepipeline_role.name
+resource "aws_iam_role_policy_attachment" "codepipeline-policy-attachment" {
+  role       = aws_iam_role.hellowaws-codepipeline-role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 # CodePipeline 생성
-resource "aws_codepipeline" "hellowaws_cicd" {
+resource "aws_codepipeline" "hellowaw-cicd" {
   name     = "hellowaws-cicd"
-  role_arn = aws_iam_role.hellowaws_codepipeline_role.arn
+  role_arn = aws_iam_role.hellowaws-codepipeline-role.arn
 
   artifact_store {
     type     = "S3"
@@ -88,7 +88,7 @@ resource "aws_codepipeline" "hellowaws_cicd" {
 }
 
 # EventBridge가 사용할 IAM 역할 생성
-resource "aws_iam_role" "eventbridge_role" {
+resource "aws_iam_role" "eventbridge-role" {
   name = "hellowaws_eventbridge_codepipeline_role"
 
   assume_role_policy = jsonencode({
@@ -105,8 +105,8 @@ resource "aws_iam_role" "eventbridge_role" {
   })
 }
 
-resource "aws_iam_role_policy" "eventbridge_role_policy" {
-  role = aws_iam_role.eventbridge_role.id
+resource "aws_iam_role_policy" "eventbridge-role-policy" {
+  role = aws_iam_role.eventbridge-role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -123,7 +123,7 @@ resource "aws_iam_role_policy" "eventbridge_role_policy" {
 }
 
 # CloudWatch Events 규칙을 생성하여 CodePipeline 트리거
-resource "aws_cloudwatch_event_rule" "codepipeline_trigger_rule" {
+resource "aws_cloudwatch_event_rule" "codepipeline-trigger-rule" {
   name        = "CodePipelineTriggerRule"
   description = "Trigger CodePipeline on CodeCommit push"
   event_pattern = jsonencode({
@@ -150,9 +150,9 @@ resource "aws_cloudwatch_event_rule" "codepipeline_trigger_rule" {
   })
 }
 
-resource "aws_cloudwatch_event_target" "codepipeline_trigger_target" {
-  rule = aws_cloudwatch_event_rule.codepipeline_trigger_rule.name
+resource "aws_cloudwatch_event_target" "codepipeline-trigger-target" {
+  rule = aws_cloudwatch_event_rule.codepipeline-trigger-rule.name
   target_id = "CodePipeline"
-  arn = aws_codepipeline.hellowaws_cicd.arn
-  role_arn  = aws_iam_role.eventbridge_role.arn
+  arn = aws_codepipeline.hellowaw-cicd.arn
+  role_arn  = aws_iam_role.eventbridge-role.arn
 }

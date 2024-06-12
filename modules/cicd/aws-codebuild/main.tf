@@ -1,4 +1,4 @@
-resource "aws_iam_role" "codebuild_role" {
+resource "aws_iam_role" "codebuild-role" {
   name = "hellowaws_codebuild_role_name"
 
   assume_role_policy = jsonencode({
@@ -15,7 +15,7 @@ resource "aws_iam_role" "codebuild_role" {
   })
 }
 
-resource "aws_security_group" "allow_all" {
+resource "aws_security_group" "allow-all" {
   name        = "allow_all_traffic"
   description = "Security group with no filtering, allows all inbound and outbound traffic"
   vpc_id      = var.vpc-id
@@ -35,12 +35,12 @@ resource "aws_security_group" "allow_all" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "codebuild_role_policy" {
-  role       = aws_iam_role.codebuild_role.name
+resource "aws_iam_role_policy_attachment" "codebuild-role-policy" {
+  role       = aws_iam_role.codebuild-role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
-resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
+resource "aws_codebuild_project" "hellowaws-3teir-buildProject" {
   name           = "hellowaws_3teir_buildProject"
   description    = "hellowaws_3teir_buildProject"
   build_timeout  = 40
@@ -76,7 +76,7 @@ resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
 
   }
 
-  service_role = aws_iam_role.codebuild_role.arn
+  service_role = aws_iam_role.codebuild-role.arn
 
   artifacts {
     type  = "S3"
@@ -95,6 +95,6 @@ resource "aws_codebuild_project" "hellowaws_3teir_buildProject" {
   vpc_config {
     vpc_id          = var.vpc-id
     subnets         = [var.subnet1-id,var.subnet2-id]
-    security_group_ids = [aws_security_group.allow_all.id]
+    security_group_ids = [aws_security_group.allow-all.id]
   }
 }

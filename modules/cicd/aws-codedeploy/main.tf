@@ -1,4 +1,4 @@
-resource "aws_iam_role" "hellowaws_codedeploy_role" {
+resource "aws_iam_role" "hellowaws-codedeploy-role" {
   name = "hellowaws_codedeploy_role"
 
   assume_role_policy = jsonencode({
@@ -15,25 +15,25 @@ resource "aws_iam_role" "hellowaws_codedeploy_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "codedeploy_role_policy" {
-  role       = aws_iam_role.hellowaws_codedeploy_role.name
+resource "aws_iam_role_policy_attachment" "codedeploy-role-policy" {
+  role       = aws_iam_role.hellowaws-codedeploy-role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
 
-resource "aws_iam_role_policy_attachment" "admin_access_policy" {
-  role       = aws_iam_role.hellowaws_codedeploy_role.name
+resource "aws_iam_role_policy_attachment" "admin-access-policy" {
+  role       = aws_iam_role.hellowaws-codedeploy-role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
-resource "aws_codedeploy_app" "hellowaws_app_deploy" {
+resource "aws_codedeploy_app" "hellowaws-app-deploy" {
   name             = "hellowaws_app_deploy"
   compute_platform = "Server"
 }
 
-resource "aws_codedeploy_deployment_group" "app_deploy_group" {
-  app_name              = aws_codedeploy_app.hellowaws_app_deploy.name
+resource "aws_codedeploy_deployment_group" "app-deploy-group" {
+  app_name              = aws_codedeploy_app.hellowaws-app-deploy.name
   deployment_group_name = "first_app_deploy_group"
-  service_role_arn      = aws_iam_role.hellowaws_codedeploy_role.arn
+  service_role_arn      = aws_iam_role.hellowaws-codedeploy-role.arn
 
   deployment_style {
     deployment_option = "WITH_TRAFFIC_CONTROL"

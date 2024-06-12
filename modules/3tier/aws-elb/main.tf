@@ -1,11 +1,11 @@
 
-# Creating ALB for App Tier
+# Creating elb for App Tier
 resource "aws_lb" "App-elb" {
-  name = var.app_alb_name
+  name = var.app_elb_name
   internal           = true
   load_balancer_type = "application"
-  subnets            = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
-  security_groups    = [data.aws_security_group.app-alb-sg.id]
+  subnets            = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
+  security_groups    = [data.aws_security_group.app-elb-sg.id]
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
@@ -33,7 +33,7 @@ resource "aws_lb_target_group" "app-tg" {
   target_type = "instance"
   port     = 8080
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.vpc.id
+  vpc_id   = data.aws_vpc.hellowaws-vpc.id
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
@@ -43,8 +43,8 @@ resource "aws_lb_target_group" "app-tg" {
 }
 
 
-# Creating ALB listener with port 80 and attaching it to Web-Tier Target Group
-resource "aws_lb_listener" "app-alb-listener" {
+# Creating elb listener with port 80 and attaching it to Web-Tier Target Group
+resource "aws_lb_listener" "app-elb-listener" {
   load_balancer_arn = aws_lb.App-elb.arn
   port              = 8080
   protocol          = "HTTP"
@@ -56,18 +56,18 @@ resource "aws_lb_listener" "app-alb-listener" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_lb_listener/app-alb-listener"
+    Name = "aws_lb_listener/app-elb-listener"
     owner = "ktd-admin"
   }
 }
 
-# Creating ALB for Web Tier
+# Creating elb for Web Tier
 resource "aws_lb" "Web-elb" {
-  name = var.web_alb_name
+  name = var.web_elb_name
   internal           = false
   load_balancer_type = "application"
-  subnets            = [data.aws_subnet.public_subnet1.id, data.aws_subnet.public_subnet2.id]
-  security_groups    = [data.aws_security_group.web-alb-sg.id]
+  subnets            = [data.aws_subnet.public-subnet1.id, data.aws_subnet.public-subnet2.id]
+  security_groups    = [data.aws_security_group.web-elb-sg.id]
   ip_address_type    = "ipv4"
   enable_deletion_protection = false
   tags = {
@@ -92,18 +92,18 @@ resource "aws_lb_target_group" "web-tg" {
   target_type = "instance"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.vpc.id
+  vpc_id   = data.aws_vpc.hellowaws-vpc.id
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = var.web_tg_name
+    Name = "aws_lb_target_group/web-tg"
     owner = "ktd-admin"
   }
 }
 
 
-# Creating ALB listener with port 80 and attaching it to Web-Tier Target Group
-resource "aws_lb_listener" "web-alb-listener" {
+# Creating elb listener with port 80 and attaching it to Web-Tier Target Group
+resource "aws_lb_listener" "web-elb-listener" {
   load_balancer_arn = aws_lb.Web-elb.arn
   port              = 80
   protocol          = "HTTP"
@@ -119,13 +119,13 @@ resource "aws_lb_listener" "web-alb-listener" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_lb_listener.web-alb-listener"
+    Name = "aws_lb_listener/web-elb-listener"
     owner = "ktd-admin"
   }
 }
 
 resource "aws_lb_listener_rule" "web-listener-rule" {
-  listener_arn = aws_lb_listener.web-alb-listener.arn
+  listener_arn = aws_lb_listener.web-elb-listener.arn
   priority     = 1
 
   action {
@@ -141,14 +141,14 @@ resource "aws_lb_listener_rule" "web-listener-rule" {
   }
 }
 
-resource "aws_ssm_parameter" "app-alb-dns" {
-  name  = "/config/system/alb_dns_name"
+resource "aws_ssm_parameter" "app-elb-dns" {
+  name  = "/config/system/elb_dns_name"
   type  = "String"
   value = aws_lb.App-elb.dns_name
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "AppALBDNS"
+    Name = "aws_ssm_parameter/app-elb-dns"
     owner = "ktd-admin"
   }
 }

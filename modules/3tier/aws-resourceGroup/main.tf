@@ -10,7 +10,7 @@ resource "aws_resourcegroups_group" "app-asg-resourceGroup" {
       TagFilters = [
         {
           Key = "Name"
-          Values = [var.web_asg_name]
+          Values = ["aws_autoscaling_group/App-ASG"]
         }
       ]
     })
@@ -35,7 +35,7 @@ resource "aws_resourcegroups_group" "web-asg-resourceGroup" {
       TagFilters = [
         {
           Key = "Name"
-          Values = [var.web_asg_name]
+          Values = ["aws_autoscaling_group/Web-ASG"]
         }
       ]
     })

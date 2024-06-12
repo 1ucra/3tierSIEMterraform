@@ -3,7 +3,8 @@ resource "aws_codecommit_repository" "sourcecode-repository" {
   description     = "My example CodeCommit repository"
 
   tags = {
-    Name        = "My CodeCommit Repository"
-    Environment = "Dev"
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aws_codecommit_repository/sourcecode-repository"
+    owner = "ktd-admin"
   }
 }

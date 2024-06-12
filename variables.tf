@@ -30,8 +30,8 @@ variable "db_routeTable_name1" {}
 variable "db_routeTable_name2" {}
 
 # SECURITY GROUP
-variable "web_alb_securityGroup_name" {}
-variable "app_alb_securityGroup_name" {}
+variable "web_elb_securityGroup_name" {}
+variable "app_elb_securityGroup_name" {}
 variable "webTier_securityGroup_name" {}
 variable "appTier_securityGroup_name" {}
 variable "dbTier_securityGroup_name" {}
@@ -48,11 +48,11 @@ variable "db_user_pwd" {
     sensitive   = true
 }
 
-# ALB
+# elb
 variable "web_tg_name" {}
 variable "app_tg_name" {}
-variable "web_alb_name" {}
-variable "app_alb_name" {}
+variable "web_elb_name" {}
+variable "app_elb_name" {}
 
 # DB-CACHE
 
@@ -62,7 +62,7 @@ variable "IAM-POLICY" {}
 variable "instance_profile_name" {}
 
 #AMI
-#variable "instance_profile_name" {}
+
 
 # AUTOSCALING
 variable "AMI-ID" {}

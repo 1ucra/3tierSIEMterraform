@@ -16,7 +16,7 @@ resource "aws_launch_template" "App-LC" {
   
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "App-template"
+    Name = "aws_launch_template/App-LC"
     owner = "ktd-admin"
   }
 }
@@ -24,11 +24,13 @@ resource "aws_launch_template" "App-LC" {
 
 resource "aws_autoscaling_group" "App-ASG" {
   name = var.app_asg_name
-  vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
+  vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
+  
   launch_template {
     id = aws_launch_template.App-LC.id
     version = aws_launch_template.App-LC.latest_version
   }
+  
   min_size             = 2
   max_size             = 6
   health_check_type    = "ELB"
@@ -46,10 +48,9 @@ resource "aws_autoscaling_group" "App-ASG" {
 
   tag {
     key                 = "Name"
-    value               = var.app_asg_name
+    value               = "aws_autoscaling_group/App-ASG"
     propagate_at_launch = true
   }
-
 }
 
 
@@ -67,7 +68,7 @@ resource "aws_launch_template" "Web-LC" {
   vpc_security_group_ids = [var.web-securityGroup-id]
 
   user_data = base64encode(templatefile("${path.module}/web_userdata.sh", {
-    app_lb_dns = var.app_alb_dns_name
+    app_lb_dns = var.app_elb_dns_name
   }))
 
 
@@ -77,7 +78,7 @@ resource "aws_launch_template" "Web-LC" {
 
 resource "aws_autoscaling_group" "Web-ASG" {
   name = var.web_asg_name
-  vpc_zone_identifier  = [data.aws_subnet.private_subnet1.id, data.aws_subnet.private_subnet2.id]
+  vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
   launch_template {
     id = aws_launch_template.Web-LC.id
     version = aws_launch_template.Web-LC.latest_version
@@ -126,7 +127,7 @@ resource "aws_autoscaling_group" "Web-ASG" {
 
 
 resource "aws_autoscaling_policy" "app-custom-cpu-policy-scaleOut" {
-  name                   = "custom-cpu-policy-scaleOut"
+  name                   = "custom-appserver-cpu-policy-scaleOut"
   autoscaling_group_name = aws_autoscaling_group.App-ASG.id
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = 1
@@ -154,9 +155,67 @@ resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaleOut" {
   alarm_actions = [aws_autoscaling_policy.app-custom-cpu-policy-scaleOut.arn]
 }
 
+resource "aws_autoscaling_policy" "web-custom-cpu-policy-scaleOut" {
+  name                   = "custom-webserver-cpu-policy-scaleOut"
+  autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = 1
+  cooldown               = 60
+  policy_type            = "SimpleScaling"
+}
+
+
+resource "aws_cloudwatch_metric_alarm" "web-custom-cpu-alarm-scaleOut" {
+  alarm_name          = "custom-webserver-cpu-alarm-scaleOut"
+  alarm_description   = "alarm when cpu usage increases"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = 120
+  statistic           = "Average"
+  threshold           = "85"
+
+  dimensions = {
+    "AutoScalingGroupName" : aws_autoscaling_group.Web-ASG.name
+  }
+  actions_enabled = true
+
+  alarm_actions = [aws_autoscaling_policy.app-custom-cpu-policy-scaleOut.arn]
+}
+
+resource "aws_autoscaling_policy" "app-custom-cpu-policy-scaleIn" {
+  name                   = "custom-appserver-cpu-policy-scaleIn"
+  autoscaling_group_name = aws_autoscaling_group.App-ASG.id
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = -1
+  cooldown               = 60
+  policy_type            = "SimpleScaling"
+}
+
+resource "aws_cloudwatch_metric_alarm" "app-custom-cpu-alarm-scaleIn" {
+  alarm_name          = "custom-appserver-cpu-alarm-scaleIn"
+  alarm_description   = "alarm when cpu usage decreases"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = 120
+  statistic           = "Average"
+  threshold           = "20"
+
+  dimensions = {
+    "AutoScalingGroupName" : aws_autoscaling_group.App-ASG.name
+  }
+  actions_enabled = true
+
+  alarm_actions = [aws_autoscaling_policy.app-custom-cpu-policy-scaleIn.arn]
+}
+
+
 
 resource "aws_autoscaling_policy" "web-custom-cpu-policy-scaleIn" {
-  name                   = "custom-cpu-policy-scaleIn"
+  name                   = "custom-webserver-cpu-policy-scaleIn"
   autoscaling_group_name = aws_autoscaling_group.Web-ASG.id
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = -1
