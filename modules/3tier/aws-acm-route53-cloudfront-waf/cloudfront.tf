@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "my-web-elb"
+    target_origin_id = var.web_elb.id
 
     min_ttl         = 0
     default_ttl     = 300
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
 
   ordered_cache_behavior {
     path_pattern     = "/attendance"
-    target_origin_id = "my-web-elb"
+    target_origin_id = var.web_elb.id
 
     allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods  = ["GET", "HEAD"]

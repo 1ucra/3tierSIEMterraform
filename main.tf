@@ -198,3 +198,8 @@ module "pipeline" {
   repository-arn = module.repository.repository-arn
   repository-name = var.repository_name
 }
+
+module "monitoring"{
+  source = "./modules/monitoring"
+  
+}

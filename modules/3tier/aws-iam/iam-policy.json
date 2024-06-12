@@ -2,7 +2,6 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Effect": "Allow",
             "Action": [
                 "s3:*",
                 "s3-object-lambda:*",
@@ -12,8 +11,10 @@
                 "ec2:StopInstances",
                 "codecommit:GitPull",
                 "codecommit:GitPush",
-                "codedeploy:*"  
+                "codedeploy:*",
+                "cloudwatch:*"
             ],
+            "Effect": "Allow",
             "Resource": "*"
         }
     ]

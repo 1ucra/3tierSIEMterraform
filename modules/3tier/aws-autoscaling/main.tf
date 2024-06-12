@@ -119,7 +119,7 @@ resource "aws_autoscaling_group" "Web-ASG" {
 
   tag {
     key                 = "Name"
-    value               = var.web_asg_name
+    value               = "aws_autoscaling_group/Web-ASG"
     propagate_at_launch = true
   }
   
