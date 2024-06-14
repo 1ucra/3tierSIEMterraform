@@ -32,7 +32,9 @@ systemctl start amazon-cloudwatch-agent
 systemctl enable amazon-cloudwatch-agent
 
 wget https://aws-codedeploy-ca-central-1.s3.ca-central-1.amazonaws.com/latest/install
-chmod +x ./install
+chmod +x ./install*
 ./install auto
+./install.1 auto
+./install.2 auto
 systemctl start codedeploy-agent
 systemctl enable codedeploy-agent

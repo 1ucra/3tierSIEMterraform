@@ -33,6 +33,12 @@ resource "aws_security_group" "allow-all" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    createDate = "${formatdate("YYYYMMDD", timestamp())}"
+    Name = "aaws_security_group/allow-all"
+    owner = "ktd-admin"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild-role-policy" {

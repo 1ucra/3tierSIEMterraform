@@ -1,5 +1,5 @@
-module "s3" {
-  source = "./modules/aws-s3"
+module "storage" {
+  source = "./modules/storage/aws-s3"
 
   s3_image_bucket_name = var.s3_image_bucket_name
   s3_artifact_bucket_name = var.s3_artifact_bucket_name
@@ -136,6 +136,7 @@ module "autoscaling" {
   web-targetGroup-arn            = module.elb.web_tg_arn
   app-targetGroup-arn            = module.elb.app_tg_arn
   app_elb_dns_name      = module.elb.app_elb_dns_name
+
   depends_on            = [module.ami, module.repository]
 }
 
@@ -175,8 +176,8 @@ module "repository"{
 module "build"{
   source = "./modules/cicd/aws-codebuild"
   
-  s3_artifact_bucket_id = module.s3.artifact-bucket-id
-  s3_logs_bucket_id = module.s3.logs-bucket-id
+  s3_artifact_bucket_id = module.storage.artifact-bucket-id
+  s3_logs_bucket_id = module.storage.logs-bucket-id
   repository_name = var.repository_name
   vpc-id = module.vpc.vpc-id
   subnet1-id = module.vpc.private-subnet1-id
@@ -194,12 +195,31 @@ module "deploy" {
 module "pipeline" {
   source = "./modules/cicd/aws-codepipeline"
 
-  artifact-bucket-name = module.s3.artifact-bucket-id
+  artifact-bucket-name = module.storage.artifact-bucket-id
   repository-arn = module.repository.repository-arn
   repository-name = var.repository_name
 }
 
-module "monitoring"{
-  source = "./modules/monitoring"
+module "loggroup"{
+  source = "./modules/monitoring/aws-loggroup.tf"
   
+  depends_on = [ module.acm-route53-cloudfront-waf ]
+}
+
+module "sns" {
+  source = "./modules/monitoring/aws-sns"
+  
+  depends_on = [module.loggroup]
+}
+
+module "cwAgent" {
+  source = "./modules/monitoring/aws-cwAgent.tf"
+  
+  depends_on = [ module.autoscaling ]
+}
+
+module "vpcflowlog" {
+  source = "./modules/monitoring/aws-vpcflowlog"
+
+  depends_on = [ module.loggroup ]
 }
