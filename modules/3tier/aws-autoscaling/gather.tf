@@ -1,4 +1,3 @@
-
 data "aws_subnet" "private-subnet1" {
   filter {
     name   = "tag:Name"

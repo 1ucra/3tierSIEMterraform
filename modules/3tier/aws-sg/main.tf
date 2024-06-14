@@ -1,9 +1,16 @@
 resource "aws_security_group" "bastion-sg" {
-  name        = "bastion-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  description = "Allow SSH, HTTP and HTTPS"
+  name        = "DBbastion-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
+  description = "Allow HTTP and HTTPS, auroraDB"
   vpc_id      = data.aws_vpc.hellowaws-vpc.id # 실제 VPC ID로 변경
-  
-  ingress {
+
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -11,11 +18,12 @@ resource "aws_security_group" "bastion-sg" {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
@@ -24,6 +32,7 @@ resource "aws_security_group" "bastion-sg" {
     
   }
 }
+
 
 resource "aws_security_group" "redis-sg" {
   name        = "redis-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"

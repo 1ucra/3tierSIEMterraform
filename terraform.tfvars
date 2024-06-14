@@ -1,6 +1,6 @@
 #S3 
 s3_artifact_bucket_name = "hellowaws-artifact-bucket"
-s3_logs_bucket_name = "hellowaws-logs-bucket"
+
 
 # VPC
 vpc_name         = "hellowaws_VPC"
@@ -38,7 +38,7 @@ redis_securityGroup_name = "hellowaws_redis-sg"
 bastion_securityGroup_name = "hellowaws_bastion-sg"
 
 #
-AMI-ID               = "ami-0f682fb0d11c2ae31"
+
 
 # RDS
 db_securityGroup_name           = "hellowaws-rds-sg"
@@ -57,8 +57,10 @@ IAM-POLICY            = "policy-for-ec2-SSM,S3CICD"
 instance_profile_name = "instance-profile-for-ec2-SSM,S3CICD"
 
 # AUTOSCALING
+AMI-ID               = "ami-0f682fb0d11c2ae31"
 web_asg_name         = "hellowaws_WEB-ASG"
 app_asg_name         = "hellowaws_APP-ASG"
+hellowaws-ami = "ami-0a6f96138bce0517a"
 
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM

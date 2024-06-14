@@ -1,7 +1,7 @@
 # Creating VPC
 resource "aws_vpc" "hellowaws-vpc" {
   cidr_block = var.vpc_cidr
-  instance_tenancy = "default"
+  instance_tenancy = "default" #공유 하드웨어 
   enable_dns_hostnames = true
   enable_dns_support = true
 

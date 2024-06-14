@@ -15,20 +15,20 @@ resource "aws_instance" "bastion" {
   }
 }
 
-# AMI 생성
-resource "aws_ami_from_instance" "hellowaws-ami" {
-  name               = "amz-nginx-${formatdate("YYYYMMDD-HHmm", timestamp())}"
-  source_instance_id = aws_instance.bastion.id
-  description        = "A instance created for a short time to create an AMI"
+# # AMI 생성
+# resource "aws_ami_from_instance" "hellowaws-ami" {
+#   name               = "amz-nginx-${formatdate("YYYYMMDD-HHmm", timestamp())}"
+#   source_instance_id = aws_instance.bastion.id
+#   description        = "A instance created for a short time to create an AMI"
 
-  tags = {
-    createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_ami_from_instance/hellowaws-ami"
-    owner = "ktd-admin"
-  }
+#   tags = {
+#     createDate = "${formatdate("YYYYMMDD", timestamp())}"
+#     Name = "aws_ami_from_instance/hellowaws-ami"
+#     owner = "ktd-admin"
+#   }
   
-  depends_on = [ aws_ssm_association.cwagent_configure ]
-}
+#   depends_on = [ aws_ssm_association.cwagent_configure ]
+# }
 
 # resource "null_resource" "stop-instance" {
 

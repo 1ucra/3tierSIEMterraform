@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "App-ASG" {
   
   launch_template {
     id = aws_launch_template.App-LC.id
-    version = aws_launch_template.App-LC.default_version
+    version = "$Default"
   }
   
   min_size             = 2
@@ -83,7 +83,7 @@ resource "aws_autoscaling_group" "Web-ASG" {
   vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
   launch_template {
     id = aws_launch_template.Web-LC.id
-    version = aws_launch_template.Web-LC.default_version
+    version = "$Default"
   }
   min_size             = 2
   max_size             = 4

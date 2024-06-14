@@ -1,6 +1,6 @@
 #S3
 variable "s3_artifact_bucket_name" {}
-variable "s3_logs_bucket_name" {}
+
 
 # VPC
 variable "vpc_name" {}
@@ -65,6 +65,7 @@ variable "instance_profile_name" {}
 
 # AUTOSCALING
 variable "AMI-ID" {}
+variable "hellowaws-ami" {}
 variable "web_asg_name" {}
 variable "app_asg_name" {}
 

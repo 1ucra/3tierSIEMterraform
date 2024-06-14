@@ -2,7 +2,6 @@ module "storage" {
   source = "./modules/storage/aws-s3"
 
   s3_artifact_bucket_name = var.s3_artifact_bucket_name
-  s3_logs_bucket_name = var.s3_logs_bucket_name
 }
 
 module "vpc" {
@@ -50,6 +49,17 @@ module "security-group" {
 
 }
 
+module "DBbastion" {
+  source = "./modules/3tier/aws-DBbastion"
+
+  ami-id = var.AMI-ID
+  instance_profile_name = var.instance_profile_name
+  bastion_securityGroup_id = module.security-group.bastion_securityGroup_id
+
+  depends_on = [ module.security-group ]
+}
+
+
 module "rds" {
   source = "./modules/3tier/aws-rds"
 
@@ -65,6 +75,7 @@ module "rds" {
   depends_on = [module.security-group]
 
 }
+
 
 module "elb" {
   source = "./modules/3tier/aws-elb"
@@ -106,23 +117,26 @@ module "iam" {
   
 }
 
-module "ami" {
-  source ="./modules/3tier/aws-ami"
-  
-  ami-id = var.AMI-ID
-  instance_profile_name = var.instance_profile_name
-  vpc_name    = var.vpc_name
-  db_subnet1 = var.db_subnet1
-  app_elb_dns_name      = module.elb.app_elb_dns_name
-  bastion_securityGroup_id = module.security-group.bastion_securityGroup_id
 
-  depends_on = [ module.security-group, module.iam ]
-}
+# module "ami" {
+#   source ="./modules/3tier/aws-ami"
+  
+#   ami-id = var.AMI-ID
+#   instance_profile_name = var.instance_profile_name
+#   vpc_name    = var.vpc_name
+#   db_subnet1 = var.db_subnet1
+#   app_elb_dns_name      = module.elb.app_elb_dns_name
+#   bastion_securityGroup_id = module.security-group.bastion_securityGroup_id
+
+#   depends_on = [ module.security-group, module.iam ]
+# }
+
+
 
 module "autoscaling" {
   source = "./modules/3tier/aws-autoscaling"
   
-  my-ami-id = module.ami.my-ami-id
+  my-ami-id = var.hellowaws-ami
   instance_profile_name = var.instance_profile_name
   webTier_securityGroup_name           = var.webTier_securityGroup_name
   appTier_securityGroup_name           = var.appTier_securityGroup_name
@@ -137,7 +151,7 @@ module "autoscaling" {
   app_elb_dns_name      = module.elb.app_elb_dns_name
   repository_name = var.repository_name
 
-  depends_on            = [module.ami, module.repository]
+  depends_on            = [ module.security-group, module.repository ]
 }
 
 module "acm-route53-cloudfront-waf" {
@@ -177,7 +191,6 @@ module "build"{
   source = "./modules/cicd/aws-codebuild"
   
   s3_artifact_bucket_id = module.storage.artifact-bucket-id
-  s3_logs_bucket_id = module.storage.logs-bucket-id
   repository_name = var.repository_name
   vpc-id = module.vpc.vpc-id
   subnet1-id = module.vpc.private-subnet1-id
