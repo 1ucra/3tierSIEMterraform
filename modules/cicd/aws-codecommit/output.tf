@@ -1,3 +1,3 @@
 output "repository-arn" {
-    value = aws_codecommit_repository.sourcecode-repository.arn
+    value = data.aws_codecommit_repository.hellowaws-sourcecode.arn
 }

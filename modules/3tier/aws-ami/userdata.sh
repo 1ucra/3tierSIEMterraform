@@ -5,8 +5,6 @@ sudo su
 yum update -y
 amazon-linux-extras install nginx1 -y
 
-cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-
 sed -i '18,22d' /etc/nginx/nginx.conf
 
 sed -i '18i \
@@ -22,19 +20,22 @@ sed -i '18i \
  access_log /var/log/nginx/access.log json_logs;\
  error_log /var/log/nginx/error.log;' /etc/nginx/nginx.conf
 
-# Nginx 서비스 시작 및 부팅 시 자동 실행 설정
-systemctl start nginx
+systemctl restart nginx
 systemctl enable nginx
+
+mkdir /hellowaws_init
+cd /hellowaws_init
+
+yum install -y git
 yum install -y ruby
 yum install -y wget
-yum install amazon-cloudwatch-agent -y
-systemctl start amazon-cloudwatch-agent
+yum install -y amazon-cloudwatch-agent
+
+systemctl restart amazon-cloudwatch-agent
 systemctl enable amazon-cloudwatch-agent
 
 wget https://aws-codedeploy-ca-central-1.s3.ca-central-1.amazonaws.com/latest/install
-chmod +x ./install*
+chmod +x ./install
 ./install auto
-./install.1 auto
-./install.2 auto
 systemctl start codedeploy-agent
 systemctl enable codedeploy-agent

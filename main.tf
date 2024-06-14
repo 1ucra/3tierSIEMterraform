@@ -1,7 +1,6 @@
 module "storage" {
   source = "./modules/storage/aws-s3"
 
-  s3_image_bucket_name = var.s3_image_bucket_name
   s3_artifact_bucket_name = var.s3_artifact_bucket_name
   s3_logs_bucket_name = var.s3_logs_bucket_name
 }
@@ -136,6 +135,7 @@ module "autoscaling" {
   web-targetGroup-arn            = module.elb.web_tg_arn
   app-targetGroup-arn            = module.elb.app_tg_arn
   app_elb_dns_name      = module.elb.app_elb_dns_name
+  repository_name = var.repository_name
 
   depends_on            = [module.ami, module.repository]
 }
@@ -212,11 +212,6 @@ module "sns" {
   depends_on = [module.loggroup]
 }
 
-module "cwAgent" {
-  source = "./modules/monitoring/aws-cwAgent.tf"
-  
-  depends_on = [ module.autoscaling ]
-}
 
 module "vpcflowlog" {
   source = "./modules/monitoring/aws-vpcflowlog"

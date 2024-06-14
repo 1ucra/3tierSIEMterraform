@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "nginx-access" {
-  name              = "nginx/access2"
+  name              = "nginx/access"
   retention_in_days = 1
   kms_key_id        = null  # 표준 로그 클래스는 기본 KMS 키를 사용하므로 null로 설정
 
@@ -11,7 +11,7 @@ resource "aws_cloudwatch_log_group" "nginx-access" {
 }
 
 resource "aws_cloudwatch_log_group" "nginx-error" {
-  name              = "nginx/error2"
+  name              = "nginx/error"
   retention_in_days = 1
   kms_key_id        = null  # 표준 로그 클래스는 기본 KMS 키를 사용하므로 null로 설정
 

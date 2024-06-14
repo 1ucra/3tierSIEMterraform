@@ -18,7 +18,7 @@ resource "aws_ssm_association" "cwagent_configure" {
   
   targets    {
       key    = "tag:Name"
-      values = ["aws_autoscaling_group/App-ASG", "aws_autoscaling_group/Web-ASG"]
+      values = ["aws_instance/bastion"]
     }
 
   parameters = {
@@ -29,4 +29,5 @@ resource "aws_ssm_association" "cwagent_configure" {
     optionalRestart               = "yes"
   }
 
+  depends_on = [ aws_instance.bastion ]
 }

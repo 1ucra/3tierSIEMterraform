@@ -10,7 +10,7 @@ resource "aws_instance" "bastion" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "bastion"
+    Name = "aws_instance/bastion"
     owner = "ktd-admin"
   }
 }
@@ -27,7 +27,7 @@ resource "aws_ami_from_instance" "hellowaws-ami" {
     owner = "ktd-admin"
   }
   
-  depends_on = [ aws_instance.bastion ]
+  depends_on = [ aws_ssm_association.cwagent_configure ]
 }
 
 # resource "null_resource" "stop-instance" {

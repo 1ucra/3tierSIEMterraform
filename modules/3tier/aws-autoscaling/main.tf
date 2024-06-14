@@ -10,6 +10,7 @@ resource "aws_launch_template" "App-LC" {
   }
 
   user_data = base64encode(templatefile("${path.module}/app_userdata.sh", {
+      
   }))
 
   vpc_security_group_ids = [var.app-securityGroup-id]
@@ -28,7 +29,7 @@ resource "aws_autoscaling_group" "App-ASG" {
   
   launch_template {
     id = aws_launch_template.App-LC.id
-    version = aws_launch_template.App-LC.latest_version
+    version = aws_launch_template.App-LC.default_version
   }
   
   min_size             = 2
@@ -68,7 +69,8 @@ resource "aws_launch_template" "Web-LC" {
   vpc_security_group_ids = [var.web-securityGroup-id]
 
   user_data = base64encode(templatefile("${path.module}/web_userdata.sh", {
-    app_lb_dns = var.app_elb_dns_name
+    app_lb_dns = var.app_elb_dns_name,
+    repository_name = var.repository_name
   }))
 
 
@@ -81,7 +83,7 @@ resource "aws_autoscaling_group" "Web-ASG" {
   vpc_zone_identifier  = [data.aws_subnet.private-subnet1.id, data.aws_subnet.private-subnet2.id]
   launch_template {
     id = aws_launch_template.Web-LC.id
-    version = aws_launch_template.Web-LC.latest_version
+    version = aws_launch_template.Web-LC.default_version
   }
   min_size             = 2
   max_size             = 4

@@ -2,11 +2,22 @@
 # Amazon Linux 2에 Nginx 설치
 
 sudo su
+systemctl restart amazon-cloudwatch-agent
 
-aws s3 cp s3://ktd-0426/django-community-board-main/templates/default.conf.template /etc/nginx/conf.d/
-app_lb_dns=$(aws ssm get-parameter --name "/config/system/elb_dns_name" --with-decryption --query "Parameter.Value" --output text  --region "ca-central-1")
-export app_lb_dns
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
 
-envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
-aws s3 cp s3://ktd-0426/django-community-board-main/static /usr/share/nginx/html/static --recursive
+cat > /etc/nginx/default.d/default.conf << 'EOF'
+location /static {
+        root /usr/share/nginx/html;
+    }
+
+location / {
+    proxy_pass http://${app_lb_dns}:8080;
+}
+EOF
+
+git clone "https://git-codecommit.ca-central-1.amazonaws.com/v1/repos/${repository_name}"
+mv "./${repository_name}/static/" /usr/share/nginx/html/
+
 systemctl restart nginx

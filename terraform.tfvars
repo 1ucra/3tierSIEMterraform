@@ -1,5 +1,4 @@
 #S3 
-s3_image_bucket_name =  "hellowaws-image-bucket"
 s3_artifact_bucket_name = "hellowaws-artifact-bucket"
 s3_logs_bucket_name = "hellowaws-logs-bucket"
 
@@ -70,4 +69,4 @@ header_name = "my-header"
 header_value = "hellowaws"
 
 #CICD
-repository_name = "hellowaws-application-sourcecode"
+repository_name = "hellowaws-sourcecode"
