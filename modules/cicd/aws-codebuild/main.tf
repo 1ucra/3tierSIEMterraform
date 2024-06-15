@@ -36,7 +36,7 @@ resource "aws_security_group" "allow-all" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aaws_security_group/allow-all"
+    Name = "aws_security_group/allow-all"
     owner = "ktd-admin"
   }
 }

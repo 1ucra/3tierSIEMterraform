@@ -1,31 +1,29 @@
 #!/bin/bash
 
-cat > /etc/nginx/conf.d/default.conf << 'EOF'
-server {
-    listen       8080 default_server;
-    listen       [::]:8080 default_server;
-    
-    root         /usr/share/nginx/html;
-    location / {
-        try_files $uri $uri/ =404;
-    }
+mkdir /mytmp
+cd /mytmp
+touch healthcheck_server.py
 
-    location /healthcheck {
-    access_log off;
-    return 200 'OK';
-    add_header Content-Type text/plain;
+echo 'from http.server import BaseHTTPRequestHandler, HTTPServer
 
-    # 오류 페이지 설정
-    error_page 404 /404.html;
-    location = /404.html {
-    }
+class RequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/healthcheck":
+            self.send_response(200)
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"OK")
+        else:
+            self.send_response(404)
+            self.end_headers()
 
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html {
-    }
-}
-EOF
+def run(server_class=HTTPServer, handler_class=RequestHandler, port=8080):
+    server_address = ("", port)
+    httpd = server_class(server_address, handler_class)
+    print(f"Serving on port {port}...")
+    httpd.serve_forever()
 
+if __name__ == "__main__":
+    run()' > healthcheck_server.py
 
-# Nginx 재시작
-systemctl restart nginx
+python3 healthcheck_server.py

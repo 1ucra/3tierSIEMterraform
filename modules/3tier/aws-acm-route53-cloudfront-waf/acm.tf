@@ -21,7 +21,6 @@ resource "aws_acm_certificate" "cert" {
     Name = "aws_acm_certificate/cert"
     owner = "ktd-admin"
   }
-
 }
 
 # ACM certificate validation resource using the certificate ARN and a list of validation record FQDNs.

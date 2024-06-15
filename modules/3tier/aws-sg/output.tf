@@ -26,3 +26,6 @@ output "redis_securityGroup_id" {
   value = aws_security_group.redis-sg.id
 }
 
+output "cloudfront_prefix_list" {
+  value = data.aws_ec2_managed_prefix_list.cloudfront
+}

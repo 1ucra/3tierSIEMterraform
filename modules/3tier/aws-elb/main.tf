@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "app-tg" {
     unhealthy_threshold = 2
   }
 
-  deregistration_delay = 60
+  deregistration_delay = 300
 
   target_type = "instance"
   port     = 8080
