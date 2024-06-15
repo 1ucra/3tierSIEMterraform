@@ -39,7 +39,27 @@ resource "aws_autoscaling_group" "App-ASG" {
   target_group_arns    = [var.app-targetGroup-arn]
   force_delete         = true
   
-  metrics_granularity = "1Minute"
+  metrics_granularity = "5Minute"
+    enabled_metrics = [
+      "GroupMinSize",
+      "GroupMaxSize",
+      "GroupDesiredCapacity",
+      "GroupInServiceInstances",
+      "GroupPendingInstances",
+      "GroupStandbyInstances",
+      "GroupTerminatingInstances",
+      "GroupTotalInstances"
+    ]
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+      max_healthy_percentage = 200
+      instance_warmup        = 180
+    }
+  }
+  
 
   warm_pool {
     min_size                 = 1

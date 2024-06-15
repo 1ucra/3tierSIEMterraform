@@ -40,21 +40,19 @@ resource "aws_codedeploy_deployment_group" "app-deploy-group" {
     deployment_type   = "BLUE_GREEN"
   }
 
-  deployment_config_name = "CodeDeployDefault.HalfAtATime"
-
   blue_green_deployment_config {
     terminate_blue_instances_on_deployment_success {
       action = "TERMINATE"
-      termination_wait_time_in_minutes = 0
+      termination_wait_time_in_minutes = 1  # 기존 인스턴스 종료 전에 대기하는 시간 (단위: 분)
     }
 
     deployment_ready_option {
       action_on_timeout = "CONTINUE_DEPLOYMENT"
+      wait_time_in_minutes = 10
     }
 
     green_fleet_provisioning_option {
       action = "COPY_AUTO_SCALING_GROUP"
-
     }
   }
 
@@ -63,7 +61,6 @@ resource "aws_codedeploy_deployment_group" "app-deploy-group" {
       name = var.app_targetGroupName
     }
   }
-  
 
   auto_rollback_configuration {
     enabled = true
