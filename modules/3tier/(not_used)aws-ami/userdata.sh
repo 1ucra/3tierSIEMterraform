@@ -20,6 +20,13 @@ sed -i '18i \
  access_log /var/log/nginx/access.log json_logs;\
  error_log /var/log/nginx/error.log;' /etc/nginx/nginx.conf
 
+echo "location /healthcheck {
+    access_log off;
+    return 200 'OK';
+    add_header Content-Type text/plain;
+}" > /etc/nginx/default.d/healthcheck.conf
+
+
 systemctl restart nginx
 systemctl enable nginx
 
