@@ -50,7 +50,7 @@ resource "aws_rds_cluster" "aurora-cluster" {
   storage_encrypted  = true
   allow_major_version_upgrade = false
   backup_retention_period = 3
-  preferred_backup_window = "19:00-21:00" #4시~6시
+  preferred_backup_window = "18:00-20:00" #중국 4시~6시
   skip_final_snapshot     = true
   final_snapshot_identifier = "aurora-cluster-final-${formatdate("YYYYMMDD-HHmm", timestamp())}"
   database_name           = var.db_name

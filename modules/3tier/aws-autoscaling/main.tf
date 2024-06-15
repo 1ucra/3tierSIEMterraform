@@ -39,7 +39,7 @@ resource "aws_autoscaling_group" "App-ASG" {
   target_group_arns    = [var.app-targetGroup-arn]
   force_delete         = true
   
-  metrics_granularity = "5Minute"
+  metrics_granularity = "1Minute"
     enabled_metrics = [
       "GroupMinSize",
       "GroupMaxSize",

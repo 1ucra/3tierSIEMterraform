@@ -58,26 +58,14 @@ resource "aws_security_group" "redis-sg" {
     Name = "aws_security_group/redis-sg"
     owner = "ktd-admin"
   }
+
+  depends_on = [ aws_security_group.app-tier-sg ]
 }
 
 resource "aws_security_group" "web-elb-sg" {
   name = "web-elb-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
   vpc_id      = data.aws_vpc.hellowaws-vpc.id
-  description = "Allow HTTP and HTTPS for World"
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  description = "Allow HTTP and HTTPS form AWs CloudFront"
 
   egress {
     from_port        = 0
@@ -95,6 +83,29 @@ resource "aws_security_group" "web-elb-sg" {
   depends_on = [ data.aws_vpc.hellowaws-vpc ]
 }
 
+resource "aws_security_group_rule" "allow_http_from_cloudfront" {
+  type        = "ingress"
+  from_port   = 80
+  to_port     = 80
+  protocol    = "tcp"
+  security_group_id = aws_security_group.web-elb-sg.id
+  source_security_group_id = "pl-38a64351"
+  description = "Allow HTTP traffic from CloudFront"
+
+  depends_on = [ aws_security_group.web-elb-sg ]
+}
+
+resource "aws_security_group_rule" "allow_https_from_cloudfront" {
+  type        = "ingress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  security_group_id = aws_security_group.web-elb-sg.id
+  source_security_group_id = "pl-38a64351"
+  description = "Allow HTTPS traffic from CloudFront"
+  
+  depends_on = [ aws_security_group.web-elb-sg ]
+}
 
 resource "aws_security_group" "web-tier-sg" {
   name = "web-tier-sg:${formatdate("YYYYMMDD-HHmm", timestamp())}"
@@ -238,5 +249,5 @@ resource "aws_security_group" "database-sg" {
     owner = "ktd-admin"
   }
 
-  depends_on = [ aws_security_group.web-tier-sg ]
+  depends_on = [ aws_security_group.app-tier-sg,aws_security_group.bastion-sg ]
 }
