@@ -59,7 +59,7 @@ resource "aws_flow_log" "hellowawsVPC-flowlog" {
 
   tags = {
     createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_ssm_parameter/hellowawsVPC-flowlog"
+    Name = "aws_flow_log/hellowawsVPC-flowlog"
     owner = "ktd-admin"
   }
 }

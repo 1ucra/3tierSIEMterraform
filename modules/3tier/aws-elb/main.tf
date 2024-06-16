@@ -20,15 +20,16 @@ resource "aws_lb_target_group" "app-tg" {
   name = "${var.app_tg_name}${formatdate("YYYYMMDD-HHmm", timestamp())}"
   health_check {
     enabled = true
-    interval            = 30
+    interval            = 10
     path                = "/healthcheck"
     protocol            = "HTTP"
     timeout             = 5
-    healthy_threshold   = 5
+    healthy_threshold   = 2
+    port = 80
     unhealthy_threshold = 2
   }
 
-  deregistration_delay = 300
+  deregistration_delay = 60
 
   target_type = "instance"
   port     = 8080

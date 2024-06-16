@@ -10,7 +10,7 @@ aws configure에 적절한 정보 입력
 
 
 테라폼이 쉘 스크립트 파일의 변경을 감지하지는 못함 -> destory하거나 template에서 userdata 바꾸기
-AMI 아마존2023에 nginx 설치된거 생성
+
 보안 자격증명 codecommit용 ID.PW 만들기 -> Parameter 스토어에 저장해두기
 S3 생성 해둬야함
 iam 콘솔로 만들기 - 관리자 계쩡과 운영계정의 분리
