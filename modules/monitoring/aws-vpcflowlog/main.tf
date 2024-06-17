@@ -49,6 +49,12 @@ resource "aws_iam_role" "vpcflowlog-role" {
   }
 }
 
+# Attach the policy to the role
+resource "aws_iam_role_policy_attachment" "vpcflowlog_role_policy_attachment" {
+  role       = aws_iam_role.vpcflowlog-role.name
+  policy_arn = aws_iam_policy.vpcflowlog-policy.arn
+}
+
 resource "aws_flow_log" "hellowawsVPC-flowlog" {
   log_destination      = data.aws_cloudwatch_log_group.hellowawsVPC-flowlog.arn
   iam_role_arn         = aws_iam_role.vpcflowlog-role.arn
