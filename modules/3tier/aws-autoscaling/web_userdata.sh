@@ -8,6 +8,7 @@ git config --global credential.UseHttpPath true
 
 
 
+
 export app_lb_dns = "${app_lb_dns}"
 
 cat > /etc/nginx/default.d/default.conf << 'EOF'
@@ -27,6 +28,9 @@ EOF
 export repository_name = "${repository_name}"
 
 git clone "https://git-codecommit.ca-central-1.amazonaws.com/v1/repos/${repository_name}"
+mkdir ./${repository_name}/static/images/
+aws s3 cp s3://hellowaws-image-bucket/building.jpg ./${repository_name}/static/images/building.jpg
 mv "./${repository_name}/static/" /usr/share/nginx/html/
+
 
 systemctl restart nginx
