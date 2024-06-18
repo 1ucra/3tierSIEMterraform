@@ -70,8 +70,8 @@ module "rds" {
   db_name              = var.db_name
   rds_name             = var.rds_name
   db_securityGroup_id             = module.security-group.database_securityGroup_id
-  db_user_id = var.db_user_id
-  db_user_pwd = var.db_user_pwd
+  # db_user_id = var.db_user_id
+  # db_user_pwd = var.db_user_pwd
   depends_on = [module.security-group]
 
 }

@@ -1,30 +1,30 @@
-resource "aws_ssm_parameter" "db-id" {
-  name  = "/config/account/admin/ID"
-  type  = "SecureString"
-  value = var.db_user_id
-  overwrite   = true
-  description = "input db admin ID"
+# resource "aws_ssm_parameter" "db-id" {
+#   name  = "/config/account/admin/ID"
+#   type  = "SecureString"
+#   value = var.db_user_id
+#   overwrite   = true
+#   description = "input db admin ID"
 
-  tags = {
-    createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_ssm_parameter/db-id"
-    owner = "ktd-admin"
-  }
-}
+#   tags = {
+#     createDate = "${formatdate("YYYYMMDD", timestamp())}"
+#     Name = "aws_ssm_parameter/db-id"
+#     owner = "ktd-admin"
+#   }
+# }
 
-resource "aws_ssm_parameter" "db-pwd" {
-  name  = "/config/account/admin/PWD"
-  type  = "SecureString"
-  value = var.db_user_pwd
-  overwrite   = true
-  description = "input db admin PWD"
+# resource "aws_ssm_parameter" "db-pwd" {
+#   name  = "/config/account/admin/PWD"
+#   type  = "SecureString"
+#   value = var.db_user_pwd
+#   overwrite   = true
+#   description = "input db admin PWD"
 
-  tags = {
-    createDate = "${formatdate("YYYYMMDD", timestamp())}"
-    Name = "aws_ssm_parameter/db-pwd"
-    owner = "ktd-admin"
-  }
-}
+#   tags = {
+#     createDate = "${formatdate("YYYYMMDD", timestamp())}"
+#     Name = "aws_ssm_parameter/db-pwd"
+#     owner = "ktd-admin"
+#   }
+# }
 
 # 8 Creating DB subnet group for RDS Instances
 resource "aws_db_subnet_group" "db-subnet-group" {
@@ -45,8 +45,8 @@ resource "aws_rds_cluster" "aurora-cluster" {
   engine                  = "aurora-mysql"
   engine_version          = "8.0.mysql_aurora.3.04.2"
   engine_mode = "provisioned"
-  master_username         = aws_ssm_parameter.db-id.value
-  master_password         = aws_ssm_parameter.db-pwd.value
+  master_username         = data.aws_ssm_parameter.db-id.value
+  master_password         = data.aws_ssm_parameter.db-pwd.value
   storage_encrypted  = true
   allow_major_version_upgrade = false
   backup_retention_period = 3

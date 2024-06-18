@@ -5,5 +5,5 @@ variable "dbTier_securityGroup_name" {}
 variable "db_name" {}
 variable "rds_name" {}
 variable "db_securityGroup_id" {}
-variable "db_user_id" {}
-variable "db_user_pwd" {}
+# variable "db_user_id" {}
+# variable "db_user_pwd" {}

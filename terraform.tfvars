@@ -60,7 +60,7 @@ instance_profile_name = "instance-profile-for-ec2-SSM,S3CICD"
 AMI-ID               = "ami-0f682fb0d11c2ae31"
 web_asg_name         = "hellowaws_WEB-ASG"
 app_asg_name         = "hellowaws_APP-ASG"
-hellowaws-ami = "ami-004556cf1fd770fbb"
+hellowaws-ami = "ami-0f4bbc3e1ed1dbca2"
 
 
 # CLOUDFFRONT / WAFv2 / ROUTE53 / ACM

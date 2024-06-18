@@ -8,11 +8,13 @@
                 "ssm:*",
                 "ec2messages:*",
                 "ssmmessages:*",
+                "ec2:DescribeTags",
                 "ec2:StopInstances",
                 "codecommit:GitPull",
                 "codecommit:GitPush",
                 "codedeploy:*",
-                "cloudwatch:*"
+                "cloudwatch:*",
+                "logs:*"
             ],
             "Effect": "Allow",
             "Resource": "*"

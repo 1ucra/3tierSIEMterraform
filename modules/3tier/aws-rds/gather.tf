@@ -19,3 +19,11 @@ data "aws_security_group" "db-sg" {
     values = [var.db_securityGroup_id]
   }
 }
+
+data "aws_ssm_parameter" "db-id" {
+  name  = "/config/account/admin/ID"
+}
+
+data "aws_ssm_parameter" "db-pwd" {
+  name  = "/config/account/admin/PWD"
+}
