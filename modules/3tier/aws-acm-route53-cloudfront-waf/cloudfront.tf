@@ -58,6 +58,57 @@ resource "aws_cloudfront_distribution" "cloudfront-web-elb-distribution" {
     viewer_protocol_policy = "redirect-to-https"
   }
 
+
+  ordered_cache_behavior {
+    path_pattern     = "/login"
+    target_origin_id = var.web_elb.id
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+  ordered_cache_behavior {
+    path_pattern     = "/loout"
+    target_origin_id = var.web_elb.id
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "/signup"
+    target_origin_id = var.web_elb.id
+
+    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods  = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+  
   restrictions {
     geo_restriction {
       restriction_type = "none"

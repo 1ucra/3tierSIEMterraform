@@ -33,4 +33,4 @@ aws s3 sync s3://hellowaws-image-bucket/ ./${repository_name}/static/images/
 mv "./${repository_name}/static/" /usr/share/nginx/html/
 
 
-systemctl restart nginxW
+systemctl restart nginx

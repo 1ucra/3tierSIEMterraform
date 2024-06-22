@@ -41,11 +41,11 @@ variable "bastion_securityGroup_name" {}
 variable "db_securityGroup_name" {}
 variable "db_name" {}
 variable "rds_name" {}
-variable "db_user_id" {}
-variable "db_user_pwd" {
-    description = "Database user password (8 characters minimum)"
-    sensitive   = true
-}
+# variable "db_user_id" {}
+# variable "db_user_pwd" {
+#     description = "Database user password (8 characters minimum)"
+#     sensitive   = true
+# }
 
 # elb
 variable "web_tg_name" {}
